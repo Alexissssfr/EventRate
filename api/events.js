@@ -1,6 +1,6 @@
 // Fonction serverless pour les événements
-import { Pool } from 'pg';
-import jwt from 'jsonwebtoken';
+const { Pool } = require('pg');
+const jwt = require('jsonwebtoken');
 
 const db = new Pool({
   connectionString: process.env.SUPABASE_DB_URL,
@@ -13,7 +13,7 @@ function authenticateToken(token) {
   return jwt.verify(token, process.env.JWT_SECRET);
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Configuration CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');

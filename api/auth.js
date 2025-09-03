@@ -1,7 +1,7 @@
 // Fonction serverless pour l'authentification
-import { Pool } from 'pg';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const { Pool } = require('pg');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Configuration de la base de données
 const db = new Pool({
@@ -9,7 +9,7 @@ const db = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Configuration CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
