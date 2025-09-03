@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "echo 'No build needed for static files'",
+  "outputDirectory": "public",
   "rewrites": [
     {
       "source": "/api/(.*)",

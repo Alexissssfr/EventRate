@@ -1,0 +1,10 @@
+client/
+server/
+demo-complete.html
+start-servers.sh
+install.sh
+SUPABASE_SETUP.md
+database.js
+server.js
+logs/
+*.log
