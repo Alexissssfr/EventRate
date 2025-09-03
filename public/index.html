@@ -1872,7 +1872,10 @@
       const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 minutes en millisecondes
 
       // Configuration API
-      const API_BASE = "/api";
+      // Détection automatique de l'environnement
+      const API_BASE = window.location.hostname === 'localhost' 
+        ? "http://localhost:5001/api" 
+        : window.location.origin + "/api";
 
       // Fonctions de gestion de l'inactivité
       function resetInactivityTimer() {

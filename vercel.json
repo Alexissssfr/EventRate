@@ -1,19 +1,33 @@
 {
-  "buildCommand": "cd client && npm install && npm run build",
-  "outputDirectory": "client/build",
+  "version": 2,
   "functions": {
-    "api/*.js": {
-      "runtime": "nodejs20.x"
+    "api/**/*.js": {
+      "runtime": "@vercel/node@18.x"
     }
   },
   "rewrites": [
     {
-      "source": "/api/auth/(.*)",
-      "destination": "/api/auth?path=$1"
-    },
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
+  "headers": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
     }
   ]
 }

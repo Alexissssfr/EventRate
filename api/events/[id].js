@@ -20,48 +20,51 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  const { id } = req.query;
+
   try {
     if (req.method === 'GET') {
-      // Récupérer tous les événements
+      // Récupérer un événement spécifique
       const result = await pool.query(`
         SELECT id, title, date, time, location, description, category, 
                created_at, updated_at 
         FROM events 
-        ORDER BY date ASC, time ASC
-      `);
+        WHERE id = $1
+      `, [id]);
       
-      return res.status(200).json(result.rows);
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'Événement non trouvé' });
+      }
+      
+      return res.status(200).json(result.rows[0]);
     }
 
-    if (req.method === 'POST') {
-      // Créer un nouvel événement
+    if (req.method === 'PUT') {
+      // Modifier un événement
       const { title, date, time, location, description, category } = req.body;
       
-      // Validation des données
-      if (!title || !date || !time || !location || !category) {
-        return res.status(400).json({ 
-          error: 'Tous les champs obligatoires doivent être remplis' 
-        });
-      }
-
       const result = await pool.query(`
-        INSERT INTO events (title, date, time, location, description, category)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        UPDATE events 
+        SET title = $1, date = $2, time = $3, location = $4, 
+            description = $5, category = $6, updated_at = NOW()
+        WHERE id = $7
         RETURNING *
-      `, [title, date, time, location, description, category]);
+      `, [title, date, time, location, description, category, id]);
       
-      return res.status(201).json(result.rows[0]);
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'Événement non trouvé' });
+      }
+      
+      return res.status(200).json(result.rows[0]);
     }
 
     if (req.method === 'DELETE') {
       // Supprimer un événement
-      const { id } = req.query;
+      const result = await pool.query('DELETE FROM events WHERE id = $1 RETURNING *', [id]);
       
-      if (!id) {
-        return res.status(400).json({ error: 'ID de l\'événement requis' });
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'Événement non trouvé' });
       }
-
-      await pool.query('DELETE FROM events WHERE id = $1', [id]);
       
       return res.status(200).json({ message: 'Événement supprimé avec succès' });
     }
@@ -70,7 +73,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Méthode non autorisée' });
 
   } catch (error) {
-    console.error('Erreur API events:', error);
+    console.error('Erreur API events/[id]:', error);
     return res.status(500).json({ 
       error: 'Erreur interne du serveur',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
