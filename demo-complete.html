@@ -1,0 +1,5003 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EventRate - Application Complète</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#eff6ff",
+                100: "#dbeafe",
+                200: "#bfdbfe",
+                300: "#93c5fd",
+                400: "#60a5fa",
+                500: "#3b82f6",
+                600: "#2563eb",
+                700: "#1d4ed8",
+                800: "#1e40af",
+                900: "#1e3a8a",
+              },
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center mr-3"
+            >
+              <span class="text-white font-bold text-lg">E</span>
+            </div>
+            <span class="text-xl font-bold text-gray-900">EventRate</span>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="#"
+              class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium"
+              onclick="showSection('home')"
+              >Accueil</a
+            >
+            <a
+              href="#"
+              class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium"
+              onclick="showSection('events')"
+              >Événements</a
+            >
+            <button
+              class="bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700"
+              onclick="handleCreateEvent()"
+              id="create-event-btn"
+            >
+              Créer un événement
+            </button>
+            <button
+              class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+              onclick="showSection('register')"
+              id="register-btn"
+            >
+              S'inscrire
+            </button>
+            <button
+              class="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700"
+              onclick="showSection('login')"
+              id="login-btn"
+            >
+              Se connecter
+            </button>
+            <button
+              class="bg-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-700"
+              onclick="openMyRatingsModal()"
+              id="my-ratings-btn"
+              style="display: none"
+            >
+              📝 Mes avis
+            </button>
+            <button
+              class="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700"
+              onclick="openMyEventsModal()"
+              id="my-events-btn"
+              style="display: none"
+            >
+              🎪 Mes événements
+            </button>
+            <button
+              class="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700"
+              onclick="logout()"
+              id="logout-btn"
+              style="display: none"
+            >
+              Se déconnecter
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Section Accueil -->
+    <section id="home" class="section active">
+      <!-- Hero Section -->
+      <div
+        class="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white"
+      >
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">
+              Découvrez et créez des
+              <span class="block text-yellow-400">événements incroyables</span>
+            </h1>
+            <p
+              class="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto"
+            >
+              La plateforme qui révolutionne la création et la découverte
+              d'événements. Notez, partagez et vivez des expériences uniques.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                class="bg-white text-primary-700 hover:bg-gray-100 px-8 py-3 rounded-md text-lg font-medium inline-flex items-center"
+                onclick="showSection('events')"
+              >
+                Découvrir des événements
+                <svg
+                  class="ml-2 h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  ></path>
+                </svg>
+              </button>
+              <button
+                class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary-700 px-8 py-3 rounded-md text-lg font-medium"
+                onclick="showSection('register')"
+              >
+                Commencer gratuitement
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fonctionnalités -->
+      <div class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Pourquoi choisir EventRate ?
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+              Une plateforme complète pour tous vos besoins événementiels
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center">
+              <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-500 text-white mb-6"
+              >
+                <svg
+                  class="h-8 w-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Créez des événements
+              </h3>
+              <p class="text-gray-600">
+                Organisez vos propres événements et gérez-les facilement
+              </p>
+            </div>
+
+            <div class="text-center">
+              <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-500 text-white mb-6"
+              >
+                <svg
+                  class="h-8 w-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Notez et évaluez
+              </h3>
+              <p class="text-gray-600">
+                Donnez votre avis sur les événements avec des critères détaillés
+              </p>
+            </div>
+
+            <div class="text-center">
+              <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500 text-white mb-6"
+              >
+                <svg
+                  class="h-8 w-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Communauté active
+              </h3>
+              <p class="text-gray-600">
+                Rejoignez une communauté passionnée d'événements
+              </p>
+            </div>
+
+            <div class="text-center">
+              <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500 text-white mb-6"
+              >
+                <svg
+                  class="h-8 w-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Géolocalisation
+              </h3>
+              <p class="text-gray-600">
+                Trouvez des événements près de chez vous
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Événements -->
+    <section id="events" class="section hidden">
+      <div class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Événements disponibles
+            </h2>
+            <p class="text-xl text-gray-600">
+              Découvrez les événements de la communauté
+            </p>
+          </div>
+
+          <!-- Barre de filtrage et tri avancée -->
+          <div
+            class="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-200"
+          >
+            <!-- Barre de recherche principale -->
+            <div class="mb-6">
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <svg
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    ></path>
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  id="search-events"
+                  placeholder="🔍 Rechercher par nom d'événement, lieu, organisateur..."
+                  class="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-lg"
+                  oninput="applyFilters()"
+                />
+                <button
+                  type="button"
+                  onclick="clearSearch()"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                  id="clear-search-btn"
+                  style="display: none"
+                >
+                  <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Filtres avancés -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6"
+            >
+              <!-- Catégorie -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >🏷️ Catégorie</label
+                >
+                <select
+                  id="category-filter"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  onchange="applyFilters()"
+                >
+                  <option value="">Toutes</option>
+                  <option value="business">💼 Business & Networking</option>
+                  <option value="tech">💻 Technologie</option>
+                  <option value="culture">🎨 Culture & Arts</option>
+                  <option value="sport">⚽ Sport & Fitness</option>
+                  <option value="education">📚 Éducation</option>
+                  <option value="social">👥 Social & Communauté</option>
+                  <option value="music">🎵 Musique</option>
+                  <option value="food">🍽️ Gastronomie</option>
+                </select>
+              </div>
+
+              <!-- Ville -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >📍 Ville</label
+                >
+                <select
+                  id="city-filter"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  onchange="applyFilters()"
+                >
+                  <option value="">Toutes les villes</option>
+                  <!-- Les villes seront ajoutées dynamiquement -->
+                </select>
+              </div>
+
+              <!-- Prix -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >💰 Prix</label
+                >
+                <select
+                  id="price-filter"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  onchange="applyFilters()"
+                >
+                  <option value="">Tous les prix</option>
+                  <option value="free">🆓 Gratuit</option>
+                  <option value="0-10">💸 0€ - 10€</option>
+                  <option value="10-25">💵 10€ - 25€</option>
+                  <option value="25-50">💴 25€ - 50€</option>
+                  <option value="50+">💎 Plus de 50€</option>
+                </select>
+              </div>
+
+              <!-- Note minimum -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >⭐ Note min.</label
+                >
+                <select
+                  id="rating-filter"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  onchange="applyFilters()"
+                >
+                  <option value="0">Toutes les notes</option>
+                  <option value="2">⭐⭐ 2+ étoiles</option>
+                  <option value="3">⭐⭐⭐ 3+ étoiles</option>
+                  <option value="4">⭐⭐⭐⭐ 4+ étoiles</option>
+                  <option value="4.5">⭐⭐⭐⭐⭐ 4.5+ étoiles</option>
+                </select>
+              </div>
+
+              <!-- Date -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >📅 Période</label
+                >
+                <select
+                  id="date-filter"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  onchange="applyFilters()"
+                >
+                  <option value="">Toutes les dates</option>
+                  <option value="today">🌅 Aujourd'hui</option>
+                  <option value="tomorrow">🌄 Demain</option>
+                  <option value="this-week">📆 Cette semaine</option>
+                  <option value="next-week">📅 Semaine prochaine</option>
+                  <option value="this-month">🗓️ Ce mois-ci</option>
+                  <option value="next-month">📋 Mois prochain</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Tri et actions -->
+            <div
+              class="flex flex-wrap items-center justify-between border-t pt-4"
+            >
+              <div class="flex items-center space-x-4 mb-4 lg:mb-0">
+                <label class="text-sm font-medium text-gray-700"
+                  >📊 Trier par :</label
+                >
+                <select
+                  id="sort-select"
+                  class="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  onchange="applyFilters()"
+                >
+                  <option value="date-asc">📅 Date (plus proche)</option>
+                  <option value="date-desc">📅 Date (plus lointaine)</option>
+                  <option value="price-asc">💰 Prix (croissant)</option>
+                  <option value="price-desc">💰 Prix (décroissant)</option>
+                  <option value="title-asc">🔤 Titre (A-Z)</option>
+                  <option value="title-desc">🔤 Titre (Z-A)</option>
+                  <option value="rating-desc">⭐ Mieux notés</option>
+                  <option value="popularity-desc">🔥 Plus populaires</option>
+                  <option value="recent-desc">🆕 Récemment ajoutés</option>
+                </select>
+              </div>
+
+              <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2">
+                  <span class="text-sm text-gray-500">Affichage :</span>
+                  <button
+                    id="grid-view-btn"
+                    onclick="setViewMode('grid')"
+                    class="p-2 text-gray-500 hover:text-primary-600 border rounded transition-colors view-toggle active"
+                    title="Vue grille"
+                  >
+                    <svg
+                      class="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                      ></path>
+                    </svg>
+                  </button>
+                  <button
+                    id="list-view-btn"
+                    onclick="setViewMode('list')"
+                    class="p-2 text-gray-500 hover:text-primary-600 border rounded transition-colors view-toggle"
+                    title="Vue liste"
+                  >
+                    <svg
+                      class="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  onclick="resetFilters()"
+                  class="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                >
+                  🗑️ Effacer filtres
+                </button>
+                <span
+                  id="events-count"
+                  class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
+                >
+                  0 événement(s)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            id="events-container"
+          >
+            <!-- Les événements seront chargés ici -->
+          </div>
+
+          <!-- Message si aucun événement trouvé -->
+          <div id="no-events-found" class="hidden text-center py-16">
+            <div class="text-gray-300 text-8xl mb-6">🔍</div>
+            <h3 class="text-2xl font-semibold text-gray-600 mb-3">
+              Aucun événement trouvé
+            </h3>
+            <p class="text-gray-500 mb-6">
+              Essayez de modifier vos critères de recherche ou filtres.
+            </p>
+            <button
+              onclick="resetFilters()"
+              class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            >
+              🗑️ Réinitialiser tous les filtres
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Créer un événement -->
+    <section id="create-event" class="section hidden">
+      <div class="py-20 bg-white">
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Créer un nouvel événement
+            </h2>
+            <p class="text-xl text-gray-600">
+              Partagez votre événement avec la communauté
+            </p>
+          </div>
+
+          <form
+            id="create-event-form"
+            class="space-y-6"
+            onsubmit="createNewEvent(event)"
+          >
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Titre de l'événement</label
+              >
+              <input
+                type="text"
+                id="event-title"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                oninput="checkDuplicatesRealTime()"
+                placeholder="Entrez le titre de votre événement..."
+              />
+              <!-- Conteneur pour les suggestions de doublons -->
+              <div
+                id="duplicate-suggestions"
+                class="hidden mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-md"
+              >
+                <div class="flex items-start">
+                  <div class="flex-shrink-0">
+                    <svg
+                      class="h-5 w-5 text-yellow-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="ml-3">
+                    <h3 class="text-sm font-medium text-yellow-800">
+                      Événements similaires trouvés
+                    </h3>
+                    <div
+                      id="duplicate-list"
+                      class="mt-2 text-sm text-yellow-700"
+                    >
+                      <!-- Les suggestions apparaîtront ici -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Description</label
+              >
+              <textarea
+                id="event-description"
+                rows="4"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              ></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Catégorie</label
+                >
+                <select
+                  id="event-category"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  <option value="">Sélectionner</option>
+                  <option value="music">Musique</option>
+                  <option value="business">Business</option>
+                  <option value="sport">Sport</option>
+                  <option value="culture">Culture</option>
+                  <option value="food">Gastronomie</option>
+                  <option value="tech">Technologie</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Ville</label
+                >
+                <input
+                  type="text"
+                  id="event-city"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Adresse</label
+                >
+                <input
+                  type="text"
+                  id="event-address"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Capacité</label
+                >
+                <input
+                  type="number"
+                  id="event-capacity"
+                  required
+                  min="1"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+
+            <!-- URLs des photos -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Photos de l'événement</label
+              >
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-sm text-gray-600 mb-1"
+                    >Lien de l'affiche/photo principale</label
+                  >
+                  <input
+                    type="url"
+                    id="event-photo-url-1"
+                    name="event-photo-url-1"
+                    placeholder="https://exemple.com/mon-affiche.jpg"
+                    class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    onchange="previewImageUrl(this, 1)"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-600 mb-1"
+                    >Lien photo 2 (optionnel)</label
+                  >
+                  <input
+                    type="url"
+                    id="event-photo-url-2"
+                    name="event-photo-url-2"
+                    placeholder="https://exemple.com/photo2.jpg"
+                    class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    onchange="previewImageUrl(this, 2)"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-600 mb-1"
+                    >Lien photo 3 (optionnel)</label
+                  >
+                  <input
+                    type="url"
+                    id="event-photo-url-3"
+                    name="event-photo-url-3"
+                    placeholder="https://exemple.com/photo3.jpg"
+                    class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    onchange="previewImageUrl(this, 3)"
+                  />
+                </div>
+              </div>
+              <!-- Prévisualisation des photos -->
+              <div
+                id="photo-preview"
+                class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 hidden"
+              ></div>
+              <p class="text-xs text-gray-500 mt-2">
+                💡 Astuce : Vous pouvez copier le lien d'une image depuis
+                Instagram, Facebook, votre site web, etc.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Date de début</label
+                >
+                <input
+                  type="datetime-local"
+                  id="event-start"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Date de fin</label
+                >
+                <input
+                  type="datetime-local"
+                  id="event-end"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Prix (€)</label
+                >
+                <input
+                  type="number"
+                  id="event-price"
+                  min="0"
+                  step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+              <div class="flex items-center mt-6">
+                <input
+                  type="checkbox"
+                  id="event-free"
+                  class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <label for="event-free" class="ml-2 block text-sm text-gray-900"
+                  >Événement gratuit</label
+                >
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <button
+                type="submit"
+                class="flex-1 bg-primary-600 text-white py-3 px-4 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              >
+                Créer l'événement
+              </button>
+              <button
+                type="button"
+                onclick="showSection('home')"
+                class="px-4 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              >
+                Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Connexion -->
+    <section id="login" class="section hidden">
+      <div class="py-20 bg-white">
+        <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Se connecter</h2>
+            <p class="text-gray-600">Accédez à votre compte EventRate</p>
+          </div>
+
+          <form class="space-y-6" onsubmit="login(event)">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="login-email"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Mot de passe</label
+              >
+              <input
+                type="password"
+                id="login-password"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <!-- Option "Se souvenir de moi" -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <input
+                  id="remember-me-login"
+                  type="checkbox"
+                  class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <label
+                  for="remember-me-login"
+                  class="ml-2 block text-sm text-gray-700"
+                >
+                  Se souvenir de moi
+                </label>
+              </div>
+              <div class="text-sm">
+                <span class="text-gray-500">Évite de re-saisir vos infos</span>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-primary-600 text-white py-3 px-4 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              Se connecter
+            </button>
+
+            <div class="text-center">
+              <p class="text-sm text-gray-600">
+                Pas encore de compte ?
+                <a
+                  href="#"
+                  onclick="showSection('register')"
+                  class="text-primary-600 hover:text-primary-500"
+                  >S'inscrire</a
+                >
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Inscription -->
+    <section id="register" class="section hidden">
+      <div class="py-20 bg-white">
+        <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">
+              Créer un compte
+            </h2>
+            <p class="text-gray-600">Rejoignez la communauté EventRate</p>
+          </div>
+
+          <form class="space-y-6" onsubmit="register(event)">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Prénom</label
+                >
+                <input
+                  type="text"
+                  id="register-firstname"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Nom</label
+                >
+                <input
+                  type="text"
+                  id="register-lastname"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Nom d'utilisateur</label
+              >
+              <input
+                type="text"
+                id="register-username"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="register-email"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Mot de passe</label
+              >
+              <input
+                type="password"
+                id="register-password"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+
+            <!-- Option "Se souvenir de moi" -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <input
+                  id="remember-me-register"
+                  type="checkbox"
+                  class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <label
+                  for="remember-me-register"
+                  class="ml-2 block text-sm text-gray-700"
+                >
+                  Se souvenir de moi
+                </label>
+              </div>
+              <div class="text-sm">
+                <span class="text-gray-500">Évite de re-saisir vos infos</span>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-primary-600 text-white py-3 px-4 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              Créer mon compte
+            </button>
+
+            <div class="text-center">
+              <p class="text-sm text-gray-600">
+                Déjà un compte ?
+                <a
+                  href="#"
+                  onclick="showSection('login')"
+                  class="text-primary-600 hover:text-primary-500"
+                  >Se connecter</a
+                >
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal de notification -->
+    <div id="notification" class="fixed top-4 right-4 z-50 hidden">
+      <div
+        class="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-sm"
+      >
+        <div class="flex items-center">
+          <div id="notification-icon" class="flex-shrink-0 mr-3">
+            <!-- Icon sera ajouté dynamiquement -->
+          </div>
+          <div>
+            <h3
+              id="notification-title"
+              class="text-sm font-medium text-gray-900"
+            ></h3>
+            <p id="notification-message" class="text-sm text-gray-500"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de notation détaillée -->
+    <div
+      id="rating-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+    >
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div
+          class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto"
+        >
+          <!-- Header -->
+          <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-2xl font-bold text-gray-900">
+              Noter cet événement
+            </h2>
+            <button
+              onclick="closeRatingModal()"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Contenu -->
+          <div class="p-6">
+            <form
+              id="detailed-rating-form"
+              onsubmit="submitDetailedRating(event)"
+            >
+              <input type="hidden" id="rating-event-id" />
+
+              <!-- Informations de présence -->
+              <div class="mb-8 bg-blue-50 p-6 rounded-lg">
+                <h3
+                  class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
+                >
+                  <svg
+                    class="w-5 h-5 mr-2 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  Votre présence à l'événement
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Heure d'arrivée</label
+                    >
+                    <input
+                      type="time"
+                      id="arrival-time"
+                      class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Heure de départ</label
+                    >
+                    <div class="flex items-center space-x-3">
+                      <input
+                        type="time"
+                        id="departure-time"
+                        class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      />
+                      <label class="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="still-present"
+                          class="mr-2"
+                          onchange="toggleDepartureTime()"
+                        />
+                        <span class="text-sm text-gray-600"
+                          >Encore présent</span
+                        >
+                      </label>
+                    </div>
+                  </div>
+                  <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Ou sélectionnez votre moment de présence</label
+                    >
+                    <div class="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        class="time-period-btn px-3 py-2 border rounded-md text-sm hover:bg-gray-50"
+                        data-period="debut"
+                      >
+                        Début d'événement
+                      </button>
+                      <button
+                        type="button"
+                        class="time-period-btn px-3 py-2 border rounded-md text-sm hover:bg-gray-50"
+                        data-period="milieu"
+                      >
+                        Milieu d'événement
+                      </button>
+                      <button
+                        type="button"
+                        class="time-period-btn px-3 py-2 border rounded-md text-sm hover:bg-gray-50"
+                        data-period="fin"
+                      >
+                        Fin d'événement
+                      </button>
+                      <button
+                        type="button"
+                        class="time-period-btn px-3 py-2 border rounded-md text-sm hover:bg-gray-50"
+                        data-period="complet"
+                      >
+                        Événement complet
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Évaluation rapide -->
+              <div class="mb-8 bg-yellow-50 p-6 rounded-lg">
+                <h3
+                  class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
+                >
+                  <svg
+                    class="w-5 h-5 mr-2 text-yellow-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.915a1 1 0 00.95-.69l1.519-4.674z"
+                    ></path>
+                  </svg>
+                  Note globale
+                </h3>
+                <div class="mb-4">
+                  <div class="flex items-center space-x-2">
+                    <input
+                      type="range"
+                      id="overall-rating"
+                      min="1"
+                      max="5"
+                      step="0.5"
+                      value="3"
+                      class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      required
+                      oninput="updateRatingValue('overall-rating')"
+                    />
+                    <span
+                      id="overall-rating-value"
+                      class="text-2xl font-bold text-yellow-600 min-w-[3rem]"
+                      >3.0</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Tags rapides -->
+                <div class="mb-4">
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Tags rapides (optionnel)</label
+                  >
+                  <div class="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      class="tag-btn px-3 py-1 border rounded-full text-sm hover:bg-gray-50"
+                      data-tag="excellent"
+                    >
+                      😍 Excellent
+                    </button>
+                    <button
+                      type="button"
+                      class="tag-btn px-3 py-1 border rounded-full text-sm hover:bg-gray-50"
+                      data-tag="bondé"
+                    >
+                      👥 Très bondé
+                    </button>
+                    <button
+                      type="button"
+                      class="tag-btn px-3 py-1 border rounded-full text-sm hover:bg-gray-50"
+                      data-tag="calme"
+                    >
+                      😌 Ambiance calme
+                    </button>
+                    <button
+                      type="button"
+                      class="tag-btn px-3 py-1 border rounded-full text-sm hover:bg-gray-50"
+                      data-tag="bruyant"
+                    >
+                      🔊 Trop bruyant
+                    </button>
+                    <button
+                      type="button"
+                      class="tag-btn px-3 py-1 border rounded-full text-sm hover:bg-gray-50"
+                      data-tag="famille"
+                    >
+                      👨‍👩‍👧‍👦 Parfait famille
+                    </button>
+                    <button
+                      type="button"
+                      class="tag-btn px-3 py-1 border rounded-full text-sm hover:bg-gray-50"
+                      data-tag="cher"
+                    >
+                      💸 Trop cher
+                    </button>
+                    <button
+                      type="button"
+                      class="tag-btn px-3 py-1 border rounded-full text-sm hover:bg-gray-50"
+                      data-tag="bon-prix"
+                    >
+                      💰 Bon rapport qualité/prix
+                    </button>
+                    <button
+                      type="button"
+                      class="tag-btn px-3 py-1 border rounded-full text-sm hover:bg-gray-50"
+                      data-tag="mal-organisé"
+                    >
+                      🤷‍♂️ Mal organisé
+                    </button>
+                    <button
+                      type="button"
+                      class="tag-btn px-3 py-1 border rounded-full text-sm hover:bg-gray-50"
+                      data-tag="bien-organisé"
+                    >
+                      ✅ Bien organisé
+                    </button>
+                  </div>
+                  <input type="hidden" id="selected-tags" value="" />
+                </div>
+              </div>
+
+              <!-- Critères détaillés (optionnels) -->
+              <div class="mb-8">
+                <div class="flex items-center justify-between mb-4">
+                  <h3
+                    class="text-lg font-semibold text-gray-900 flex items-center"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-2 text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      ></path>
+                    </svg>
+                    Évaluation détaillée
+                  </h3>
+                  <button
+                    type="button"
+                    id="toggle-detailed"
+                    class="text-sm text-blue-600 hover:text-blue-800"
+                    onclick="toggleDetailedCriteria()"
+                  >
+                    Afficher les critères détaillés
+                  </button>
+                </div>
+
+                <div id="detailed-criteria" class="hidden">
+                  <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <p class="text-sm text-gray-600 mb-3">
+                      💡 <strong>Sélection libre :</strong> Cochez simplement
+                      les critères que vous souhaitez évaluer
+                    </p>
+                  </div>
+
+                  <!-- Grille de tous les critères disponibles -->
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"
+                    id="all-criteria-container"
+                  >
+                    <!-- Les critères seront ajoutés ici -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Contexte et ambiance -->
+              <div class="mb-8 bg-green-50 p-6 rounded-lg">
+                <h3
+                  class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
+                >
+                  <svg
+                    class="w-5 h-5 mr-2 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-1l-4 4z"
+                    ></path>
+                  </svg>
+                  Contexte de votre visite
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Niveau d'affluence à votre arrivée</label
+                    >
+                    <div class="flex items-center space-x-2">
+                      <span class="text-sm text-gray-500">Vide</span>
+                      <input
+                        type="range"
+                        id="crowd-level"
+                        min="1"
+                        max="5"
+                        step="1"
+                        value="3"
+                        class="flex-1"
+                        oninput="updateCrowdLevel()"
+                      />
+                      <span class="text-sm text-gray-500">Bondé</span>
+                    </div>
+                    <div class="text-center mt-1">
+                      <span
+                        id="crowd-level-text"
+                        class="text-sm font-medium text-gray-700"
+                        >Modéré</span
+                      >
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Conditions météo (si pertinent)</label
+                    >
+                    <select
+                      id="weather-conditions"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    >
+                      <option value="">Non pertinent</option>
+                      <option value="ensoleillé">☀️ Ensoleillé</option>
+                      <option value="nuageux">☁️ Nuageux</option>
+                      <option value="pluvieux">🌧️ Pluvieux</option>
+                      <option value="neigeux">❄️ Neigeux</option>
+                      <option value="venteux">💨 Venteux</option>
+                      <option value="orageux">⛈️ Orageux</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Commentaire -->
+              <div class="mb-8">
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Commentaire (optionnel)</label
+                >
+                <textarea
+                  id="rating-comment"
+                  rows="4"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="Partagez votre expérience..."
+                ></textarea>
+              </div>
+
+              <!-- Boutons -->
+              <div class="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  onclick="closeRatingModal()"
+                  class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  class="px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+                >
+                  Envoyer ma notation
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de comparaison des doublons -->
+    <div
+      id="duplicate-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+    >
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div
+          class="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-screen overflow-y-auto"
+        >
+          <!-- Header -->
+          <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-2xl font-bold text-gray-900">
+              Comparaison d'événements similaires
+            </h2>
+            <button
+              onclick="closeDuplicateModal()"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Contenu -->
+          <div class="p-6">
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                Votre nouvel événement
+              </h3>
+              <div id="new-event-details" class="bg-gray-50 p-4 rounded-lg">
+                <!-- Détails du nouvel événement -->
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                Événements similaires trouvés
+              </h3>
+              <div id="similar-events-list" class="space-y-4">
+                <!-- Liste des événements similaires -->
+              </div>
+            </div>
+
+            <!-- Boutons -->
+            <div class="flex justify-end space-x-4">
+              <button
+                onclick="closeDuplicateModal()"
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              >
+                Annuler
+              </button>
+              <button
+                onclick="confirmCreateEvent()"
+                class="px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+              >
+                Créer quand même
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal pour afficher les avis d'un événement -->
+    <div
+      id="ratings-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+    >
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div
+          class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto"
+        >
+          <!-- Header -->
+          <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-2xl font-bold text-gray-900">
+              Avis des participants
+            </h2>
+            <button
+              onclick="closeRatingsModal()"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Contenu -->
+          <div class="p-6">
+            <div id="ratings-content">
+              <!-- Les avis seront chargés ici -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal d'édition d'événement -->
+    <div
+      id="edit-event-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+    >
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div
+          class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto"
+        >
+          <!-- Header -->
+          <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-2xl font-bold text-gray-900">
+              ✏️ Modifier l'événement
+            </h2>
+            <button
+              onclick="closeEditEventModal()"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <!-- Formulaire d'édition -->
+          <div class="p-6">
+            <form id="edit-event-form" class="space-y-6">
+              <!-- Titre -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  📝 Titre de l'événement
+                </label>
+                <input
+                  type="text"
+                  id="edit-event-title"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+
+              <!-- Description -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  📄 Description
+                </label>
+                <textarea
+                  id="edit-event-description"
+                  rows="4"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                ></textarea>
+              </div>
+
+              <!-- Catégorie -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  🏷️ Catégorie
+                </label>
+                <select
+                  id="edit-event-category"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  <option value="">Sélectionnez une catégorie</option>
+                  <option value="business">Business & Networking</option>
+                  <option value="tech">Technologie</option>
+                  <option value="culture">Culture & Arts</option>
+                  <option value="sport">Sport & Fitness</option>
+                  <option value="education">Éducation</option>
+                  <option value="social">Social & Communauté</option>
+                </select>
+              </div>
+
+              <!-- Lieu -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    📍 Adresse
+                  </label>
+                  <input
+                    type="text"
+                    id="edit-event-address"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    🏙️ Ville
+                  </label>
+                  <input
+                    type="text"
+                    id="edit-event-city"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+              </div>
+
+              <!-- Dates -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    📅 Date de début
+                  </label>
+                  <input
+                    type="datetime-local"
+                    id="edit-event-start-date"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    📅 Date de fin
+                  </label>
+                  <input
+                    type="datetime-local"
+                    id="edit-event-end-date"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+              </div>
+
+              <!-- Capacité et Prix -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    👥 Nombre max de participants
+                  </label>
+                  <input
+                    type="number"
+                    id="edit-event-capacity"
+                    min="1"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    💰 Prix (€)
+                  </label>
+                  <div class="space-y-2">
+                    <input
+                      type="number"
+                      id="edit-event-price"
+                      min="0"
+                      step="0.01"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    />
+                    <label class="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="edit-event-free"
+                        class="mr-2"
+                      />
+                      <span class="text-sm text-gray-600"
+                        >Événement gratuit</span
+                      >
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Photos -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  📷 Photos de l'événement
+                </label>
+                <div class="space-y-4">
+                  <div id="edit-event-photos-container">
+                    <!-- Les photos existantes seront chargées ici -->
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <input
+                      type="url"
+                      id="edit-new-photo-url"
+                      placeholder="https://exemple.com/photo.jpg"
+                      class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    />
+                    <button
+                      type="button"
+                      onclick="addEditPhoto()"
+                      class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                    >
+                      ➕ Ajouter
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Boutons d'action -->
+              <div class="flex justify-end space-x-4 pt-6 border-t">
+                <button
+                  type="button"
+                  onclick="closeEditEventModal()"
+                  class="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  💾 Sauvegarder
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal "Mes événements" -->
+    <div
+      id="my-events-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+    >
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div
+          class="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-screen overflow-y-auto"
+        >
+          <!-- Header -->
+          <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-2xl font-bold text-gray-900">🎪 Mes événements</h2>
+            <button
+              onclick="closeMyEventsModal()"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <!-- Contenu -->
+          <div class="p-6">
+            <div id="my-events-list" class="space-y-6">
+              <!-- Les événements de l'utilisateur seront chargés ici -->
+              <p class="text-gray-500">Chargement de vos événements...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal "Mes avis" -->
+    <div
+      id="my-ratings-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+    >
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div
+          class="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-screen overflow-y-auto"
+        >
+          <!-- Header -->
+          <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-2xl font-bold text-gray-900">📝 Mes avis</h2>
+            <button
+              onclick="closeMyRatingsModal()"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Contenu -->
+          <div class="p-6">
+            <div id="my-ratings-content">
+              <!-- Les avis de l'utilisateur seront chargés ici -->
+              <div class="flex items-center justify-center py-8">
+                <div class="text-center">
+                  <div
+                    class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"
+                  ></div>
+                  <p class="text-gray-500">Chargement de vos avis...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Variables globales
+      let currentUser = null;
+      let authToken = localStorage.getItem("authToken");
+
+      // Gestion de la déconnexion automatique (10 minutes)
+      let inactivityTimer;
+      let lastActivity = Date.now();
+      const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 minutes en millisecondes
+
+      // Configuration API
+      const API_BASE = "http://localhost:5001/api";
+
+      // Fonctions de gestion de l'inactivité
+      function resetInactivityTimer() {
+        lastActivity = Date.now();
+        clearTimeout(inactivityTimer);
+
+        if (authToken) {
+          inactivityTimer = setTimeout(() => {
+            showNotification(
+              "warning",
+              "Session expirée",
+              "Vous avez été déconnecté après 10 minutes d'inactivité"
+            );
+            logout();
+          }, INACTIVITY_TIMEOUT);
+        }
+      }
+
+      function trackActivity() {
+        resetInactivityTimer();
+      }
+
+      // Écouter les événements d'activité
+      document.addEventListener("click", trackActivity);
+      document.addEventListener("keypress", trackActivity);
+      document.addEventListener("scroll", trackActivity);
+      document.addEventListener("mousemove", trackActivity);
+
+      // Fonctions "Se souvenir de moi"
+      function saveCredentials(email, password) {
+        if (
+          confirm(
+            "Voulez-vous vraiment enregistrer vos identifiants ? (Les données seront chiffrées localement)"
+          )
+        ) {
+          const credentials = {
+            username: email, // On stocke l'email comme "username"
+            // Simple encodage Base64 pour l'exemple (en production, utiliser un vrai chiffrement)
+            password: btoa(password),
+            savedAt: Date.now(),
+          };
+          localStorage.setItem("savedCredentials", JSON.stringify(credentials));
+          console.log("✅ Identifiants sauvegardés localement");
+        }
+      }
+
+      function loadSavedCredentials() {
+        const saved = localStorage.getItem("savedCredentials");
+        if (saved) {
+          try {
+            const credentials = JSON.parse(saved);
+            return {
+              username: credentials.username,
+              password: atob(credentials.password), // Décoder Base64
+              savedAt: credentials.savedAt,
+            };
+          } catch (e) {
+            console.error("Erreur lecture identifiants:", e);
+            localStorage.removeItem("savedCredentials");
+          }
+        }
+        return null;
+      }
+
+      function clearSavedCredentials() {
+        localStorage.removeItem("savedCredentials");
+      }
+
+      // Pré-remplir les formulaires si identifiants sauvegardés
+      function fillLoginForm() {
+        const saved = loadSavedCredentials();
+        if (saved) {
+          document.getElementById("login-email").value = saved.username;
+          document.getElementById("login-password").value = saved.password;
+          document.getElementById("remember-me-login").checked = true;
+
+          // Afficher un message visuel que les identifiants sont chargés
+          console.log("✅ Identifiants pré-remplis depuis le stockage local");
+        }
+      }
+
+      // Gestion des sections
+      function showSection(sectionId) {
+        document.querySelectorAll(".section").forEach((section) => {
+          section.classList.add("hidden");
+          section.classList.remove("active");
+        });
+
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.classList.remove("hidden");
+          section.classList.add("active");
+        }
+
+        if (sectionId === "events") {
+          loadEvents();
+        }
+
+        // Pré-remplir le formulaire de connexion si on va sur cette section
+        if (sectionId === "login") {
+          setTimeout(() => fillLoginForm(), 100); // Petit délai pour s'assurer que les éléments sont visibles
+        }
+
+        updateNavigation();
+      }
+
+      // Mettre à jour la navigation selon l'état de connexion
+      function updateNavigation() {
+        const loginBtn = document.getElementById("login-btn");
+        const registerBtn = document.getElementById("register-btn");
+        const logoutBtn = document.getElementById("logout-btn");
+        const myRatingsBtn = document.getElementById("my-ratings-btn");
+        const myEventsBtn = document.getElementById("my-events-btn");
+        const createEventBtn = document.getElementById("create-event-btn");
+
+        if (currentUser && authToken) {
+          // Utilisateur connecté : masquer connexion/inscription, afficher déconnexion et mes avis/événements
+          loginBtn.style.display = "none";
+          registerBtn.style.display = "none";
+          logoutBtn.style.display = "block";
+          myRatingsBtn.style.display = "block";
+          myEventsBtn.style.display = "block";
+          createEventBtn.textContent = "Créer un événement";
+          createEventBtn.className =
+            "bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700";
+        } else {
+          // Visiteur : afficher connexion/inscription, masquer déconnexion et mes avis/événements
+          loginBtn.style.display = "block";
+          registerBtn.style.display = "block";
+          logoutBtn.style.display = "none";
+          myRatingsBtn.style.display = "none";
+          myEventsBtn.style.display = "none";
+          createEventBtn.textContent = "Se connecter pour créer";
+          createEventBtn.className =
+            "bg-gray-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-600 cursor-not-allowed";
+        }
+      }
+
+      // Gérer le clic sur "Créer un événement"
+      function handleCreateEvent() {
+        if (currentUser && authToken) {
+          // Utilisateur connecté : aller à la création d'événement
+          showSection("create-event");
+        } else {
+          // Visiteur : rediriger vers la connexion
+          showNotification(
+            "info",
+            "Connexion requise",
+            "Vous devez vous connecter pour créer un événement."
+          );
+          showSection("login");
+        }
+      }
+
+      // Notification
+      function showNotification(type, title, message) {
+        const notification = document.getElementById("notification");
+        const icon = document.getElementById("notification-icon");
+        const titleEl = document.getElementById("notification-title");
+        const messageEl = document.getElementById("notification-message");
+
+        let iconHtml = "";
+        let bgColor = "";
+
+        switch (type) {
+          case "success":
+            iconHtml =
+              '<svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+            bgColor = "border-green-200 bg-green-50";
+            break;
+          case "error":
+            iconHtml =
+              '<svg class="h-6 w-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+            bgColor = "border-red-200 bg-red-50";
+            break;
+          case "info":
+            iconHtml =
+              '<svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            bgColor = "border-blue-200 bg-blue-50";
+            break;
+        }
+
+        icon.innerHTML = iconHtml;
+        titleEl.textContent = title;
+        messageEl.textContent = message;
+
+        notification.className = `fixed top-4 right-4 z-50 ${bgColor} border rounded-lg shadow-lg p-4 max-w-sm`;
+        notification.classList.remove("hidden");
+
+        setTimeout(() => {
+          notification.classList.add("hidden");
+        }, 5000);
+      }
+
+      // Variables globales pour les filtres
+      let allEvents = [];
+      let filteredEvents = [];
+      let currentViewMode = "grid"; // 'grid' ou 'list'
+
+      // Charger les événements depuis l'API
+      async function loadEvents() {
+        try {
+          const response = await fetch(`${API_BASE}/events`);
+          const data = await response.json();
+
+          allEvents = data.events || [];
+
+          // Adapter le format des événements pour l'interface
+          allEvents = allEvents.map((event) => ({
+            id: event._id,
+            title: event.title,
+            description: event.description,
+            category: event.category,
+            location_city: event.location.city,
+            location_address: event.location.address,
+            date_start: event.date.start,
+            date_end: event.date.end,
+            capacity: event.capacity,
+            current_attendees: event.currentAttendees,
+            price_amount: event.price.amount,
+            price_is_free: event.price.isFree,
+            rating_average: event.rating.average,
+            rating_count: event.rating.count,
+            photos: event.photos || [], // Ajouter les photos
+            creator_username: event.creator.username,
+            created_at: event.createdAt,
+          }));
+          filteredEvents = [...allEvents];
+          populateFilterOptions();
+          applyFilters();
+        } catch (error) {
+          console.error("Erreur lors du chargement des événements:", error);
+          document.getElementById("events-container").innerHTML = `
+                    <div class="col-span-full text-center text-gray-500">
+                        Erreur lors du chargement des événements. Assurez-vous que l'API est démarrée sur http://localhost:5001
+                    </div>
+                `;
+        }
+      }
+
+      // Afficher les événements filtrés
+      function displayEvents() {
+        const container = document.getElementById("events-container");
+        const noEventsMessage = document.getElementById("no-events-found");
+
+        container.innerHTML = "";
+
+        if (filteredEvents.length === 0) {
+          container.style.display = "none";
+          noEventsMessage.classList.remove("hidden");
+          return;
+        }
+
+        container.style.display = currentViewMode === "grid" ? "grid" : "block";
+        noEventsMessage.classList.add("hidden");
+
+        filteredEvents.forEach((event) => {
+          const eventCard = createEventCard(event);
+          container.appendChild(eventCard);
+        });
+      }
+
+      // Créer une carte d'événement
+      function createEventCard(event) {
+        const card = document.createElement("div");
+        card.className =
+          "bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200";
+
+        // Afficher les photos si disponibles
+        const photosHtml =
+          event.photos && event.photos.length > 0
+            ? `
+          <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 overflow-hidden">
+            <div class="flex space-x-2 h-full">
+              ${event.photos
+                .map(
+                  (photo) => `
+                <img src="${photo}" alt="Photo de l'événement" class="w-full h-full object-cover flex-shrink-0">
+              `
+                )
+                .join("")}
+            </div>
+          </div>
+        `
+            : `
+          <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+            <svg class="h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+        `;
+
+        card.innerHTML = `
+          ${photosHtml}
+          
+          <!-- En-tête avec titre et catégorie -->
+          <div class="mb-3">
+            <div class="flex items-start justify-between mb-2">
+              <h3 class="text-xl font-semibold text-gray-900 flex-1">${
+                event.title
+              }</h3>
+              <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                ${event.category || "Général"}
+              </span>
+            </div>
+            <p class="text-gray-600 text-sm leading-relaxed">${
+              event.description
+            }</p>
+          </div>
+
+          <!-- Informations détaillées -->
+          <div class="space-y-3 mb-4">
+            <!-- Dates -->
+            <div class="flex items-start">
+              <svg class="h-4 w-4 mr-2 mt-0.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              <div class="text-sm">
+                <div class="font-medium text-gray-900">📅 ${formatEventDateRange(
+                  event
+                )}</div>
+                ${
+                  event.date_start === event.date_end
+                    ? ""
+                    : `<div class="text-gray-500 text-xs">Jusqu'au ${formatEventDate(
+                        event.date_end
+                      )}</div>`
+                }
+              </div>
+            </div>
+
+            <!-- Lieu complet -->
+            <div class="flex items-start">
+              <svg class="h-4 w-4 mr-2 mt-0.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <div class="text-sm">
+                <div class="font-medium text-gray-900">📍 ${
+                  event.location_address || "Adresse non précisée"
+                }</div>
+                <div class="text-gray-500">${
+                  event.location_city || "Ville non précisée"
+                }</div>
+              </div>
+            </div>
+
+            <!-- Capacité si disponible -->
+            ${
+              event.capacity
+                ? `
+            <div class="flex items-center">
+              <svg class="h-4 w-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              <span class="text-sm text-gray-600">👥 ${event.capacity} places maximum</span>
+            </div>
+            `
+                : ""
+            }
+          </div>
+
+          <!-- Prix et note -->
+          <div class="flex items-center justify-between mb-4 pt-3 border-t border-gray-100">
+            <div class="flex items-center">
+              <span class="text-lg font-bold text-primary-600">
+                ${
+                  event.price_is_free
+                    ? "🆓 Gratuit"
+                    : "💰 " + event.price_amount + "€"
+                }
+              </span>
+            </div>
+            ${
+              event.rating_average && event.rating_average > 0
+                ? `
+                <div class="flex items-center">
+                  <svg class="h-4 w-4 mr-1 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.783.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                  </svg>
+                  <span class="text-sm font-medium text-gray-900">${
+                    event.rating_average
+                  }</span>
+                  <span class="ml-1 text-xs text-gray-500">(${
+                    event.rating_count || 0
+                  } avis)</span>
+                </div>
+                `
+                : ""
+            }
+          </div>
+
+          <!-- Boutons d'action -->
+          <div class="flex gap-2">
+            <button onclick="rateEvent(${
+              event.id
+            })" class="flex-1 bg-yellow-500 text-white py-2 px-3 rounded-md text-sm font-medium hover:bg-yellow-600 transition-colors">
+              ⭐ Noter
+            </button>
+            <button onclick="showEventRatings(${
+              event.id
+            })" class="flex-1 bg-blue-500 text-white py-2 px-3 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
+              💬 Voir avis
+            </button>
+          </div>
+        `;
+
+        return card;
+      }
+
+      // Remplir automatiquement les options de filtre
+      function populateFilterOptions() {
+        // Remplir les villes
+        const cities = [
+          ...new Set(
+            allEvents.map((event) => event.location_city).filter((city) => city)
+          ),
+        ];
+        cities.sort();
+
+        const cityFilter = document.getElementById("city-filter");
+        // Garder l'option "Toutes les villes"
+        cityFilter.innerHTML = '<option value="">Toutes les villes</option>';
+        cities.forEach((city) => {
+          cityFilter.innerHTML += `<option value="${city}">${city}</option>`;
+        });
+      }
+
+      // Fonctions utilitaires pour les filtres de date
+      function isToday(date) {
+        const today = new Date();
+        const eventDate = new Date(date);
+        return eventDate.toDateString() === today.toDateString();
+      }
+
+      function isTomorrow(date) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const eventDate = new Date(date);
+        return eventDate.toDateString() === tomorrow.toDateString();
+      }
+
+      function isThisWeek(date) {
+        const today = new Date();
+        const eventDate = new Date(date);
+        const startOfWeek = new Date(
+          today.setDate(today.getDate() - today.getDay())
+        );
+        const endOfWeek = new Date(
+          today.setDate(today.getDate() - today.getDay() + 6)
+        );
+        return eventDate >= startOfWeek && eventDate <= endOfWeek;
+      }
+
+      function isNextWeek(date) {
+        const today = new Date();
+        const eventDate = new Date(date);
+        const startOfNextWeek = new Date(
+          today.setDate(today.getDate() - today.getDay() + 7)
+        );
+        const endOfNextWeek = new Date(
+          today.setDate(today.getDate() - today.getDay() + 13)
+        );
+        return eventDate >= startOfNextWeek && eventDate <= endOfNextWeek;
+      }
+
+      function isThisMonth(date) {
+        const today = new Date();
+        const eventDate = new Date(date);
+        return (
+          eventDate.getMonth() === today.getMonth() &&
+          eventDate.getFullYear() === today.getFullYear()
+        );
+      }
+
+      function isNextMonth(date) {
+        const today = new Date();
+        const eventDate = new Date(date);
+        const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1);
+        return (
+          eventDate.getMonth() === nextMonth.getMonth() &&
+          eventDate.getFullYear() === nextMonth.getFullYear()
+        );
+      }
+
+      // Filtrage et tri avancés
+      function applyFilters() {
+        const searchText = document
+          .getElementById("search-events")
+          .value.toLowerCase();
+        const category = document.getElementById("category-filter").value;
+        const city = document.getElementById("city-filter").value;
+        const priceRange = document.getElementById("price-filter").value;
+        const minRating = parseFloat(
+          document.getElementById("rating-filter").value
+        );
+        const dateFilter = document.getElementById("date-filter").value;
+        const sortBy = document.getElementById("sort-select").value;
+
+        // Afficher/masquer le bouton clear search
+        const clearBtn = document.getElementById("clear-search-btn");
+        clearBtn.style.display = searchText ? "flex" : "none";
+
+        // Filtrer les événements
+        filteredEvents = allEvents.filter((event) => {
+          // Filtre de recherche textuelle
+          const matchesSearch =
+            !searchText ||
+            event.title.toLowerCase().includes(searchText) ||
+            event.description.toLowerCase().includes(searchText) ||
+            event.location_city.toLowerCase().includes(searchText) ||
+            event.location_address.toLowerCase().includes(searchText) ||
+            event.creator_username.toLowerCase().includes(searchText);
+
+          // Filtre par catégorie
+          const matchesCategory = !category || event.category === category;
+
+          // Filtre par ville
+          const matchesCity = !city || event.location_city === city;
+
+          // Filtre par prix
+          let matchesPrice = true;
+          if (priceRange) {
+            const price = event.price_is_free
+              ? 0
+              : parseFloat(event.price_amount) || 0;
+            switch (priceRange) {
+              case "free":
+                matchesPrice = event.price_is_free || price === 0;
+                break;
+              case "0-10":
+                matchesPrice = price >= 0 && price <= 10;
+                break;
+              case "10-25":
+                matchesPrice = price > 10 && price <= 25;
+                break;
+              case "25-50":
+                matchesPrice = price > 25 && price <= 50;
+                break;
+              case "50+":
+                matchesPrice = price > 50;
+                break;
+            }
+          }
+
+          // Filtre par note minimum
+          const matchesRating =
+            !minRating ||
+            (event.rating_average &&
+              parseFloat(event.rating_average) >= minRating);
+
+          // Filtre par date
+          let matchesDate = true;
+          if (dateFilter && event.date_start) {
+            switch (dateFilter) {
+              case "today":
+                matchesDate = isToday(event.date_start);
+                break;
+              case "tomorrow":
+                matchesDate = isTomorrow(event.date_start);
+                break;
+              case "this-week":
+                matchesDate = isThisWeek(event.date_start);
+                break;
+              case "next-week":
+                matchesDate = isNextWeek(event.date_start);
+                break;
+              case "this-month":
+                matchesDate = isThisMonth(event.date_start);
+                break;
+              case "next-month":
+                matchesDate = isNextMonth(event.date_start);
+                break;
+            }
+          }
+
+          return (
+            matchesSearch &&
+            matchesCategory &&
+            matchesCity &&
+            matchesPrice &&
+            matchesRating &&
+            matchesDate
+          );
+        });
+
+        // Trier les événements
+        filteredEvents.sort((a, b) => {
+          switch (sortBy) {
+            case "date-asc":
+              return new Date(a.date_start) - new Date(b.date_start);
+            case "date-desc":
+              return new Date(b.date_start) - new Date(a.date_start);
+            case "price-asc":
+              const priceA = a.price_is_free
+                ? 0
+                : parseFloat(a.price_amount) || 0;
+              const priceB = b.price_is_free
+                ? 0
+                : parseFloat(b.price_amount) || 0;
+              return priceA - priceB;
+            case "price-desc":
+              const priceA2 = a.price_is_free
+                ? 0
+                : parseFloat(a.price_amount) || 0;
+              const priceB2 = b.price_is_free
+                ? 0
+                : parseFloat(b.price_amount) || 0;
+              return priceB2 - priceA2;
+            case "title-asc":
+              return a.title.localeCompare(b.title);
+            case "title-desc":
+              return b.title.localeCompare(a.title);
+            case "rating-desc":
+              return (
+                (parseFloat(b.rating_average) || 0) -
+                (parseFloat(a.rating_average) || 0)
+              );
+            case "popularity-desc":
+              return (b.current_attendees || 0) - (a.current_attendees || 0);
+            case "recent-desc":
+              return new Date(b.created_at) - new Date(a.created_at);
+            default:
+              return new Date(a.date_start) - new Date(b.date_start);
+          }
+        });
+
+        displayEvents();
+        updateEventsCount();
+      }
+
+      // Fonctions utilitaires pour le formatage
+      function formatEventDateRange(event) {
+        if (!event.date_start) return "Date non définie";
+
+        const startDate = new Date(event.date_start);
+        const endDate = event.date_end ? new Date(event.date_end) : null;
+
+        const formatDate = (date) => {
+          return date.toLocaleDateString("fr-FR", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        };
+
+        if (!endDate || startDate.toDateString() === endDate.toDateString()) {
+          return formatDate(startDate);
+        } else {
+          return `Du ${formatDate(startDate)} au ${formatDate(endDate)}`;
+        }
+      }
+
+      function formatRating(event) {
+        if (!event.rating_average || event.rating_average === 0) {
+          return "Pas encore d'avis";
+        }
+        const rating = parseFloat(event.rating_average);
+        const count = event.rating_count || 0;
+        return `${rating.toFixed(1)}/5 (${count} avis)`;
+      }
+
+      // Nouvelles fonctions utilitaires
+      function clearSearch() {
+        document.getElementById("search-events").value = "";
+        applyFilters();
+      }
+
+      function updateEventsCount() {
+        const count = filteredEvents.length;
+        const countElement = document.getElementById("events-count");
+        if (countElement) {
+          countElement.textContent = `${count} événement(s)`;
+        }
+      }
+
+      function setViewMode(mode) {
+        currentViewMode = mode;
+
+        // Mettre à jour les boutons
+        document
+          .querySelectorAll(".view-toggle")
+          .forEach((btn) => btn.classList.remove("active"));
+        if (mode === "grid") {
+          document.getElementById("grid-view-btn").classList.add("active");
+          document.getElementById("events-container").className =
+            "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8";
+        } else {
+          document.getElementById("list-view-btn").classList.add("active");
+          document.getElementById("events-container").className = "space-y-6";
+        }
+
+        displayEvents();
+      }
+
+      // Réinitialiser tous les filtres
+      function resetFilters() {
+        document.getElementById("search-events").value = "";
+        document.getElementById("sort-select").value = "date-asc";
+        document.getElementById("category-filter").value = "";
+        document.getElementById("city-filter").value = "";
+        document.getElementById("price-filter").value = "";
+        document.getElementById("rating-filter").value = "0";
+        document.getElementById("date-filter").value = "";
+
+        // Masquer le bouton clear search
+        document.getElementById("clear-search-btn").style.display = "none";
+
+        filteredEvents = [...allEvents];
+        displayEvents();
+        updateEventsCount();
+      }
+
+      // Variables globales pour les photos et doublons
+      let selectedPhotoUrls = [];
+      let pendingEventData = null;
+      let similarEvents = [];
+
+      // Prévisualisation des images depuis URL
+      function previewImageUrl(input, index) {
+        const url = input.value.trim();
+        const preview = document.getElementById("photo-preview");
+
+        // Mettre à jour le tableau des URLs
+        selectedPhotoUrls[index - 1] = url;
+
+        // Nettoyer le tableau des URLs vides
+        selectedPhotoUrls = selectedPhotoUrls.filter(
+          (url) => url && url.length > 0
+        );
+
+        // Réafficher la prévisualisation
+        updatePhotoPreview();
+      }
+
+      // Mettre à jour l'affichage des prévisualisations
+      function updatePhotoPreview() {
+        const preview = document.getElementById("photo-preview");
+        preview.innerHTML = "";
+
+        if (selectedPhotoUrls.length > 0) {
+          preview.classList.remove("hidden");
+
+          selectedPhotoUrls.forEach((url, index) => {
+            const previewItem = document.createElement("div");
+            previewItem.className = "relative";
+            previewItem.innerHTML = `
+              <img src="${url}" class="w-full h-32 object-cover rounded-lg" alt="Prévisualisation"
+                   onerror="this.src='https://via.placeholder.com/400x300/E5E7EB/6B7280?text=Image+non+trouvée'" />
+              <button onclick="removePhotoUrl(${index})" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
+                   ×
+                 </button>
+               `;
+            preview.appendChild(previewItem);
+          });
+        } else {
+          preview.classList.add("hidden");
+        }
+      }
+
+      // Supprimer une URL de photo
+      function removePhotoUrl(index) {
+        selectedPhotoUrls.splice(index, 1);
+
+        // Réinitialiser les champs de saisie
+        for (let i = 1; i <= 3; i++) {
+          const input = document.getElementById(`event-photo-url-${i}`);
+          input.value = selectedPhotoUrls[i - 1] || "";
+        }
+
+        updatePhotoPreview();
+      }
+
+      // Afficher le modal de comparaison des doublons
+      function showDuplicateModal(newEventData, similarEventsData) {
+        pendingEventData = newEventData;
+        similarEvents = similarEventsData;
+
+        // Afficher les détails du nouvel événement
+        const newEventDetails = document.getElementById("new-event-details");
+        newEventDetails.innerHTML = `
+           <div class="grid grid-cols-2 gap-4">
+             <div>
+               <strong>Titre:</strong> ${newEventData.title}<br>
+               <strong>Catégorie:</strong> ${newEventData.category}<br>
+               <strong>Ville:</strong> ${newEventData.locationCity}<br>
+               <strong>Date:</strong> ${new Date(
+                 newEventData.dateStart
+               ).toLocaleDateString()}
+             </div>
+             <div>
+               <strong>Description:</strong> ${newEventData.description}<br>
+               <strong>Capacité:</strong> ${newEventData.capacity}<br>
+               <strong>Prix:</strong> ${
+                 newEventData.priceIsFree
+                   ? "Gratuit"
+                   : newEventData.priceAmount + "€"
+               }
+             </div>
+           </div>
+         `;
+
+        // Afficher les événements similaires
+        const similarEventsList = document.getElementById(
+          "similar-events-list"
+        );
+        similarEventsList.innerHTML = "";
+
+        similarEventsData.forEach((event) => {
+          const eventCard = document.createElement("div");
+          eventCard.className =
+            "bg-white border border-gray-200 rounded-lg p-4";
+          eventCard.innerHTML = `
+             <div class="grid grid-cols-2 gap-4">
+               <div>
+                 <strong>Titre:</strong> ${event.title}<br>
+                 <strong>Catégorie:</strong> ${event.category}<br>
+                 <strong>Ville:</strong> ${event.location_city}<br>
+                 <strong>Date:</strong> ${new Date(
+                   event.date_start
+                 ).toLocaleDateString()}
+               </div>
+               <div>
+                 <strong>Description:</strong> ${event.description}<br>
+                 <strong>Capacité:</strong> ${event.capacity}<br>
+                 <strong>Prix:</strong> ${
+                   event.price_is_free ? "Gratuit" : event.price_amount + "€"
+                 }<br>
+                 <strong>Créé par:</strong> ${event.creator_username}
+               </div>
+             </div>
+           `;
+          similarEventsList.appendChild(eventCard);
+        });
+
+        document.getElementById("duplicate-modal").classList.remove("hidden");
+      }
+
+      // Fermer le modal de comparaison
+      function closeDuplicateModal() {
+        document.getElementById("duplicate-modal").classList.add("hidden");
+        pendingEventData = null;
+        similarEvents = [];
+      }
+
+      // Confirmer la création d'événement malgré les doublons
+      async function confirmCreateEvent() {
+        if (pendingEventData) {
+          await createEventWithPhotos(pendingEventData);
+          closeDuplicateModal();
+        }
+      }
+
+      // Afficher les avis d'un événement
+      async function showEventRatings(eventId) {
+        try {
+          const response = await fetch(`${API_BASE}/events/${eventId}/ratings`);
+          const data = await response.json();
+
+          if (response.ok) {
+            displayEventRatings(data.ratings);
+            document.getElementById("ratings-modal").classList.remove("hidden");
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              "Impossible de charger les avis"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
+      // Afficher les avis dans le modal (nouveau système intelligent)
+      function displayEventRatings(ratings) {
+        const content = document.getElementById("ratings-content");
+
+        if (ratings.length === 0) {
+          content.innerHTML = `
+             <div class="text-center py-8">
+               <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+               </svg>
+               <h3 class="mt-2 text-sm font-medium text-gray-900">Aucun avis</h3>
+               <p class="mt-1 text-sm text-gray-500">Soyez le premier à noter cet événement !</p>
+             </div>
+           `;
+          return;
+        }
+
+        content.innerHTML = `
+           <div class="space-y-6">
+             ${ratings
+               .map(
+                 (rating) => `
+               <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                 <!-- En-tête avec note et timing -->
+                 <div class="flex items-start justify-between mb-4">
+                   <div class="flex-1">
+                     <div class="flex items-center space-x-3 mb-2">
+                       <div class="flex text-yellow-400 text-xl">
+                         ${Array.from({ length: 5 }, (_, i) =>
+                           i < Math.floor(rating.overall_rating)
+                             ? "★"
+                             : i < rating.overall_rating
+                             ? "☆"
+                             : "☆"
+                         ).join("")}
+                   </div>
+                       <span class="text-xl font-bold text-gray-900">${
+                         rating.overall_rating
+                       }/5</span>
+                   </div>
+                     <p class="text-sm text-gray-500">${formatRatingDate(
+                       rating.created_at
+                     )}</p>
+                   </div>
+                   ${formatPresenceTiming(rating)}
+                 </div>
+                 
+                 <!-- Tags rapides -->
+                 ${formatQuickTags(rating.quick_tags)}
+
+                 <!-- Critères détaillés -->
+                 ${formatDetailedCriteria(rating.detailed_criteria)}
+
+                 <!-- Commentaire -->
+                 ${
+                   rating.comment
+                     ? `
+                   <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500 mb-4">
+                     <div class="flex items-start space-x-2">
+                       <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                       </svg>
+                       <p class="text-gray-700 italic">"${rating.comment}"</p>
+                   </div>
+                   </div>
+                 `
+                     : ""
+                 }
+                 
+                 <!-- Informations contextuelles -->
+                 ${formatContextInfo(rating)}
+                   </div>
+                   `
+               )
+               .join("")}
+                   </div>
+         `;
+      }
+
+      // Fonctions utilitaires pour l'affichage des avis intelligents
+
+      function formatRatingDate(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffTime = Math.abs(now - date);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays === 1) return "Hier";
+        if (diffDays < 7) return `Il y a ${diffDays} jours`;
+        return date.toLocaleDateString("fr-FR", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+      }
+
+      function formatPresenceTiming(rating) {
+        if (!rating.arrival_time && !rating.departure_time) return "";
+
+        let timingText = "";
+        let timingIcon = "🕐";
+
+        if (rating.arrival_time && rating.departure_time) {
+          timingText = `${rating.arrival_time} → ${rating.departure_time}`;
+          timingIcon = "⏰";
+        } else if (rating.arrival_time && rating.still_present) {
+          timingText = `Depuis ${rating.arrival_time}`;
+          timingIcon = "🔴";
+        } else if (rating.arrival_time) {
+          timingText = `Arrivé à ${rating.arrival_time}`;
+          timingIcon = "🕐";
+        }
+
+        return timingText
+          ? `
+          <div class="text-right">
+            <div class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+              <span class="mr-1">${timingIcon}</span>
+              ${timingText}
+                   </div>
+                     </div>
+                   `
+          : "";
+      }
+
+      function formatQuickTags(quickTags) {
+        if (!quickTags || quickTags.length === 0) return "";
+
+        const tagEmojis = {
+          excellent: "😍",
+          bondé: "👥",
+          calme: "😌",
+          bruyant: "🔊",
+          famille: "👨‍👩‍👧‍👦",
+          cher: "💸",
+          "bon-prix": "💰",
+          "mal-organisé": "🤷‍♂️",
+          "bien-organisé": "✅",
+        };
+
+        return `
+          <div class="mb-4">
+            <div class="flex flex-wrap gap-2">
+              ${quickTags
+                .map(
+                  (tag) => `
+                <span class="inline-flex items-center px-2 py-1 bg-gray-200 text-gray-800 text-xs font-medium rounded-full">
+                  <span class="mr-1">${tagEmojis[tag] || "🏷️"}</span>
+                  ${tag.charAt(0).toUpperCase() + tag.slice(1)}
+                </span>
+              `
+                )
+                .join("")}
+                     </div>
+          </div>
+        `;
+      }
+
+      function formatDetailedCriteria(detailedCriteria) {
+        if (!detailedCriteria || Object.keys(detailedCriteria).length === 0)
+          return "";
+
+        const criteriaLabels = {
+          "sound-quality": { name: "Qualité sonore", icon: "🎵" },
+          ambiance: { name: "Ambiance", icon: "🎭" },
+          organisation: { name: "Organisation", icon: "📋" },
+          visibility: { name: "Visibilité", icon: "👀" },
+          comfort: { name: "Confort", icon: "🪑" },
+          security: { name: "Sécurité", icon: "🛡️" },
+          "content-quality": { name: "Qualité contenu", icon: "📚" },
+          "speaker-quality": { name: "Orateur", icon: "🎤" },
+          accessibility: { name: "Accessibilité", icon: "♿" },
+          networking: { name: "Réseau", icon: "🤝" },
+          variety: { name: "Variété", icon: "🎨" },
+          "food-quality": { name: "Restauration", icon: "🍔" },
+          cleanliness: { name: "Propreté", icon: "🧹" },
+          value: { name: "Rapport Q/P", icon: "💰" },
+          "game-quality": { name: "Qualité match", icon: "⚽" },
+          facilities: { name: "Installations", icon: "🏟️" },
+          learning: { name: "Éducatif", icon: "📖" },
+          quality: { name: "Qualité", icon: "⭐" },
+        };
+
+        return `
+          <div class="mb-4">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">Critères détaillés :</h4>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+              ${Object.entries(detailedCriteria)
+                .map(([key, value]) => {
+                  const criteria = criteriaLabels[key] || {
+                    name: key,
+                    icon: "📊",
+                  };
+                  return `
+                  <div class="flex items-center space-x-2 bg-white p-2 rounded border">
+                    <span>${criteria.icon}</span>
+                    <span class="text-xs text-gray-600 flex-1">${criteria.name}</span>
+                    <span class="font-semibold text-sm">${value}/5</span>
+                     </div>
+                `;
+                })
+                .join("")}
+               </div>
+           </div>
+         `;
+      }
+
+      function formatContextInfo(rating) {
+        const contextItems = [];
+
+        if (rating.crowd_level) {
+          const crowdLevels = [
+            "Très vide",
+            "Peu de monde",
+            "Modéré",
+            "Bondé",
+            "Très bondé",
+          ];
+          const crowdText =
+            crowdLevels[rating.crowd_level - 1] || `${rating.crowd_level}/5`;
+          contextItems.push(`
+            <div class="flex items-center space-x-1">
+              <span>👥</span>
+              <span class="text-xs text-gray-600">Affluence:</span>
+              <span class="text-xs font-medium">${crowdText}</span>
+            </div>
+          `);
+        }
+
+        if (rating.weather_conditions) {
+          const weatherEmojis = {
+            ensoleillé: "☀️",
+            nuageux: "☁️",
+            pluvieux: "🌧️",
+            neigeux: "❄️",
+            venteux: "💨",
+            orageux: "⛈️",
+          };
+          contextItems.push(`
+            <div class="flex items-center space-x-1">
+              <span>${weatherEmojis[rating.weather_conditions] || "🌤️"}</span>
+              <span class="text-xs text-gray-600">Météo:</span>
+              <span class="text-xs font-medium">${
+                rating.weather_conditions
+              }</span>
+                   </div>
+          `);
+        }
+
+        return contextItems.length > 0
+          ? `
+          <div class="flex flex-wrap gap-3 pt-3 border-t border-gray-200">
+            ${contextItems.join("")}
+                     </div>
+                   `
+          : "";
+      }
+
+      // Fermer le modal des avis
+      function closeRatingsModal() {
+        document.getElementById("ratings-modal").classList.add("hidden");
+      }
+
+      // Ouvrir le modal "Mes avis"
+      async function openMyRatingsModal() {
+        if (!currentUser || !authToken) {
+          showNotification(
+            "error",
+            "Connexion requise",
+            "Vous devez être connecté pour voir vos avis"
+          );
+          return;
+        }
+
+        document.getElementById("my-ratings-modal").classList.remove("hidden");
+        await loadMyRatings();
+      }
+
+      // Fermer le modal "Mes avis"
+      function closeMyRatingsModal() {
+        document.getElementById("my-ratings-modal").classList.add("hidden");
+      }
+
+      // Modal "Mes événements" - VERSION COMPLÈTE
+      async function openMyEventsModal() {
+        document.getElementById("my-events-modal").classList.remove("hidden");
+        await loadMyEvents();
+      }
+
+      function closeMyEventsModal() {
+        document.getElementById("my-events-modal").classList.add("hidden");
+      }
+
+      // Charger les événements de l'utilisateur
+      async function loadMyEvents() {
+        try {
+          const response = await fetch(
+            `${API_BASE}/users/${currentUser.id}/events`,
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (response.ok) {
+            const events = await response.json();
+            displayMyEvents(events);
+          } else {
+            console.error("Erreur chargement événements:", response.status);
+            document.getElementById("my-events-list").innerHTML = `
+              <div class="text-center py-8">
+                <p class="text-red-500">❌ Erreur de chargement des événements</p>
+                     </div>
+            `;
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          document.getElementById("my-events-list").innerHTML = `
+            <div class="text-center py-8">
+              <p class="text-red-500">❌ Erreur de connexion au serveur</p>
+                     </div>
+          `;
+        }
+      }
+
+      // Afficher les événements de l'utilisateur
+      function displayMyEvents(events) {
+        const content = document.getElementById("my-events-list");
+
+        if (events.length === 0) {
+          content.innerHTML = `
+            <div class="text-center py-12">
+              <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              <h3 class="mt-2 text-lg font-medium text-gray-900">Aucun événement créé</h3>
+              <p class="mt-1 text-gray-500">Créez votre premier événement pour le voir ici !</p>
+              <button
+                onclick="closeMyEventsModal(); showSection('home')"
+                class="mt-4 bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
+              >
+                🎪 Créer un événement
+              </button>
+                     </div>
+          `;
+          return;
+        }
+
+        content.innerHTML = `
+          <div class="space-y-6">
+            ${events
+              .map(
+                (event) => `
+              <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                <div class="flex justify-between items-start mb-4">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">${
+                      event.title
+                    }</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                      <div><span class="font-medium">📅 Date:</span> ${formatEventDateRange(
+                        event
+                      )}</div>
+                      <div><span class="font-medium">📍 Lieu:</span> ${
+                        event.location || "Non spécifié"
+                      }</div>
+                      <div><span class="font-medium">👥 Inscrits:</span> ${
+                        event.current_attendees || 0
+                      }</div>
+                      ${
+                        event.rating_average && event.rating_average > 0
+                          ? `<div><span class="font-medium">⭐ Note moyenne:</span> ${formatRating(
+                              event
+                            )}</div>`
+                          : ""
+                      }
+                     </div>
+                  </div>
+                  <div class="flex space-x-2 ml-4">
+                    <button 
+                      onclick="editEvent(${event.id})" 
+                      class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm hover:bg-blue-200"
+                    >
+                      ✏️ Modifier
+                    </button>
+                    <button 
+                      onclick="duplicateEvent(${event.id})" 
+                      class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm hover:bg-green-200"
+                    >
+                      📋 Dupliquer
+                    </button>
+                    <button 
+                      onclick="deleteEvent(${event.id})" 
+                      class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200"
+                    >
+                      🗑️ Supprimer
+                    </button>
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    ${(event.photos || [])
+                      .slice(0, 3)
+                      .map(
+                        (photo) => `
+                      <img src="${photo}" class="w-full h-24 object-cover rounded-md border" alt="Photo événement" onerror="this.style.display='none'">
+                    `
+                      )
+                      .join("")}
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <p class="text-gray-700">${
+                    event.description || "Aucune description"
+                  }</p>
+                </div>
+
+
+               </div>
+             `
+              )
+              .join("")}
+           </div>
+         `;
+      }
+
+      // Variables pour l'édition d'événement
+      let currentEditingEventId = null;
+      let editEventPhotos = [];
+
+      // Fonctions d'actions sur les événements
+      async function editEvent(eventId) {
+        // Fermer le modal "Mes événements" d'abord
+        closeMyEventsModal();
+
+        currentEditingEventId = eventId;
+
+        try {
+          // Récupérer les détails de l'événement
+          const response = await fetch(`${API_BASE}/events/${eventId}`, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          });
+
+          if (response.ok) {
+            const event = await response.json();
+            fillEditEventForm(event);
+            document
+              .getElementById("edit-event-modal")
+              .classList.remove("hidden");
+          } else {
+            alert("❌ Erreur lors du chargement de l'événement");
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          alert("❌ Erreur de connexion au serveur");
+        }
+      }
+
+      // Pré-remplir le formulaire d'édition
+      function fillEditEventForm(event) {
+        document.getElementById("edit-event-title").value = event.title || "";
+        document.getElementById("edit-event-description").value =
+          event.description || "";
+        document.getElementById("edit-event-category").value =
+          event.category || "";
+        document.getElementById("edit-event-address").value =
+          event.location_address || "";
+        document.getElementById("edit-event-city").value =
+          event.location_city || "";
+        document.getElementById("edit-event-capacity").value =
+          event.capacity || "";
+
+        // Gestion des dates
+        if (event.date_start) {
+          const startDate = new Date(event.date_start)
+            .toISOString()
+            .slice(0, 16);
+          document.getElementById("edit-event-start-date").value = startDate;
+        }
+        if (event.date_end) {
+          const endDate = new Date(event.date_end).toISOString().slice(0, 16);
+          document.getElementById("edit-event-end-date").value = endDate;
+        }
+
+        // Gestion du prix
+        const isFree = event.price_is_free;
+        document.getElementById("edit-event-free").checked = isFree;
+        document.getElementById("edit-event-price").value = isFree
+          ? ""
+          : event.price_amount || "";
+        document.getElementById("edit-event-price").disabled = isFree;
+
+        // Gestion des photos
+        editEventPhotos = event.photos ? [...event.photos] : [];
+        displayEditEventPhotos();
+      }
+
+      // Afficher les photos dans le formulaire d'édition
+      function displayEditEventPhotos() {
+        const container = document.getElementById(
+          "edit-event-photos-container"
+        );
+
+        if (editEventPhotos.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+              <p class="text-gray-500">Aucune photo ajoutée</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            ${editEventPhotos
+              .map(
+                (photo, index) => `
+              <div class="relative group">
+                <img src="${photo}" class="w-full h-32 object-cover rounded-lg border" alt="Photo ${
+                  index + 1
+                }" 
+                     onerror="this.src='https://via.placeholder.com/400x300/E5E7EB/6B7280?text=Image+non+trouvée'" />
+                <button
+                  type="button"
+                  onclick="removeEditPhoto(${index})"
+                  class="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  ✕
+                </button>
+                <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                  Photo ${index + 1}
+                 </div>
+               </div>
+             `
+              )
+              .join("")}
+           </div>
+         `;
+      }
+
+      // Ajouter une photo à l'édition
+      function addEditPhoto() {
+        const urlInput = document.getElementById("edit-new-photo-url");
+        const url = urlInput.value.trim();
+
+        if (!url) {
+          alert("❌ Veuillez entrer une URL de photo");
+          return;
+        }
+
+        if (!isValidUrl(url)) {
+          alert("❌ Veuillez entrer une URL valide");
+          return;
+        }
+
+        if (editEventPhotos.includes(url)) {
+          alert("❌ Cette photo est déjà ajoutée");
+          return;
+        }
+
+        editEventPhotos.push(url);
+        urlInput.value = "";
+        displayEditEventPhotos();
+      }
+
+      // Supprimer une photo de l'édition
+      function removeEditPhoto(index) {
+        if (confirm("Voulez-vous supprimer cette photo ?")) {
+          editEventPhotos.splice(index, 1);
+          displayEditEventPhotos();
+        }
+      }
+
+      // Fermer le modal d'édition
+      function closeEditEventModal() {
+        document.getElementById("edit-event-modal").classList.add("hidden");
+        currentEditingEventId = null;
+        editEventPhotos = [];
+        document.getElementById("edit-event-form").reset();
+      }
+
+      // Gérer l'événement gratuit
+      document.addEventListener("DOMContentLoaded", function () {
+        const freeCheckbox = document.getElementById("edit-event-free");
+        const priceInput = document.getElementById("edit-event-price");
+
+        if (freeCheckbox && priceInput) {
+          freeCheckbox.addEventListener("change", function () {
+            if (this.checked) {
+              priceInput.value = "";
+              priceInput.disabled = true;
+            } else {
+              priceInput.disabled = false;
+            }
+          });
+        }
+      });
+
+      // Soumettre les modifications
+      document.addEventListener("DOMContentLoaded", function () {
+        const editForm = document.getElementById("edit-event-form");
+        if (editForm) {
+          editForm.addEventListener("submit", handleEditEventSubmit);
+        }
+      });
+
+      async function handleEditEventSubmit(e) {
+        e.preventDefault();
+
+        if (!currentEditingEventId) {
+          alert("❌ Erreur : ID d'événement manquant");
+          return;
+        }
+
+        const formData = {
+          title: document.getElementById("edit-event-title").value.trim(),
+          description: document
+            .getElementById("edit-event-description")
+            .value.trim(),
+          category: document.getElementById("edit-event-category").value,
+          location_address: document
+            .getElementById("edit-event-address")
+            .value.trim(),
+          location_city: document
+            .getElementById("edit-event-city")
+            .value.trim(),
+          date_start: document.getElementById("edit-event-start-date").value,
+          date_end: document.getElementById("edit-event-end-date").value,
+          capacity: parseInt(
+            document.getElementById("edit-event-capacity").value
+          ),
+          price_is_free: document.getElementById("edit-event-free").checked,
+          price_amount: document.getElementById("edit-event-free").checked
+            ? 0
+            : parseFloat(document.getElementById("edit-event-price").value) ||
+              0,
+          photos: editEventPhotos,
+        };
+
+        // Validation
+        if (
+          !formData.title ||
+          !formData.category ||
+          !formData.location_address ||
+          !formData.location_city ||
+          !formData.date_start ||
+          !formData.capacity
+        ) {
+          alert("❌ Veuillez remplir tous les champs obligatoires");
+          return;
+        }
+
+        if (new Date(formData.date_start) < new Date()) {
+          alert("❌ La date de début ne peut pas être dans le passé");
+          return;
+        }
+
+        if (
+          formData.date_end &&
+          new Date(formData.date_end) <= new Date(formData.date_start)
+        ) {
+          alert("❌ La date de fin doit être postérieure à la date de début");
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `${API_BASE}/events/${currentEditingEventId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: JSON.stringify(formData),
+            }
+          );
+
+          if (response.ok) {
+            alert("✅ Événement modifié avec succès !");
+            closeEditEventModal();
+            // Recharger la liste des événements
+            await loadMyEvents();
+          } else {
+            const error = await response.json();
+            alert(`❌ Erreur : ${error.error || "Modification échouée"}`);
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          alert("❌ Erreur de connexion au serveur");
+        }
+      }
+
+      async function duplicateEvent(eventId) {
+        if (confirm("Voulez-vous dupliquer cet événement ?")) {
+          alert(
+            "📋 Duplication en cours...\n\nFonctionnalité en développement..."
+          );
+        }
+      }
+
+      async function deleteEvent(eventId) {
+        if (
+          confirm(
+            "⚠️ Êtes-vous sûr de vouloir supprimer cet événement ?\n\nCette action est irréversible !"
+          )
+        ) {
+          alert(
+            "🗑️ Suppression en cours...\n\nFonctionnalité en développement..."
+          );
+        }
+      }
+
+      // Formater une date d'événement
+      function formatEventDate(dateStr) {
+        try {
+          const date = new Date(dateStr);
+          return date.toLocaleDateString("fr-FR", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        } catch (e) {
+          return dateStr;
+        }
+      }
+
+      // Charger les avis de l'utilisateur connecté
+      async function loadMyRatings() {
+        try {
+          const response = await fetch(
+            `${API_BASE}/users/${currentUser.id}/ratings`,
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok) {
+            displayMyRatings(data.ratings);
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              data.error || "Impossible de charger vos avis"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
+      // Afficher les avis de l'utilisateur
+      function displayMyRatings(ratings) {
+        const content = document.getElementById("my-ratings-content");
+
+        if (ratings.length === 0) {
+          content.innerHTML = `
+            <div class="text-center py-12">
+              <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+              </svg>
+              <h3 class="mt-2 text-lg font-medium text-gray-900">Aucun avis pour le moment</h3>
+              <p class="mt-1 text-gray-500">Notez votre premier événement pour voir vos avis ici !</p>
+            </div>
+          `;
+          return;
+        }
+
+        content.innerHTML = `
+          <div class="space-y-6">
+            ${ratings
+              .map(
+                (rating) => `
+              <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                <!-- En-tête avec événement et actions -->
+                <div class="flex justify-between items-start mb-4">
+                  <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-1">${
+                      rating.event_title
+                    }</h3>
+                    <p class="text-sm text-gray-500">${formatRatingDate(
+                      rating.created_at
+                    )}</p>
+                    <!-- Photo de l'événement -->
+                    <div id="event-photo-${rating.id}" class="mt-2"></div>
+                    <div class="flex items-center mt-2">
+                      <div class="flex text-yellow-400 mr-2">
+                        ${Array.from({ length: 5 }, (_, i) =>
+                          i < Math.floor(rating.overall_rating) ? "★" : "☆"
+                        ).join("")}
+                      </div>
+                      <span class="text-lg font-bold text-gray-900">${
+                        rating.overall_rating
+                      }/5</span>
+                    </div>
+                  </div>
+                  <div class="flex space-x-2 ml-4">
+                    <button
+                      onclick="editRating(${rating.id})"
+                      class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm hover:bg-blue-200 transition-colors"
+                      title="Modifier cet avis"
+                    >
+                      ✏️ Modifier
+                    </button>
+                    <button
+                      onclick="deleteRating(${rating.id})"
+                      class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200 transition-colors"
+                      title="Supprimer cet avis"
+                    >
+                      🗑️ Supprimer
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Timing de présence -->
+                ${formatPresenceTiming(rating)}
+
+                <!-- Tags rapides -->
+                ${formatQuickTags(rating.quick_tags)}
+
+                <!-- Critères détaillés -->
+                ${formatDetailedCriteria(rating.detailed_criteria)}
+
+                <!-- Commentaire -->
+                ${
+                  rating.comment
+                    ? `
+                  <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500 mb-4">
+                    <div class="flex items-start space-x-2">
+                      <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                      </svg>
+                      <p class="text-gray-700 italic">"${rating.comment}"</p>
+                    </div>
+                     </div>
+                   `
+                    : ""
+                }
+
+                <!-- Informations contextuelles -->
+                ${formatContextInfo(rating)}
+               </div>
+             `
+              )
+              .join("")}
+           </div>
+         `;
+
+        // Charger les photos pour chaque événement
+        ratings.forEach((rating) => {
+          loadEventPhotoForDisplay(rating.event_id, `event-photo-${rating.id}`);
+        });
+      }
+
+      // Charger et afficher une photo d'événement dans la liste
+      async function loadEventPhotoForDisplay(eventId, containerId) {
+        try {
+          const response = await fetch(`${API_BASE}/events/${eventId}`, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (response.ok) {
+            const event = await response.json();
+            const photos = event.photos || event.data?.photos || [];
+            const container = document.getElementById(containerId);
+
+            if (container && photos.length > 0) {
+              container.innerHTML = `
+                <img src="${photos[0]}"
+                     class="w-20 h-20 object-cover rounded-lg border"
+                     alt="Photo événement"
+                     onerror="this.style.display='none'">
+                <p class="text-xs text-gray-500 mt-1">📷 ${photos.length} photo(s)</p>
+              `;
+            }
+          }
+        } catch (error) {
+          console.error("Erreur chargement photo:", error);
+        }
+      }
+
+      // Modifier un avis
+      async function editRating(ratingId) {
+        try {
+          // Fermer le modal "Mes avis" d'abord
+          closeMyRatingsModal();
+
+          // Récupérer les détails du rating
+          const response = await fetch(`${API_BASE}/ratings/${ratingId}`, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const rating = data.rating;
+
+            // Pré-remplir le modal de notation avec les données existantes
+            await prepareEditRatingModal(rating);
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              "Impossible de charger l'avis à modifier"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
+      // Préparer le modal pour éditer un avis
+      async function prepareEditRatingModal(rating) {
+        // Marquer qu'on est en mode édition
+        window.editingRatingId = rating.id;
+
+        // Ouvrir le modal de notation
+        openRatingModal(rating.event_id);
+
+        // Attendre que le modal soit ouvert
+        setTimeout(() => {
+          // SUPPRIMÉ : Pas de modification du titre et photos dans "Mes avis"
+          // On modifie seulement l'avis, pas l'événement lui-même
+
+          // Pré-remplir les champs avec les données existantes
+
+          // Note globale
+          const overallRating = document.getElementById("overall-rating");
+          if (overallRating && rating.overall_rating) {
+            overallRating.value = rating.overall_rating;
+            updateRatingValue("overall-rating");
+          }
+
+          // Timing de présence
+          if (rating.arrival_time) {
+            const arrivalTime = document.getElementById("arrival-time");
+            if (arrivalTime) arrivalTime.value = rating.arrival_time;
+          }
+
+          if (rating.departure_time) {
+            const departureTime = document.getElementById("departure-time");
+            if (departureTime) departureTime.value = rating.departure_time;
+          }
+
+          const stillPresent = document.getElementById("still-present");
+          if (stillPresent)
+            stillPresent.checked = rating.still_present || false;
+          toggleDepartureTime();
+
+          // Tags rapides
+          selectedTags = rating.quick_tags ? [...rating.quick_tags] : [];
+          updateTagButtons();
+
+          // Critères détaillés
+          if (rating.detailed_criteria) {
+            activeCriteria = { ...rating.detailed_criteria };
+
+            // Afficher la section des critères détaillés
+            const detailedSection =
+              document.getElementById("detailed-criteria");
+            if (detailedSection.classList.contains("hidden")) {
+              toggleDetailedCriteria();
+            }
+
+            // Cocher et définir les valeurs des critères
+            Object.entries(rating.detailed_criteria).forEach(
+              ([criterionId, value]) => {
+                const checkbox = document.querySelector(
+                  `[data-criterion="${criterionId}"] .criterion-checkbox`
+                );
+                if (checkbox) {
+                  checkbox.checked = true;
+                  toggleCriterionRating(criterionId);
+
+                  const slider = document.getElementById(criterionId);
+                  if (slider) {
+                    slider.value = value;
+                    updateCriterionValue(criterionId);
+                  }
+                }
+              }
+            );
+          }
+
+          // Contexte (crowd level, weather)
+          if (rating.crowd_level) {
+            const crowdLevel = document.getElementById("crowd-level");
+            if (crowdLevel) {
+              crowdLevel.value = rating.crowd_level;
+              updateCrowdLevel();
+            }
+          }
+
+          if (rating.weather_conditions) {
+            const weather = document.getElementById("weather-conditions");
+            if (weather) weather.value = rating.weather_conditions;
+          }
+
+          // Commentaire
+          if (rating.comment) {
+            const comment = document.getElementById("rating-comment");
+            if (comment) comment.value = rating.comment;
+          }
+
+          // Modifier le titre du modal
+          const modalTitle = document.querySelector("#rating-modal h2");
+          if (modalTitle) {
+            modalTitle.textContent = "✏️ Modifier votre avis";
+          }
+
+          // Modifier le texte du bouton
+          const submitBtn = document.querySelector(
+            '#rating-modal button[type="submit"]'
+          );
+          if (submitBtn) {
+            submitBtn.textContent = "Mettre à jour l'avis";
+          }
+        }, 300);
+      }
+
+      // Supprimer un avis
+      async function deleteRating(ratingId) {
+        if (
+          !confirm(
+            "Êtes-vous sûr de vouloir supprimer cet avis ? Cette action est irréversible."
+          )
+        ) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/ratings/${ratingId}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            showNotification(
+              "success",
+              "Supprimé",
+              "Votre avis a été supprimé avec succès"
+            );
+            // Recharger la liste des avis
+            await loadMyRatings();
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              data.error || "Impossible de supprimer l'avis"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
+      // Inscription
+      async function register(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("register-email").value;
+        const password = document.getElementById("register-password").value;
+        const rememberMe = document.getElementById(
+          "remember-me-register"
+        ).checked;
+
+        const formData = {
+          username: document.getElementById("register-username").value,
+          email: email,
+          password: password,
+          firstName: document.getElementById("register-firstname").value,
+          lastName: document.getElementById("register-lastname").value,
+        };
+
+        try {
+          const response = await fetch(`${API_BASE}/auth/register`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            currentUser = data.user;
+            authToken = data.token;
+            localStorage.setItem("authToken", authToken);
+
+            // Démarrer le timer d'inactivité
+            resetInactivityTimer();
+
+            // Sauvegarder les identifiants si demandé
+            if (rememberMe) {
+              saveCredentials(email, password);
+            }
+
+            showNotification(
+              "success",
+              "Compte créé !",
+              `Bienvenue ${formData.firstName} ${formData.lastName} !`
+            );
+
+            event.target.reset();
+            showSection("home");
+            updateNavigation();
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              data.error || "Erreur lors de la création du compte"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
+      // Connexion
+      async function login(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+        const rememberMe = document.getElementById("remember-me-login").checked;
+
+        const formData = {
+          email: email,
+          password: password,
+        };
+
+        try {
+          const response = await fetch(`${API_BASE}/auth/login`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            currentUser = data.user;
+            authToken = data.token;
+            localStorage.setItem("authToken", authToken);
+
+            // Démarrer le timer d'inactivité
+            resetInactivityTimer();
+
+            // Sauvegarder les identifiants si demandé
+            if (rememberMe) {
+              saveCredentials(email, password);
+            }
+
+            showNotification(
+              "success",
+              "Connexion réussie !",
+              `Bienvenue ${data.user.firstName} !`
+            );
+
+            event.target.reset();
+            showSection("home");
+            updateNavigation();
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              data.error || "Email ou mot de passe incorrect"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
+      // Déconnexion
+      function logout() {
+        currentUser = null;
+        authToken = null;
+        localStorage.removeItem("authToken");
+
+        // Arrêter le timer d'inactivité
+        clearTimeout(inactivityTimer);
+
+        // Optionnel : demander si effacer les identifiants sauvegardés
+        const saved = loadSavedCredentials();
+        if (
+          saved &&
+          confirm("Voulez-vous aussi effacer vos identifiants sauvegardés ?")
+        ) {
+          clearSavedCredentials();
+        }
+
+        showNotification(
+          "success",
+          "Déconnexion",
+          "Vous êtes maintenant déconnecté"
+        );
+        showSection("home");
+        updateNavigation();
+      }
+
+      // Créer un événement
+      // Variables pour la détection de doublons
+      let duplicateCheckTimeout = null;
+      let lastCheckedTitle = "";
+
+      // Fonction pour vérifier les doublons en temps réel
+      async function checkDuplicatesRealTime() {
+        const titleInput = document.getElementById("event-title");
+        const title = titleInput.value.trim();
+
+        // Ne pas vérifier si moins de 3 caractères ou si le titre n'a pas changé
+        if (title.length < 3 || title === lastCheckedTitle) {
+          hideDuplicateSuggestions();
+          return;
+        }
+
+        // Debounce: attendre 500ms après la dernière frappe
+        if (duplicateCheckTimeout) {
+          clearTimeout(duplicateCheckTimeout);
+        }
+
+        duplicateCheckTimeout = setTimeout(async () => {
+          lastCheckedTitle = title;
+          await checkForDuplicates(title);
+        }, 500);
+      }
+
+      // Fonction pour appeler l'API de détection de doublons
+      async function checkForDuplicates(title) {
+        try {
+          const dateInput = document.getElementById("event-start");
+          const cityInput = document.getElementById("event-city");
+
+          const params = new URLSearchParams({
+            title: title,
+          });
+
+          if (dateInput && dateInput.value) {
+            params.append("date_start", dateInput.value);
+          }
+
+          if (cityInput && cityInput.value) {
+            params.append("location_city", cityInput.value);
+          }
+
+          const response = await fetch(
+            `${API_BASE}/events/check-duplicates?${params}`
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.duplicates && data.duplicates.length > 0) {
+              showDuplicateSuggestions(data.duplicates);
+            } else {
+              hideDuplicateSuggestions();
+            }
+          } else {
+            hideDuplicateSuggestions();
+          }
+        } catch (error) {
+          console.error("Erreur lors de la vérification des doublons:", error);
+          hideDuplicateSuggestions();
+        }
+      }
+
+      // Afficher les suggestions de doublons
+      function showDuplicateSuggestions(duplicates) {
+        const suggestionsContainer = document.getElementById(
+          "duplicate-suggestions"
+        );
+        const duplicateList = document.getElementById("duplicate-list");
+
+        if (!suggestionsContainer || !duplicateList) return;
+
+        let html = "";
+        duplicates.forEach((duplicate) => {
+          const confidence = duplicate.confidence;
+          const confidenceColor =
+            confidence >= 80
+              ? "text-red-600"
+              : confidence >= 60
+              ? "text-orange-600"
+              : "text-yellow-600";
+          const confidenceIcon =
+            confidence >= 80 ? "🚨" : confidence >= 60 ? "⚠️" : "💡";
+
+          html += `
+            <div class="mb-3 p-2 bg-white rounded border border-yellow-300">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <div class="flex items-center">
+                    <span class="mr-2">${confidenceIcon}</span>
+                    <span class="font-medium text-gray-900">${
+                      duplicate.title
+                    }</span>
+                    <span class="ml-2 text-xs ${confidenceColor} font-medium">${confidence}% similaire</span>
+                  </div>
+                  <div class="mt-1 text-xs text-gray-600">
+                    📅 ${formatEventDate(duplicate.date_start)} • 📍 ${
+            duplicate.location_city
+          }
+                  </div>
+                  <div class="mt-1 text-xs text-gray-500">
+                    ${duplicate.reason}
+                  </div>
+                </div>
+                <button 
+                  onclick="viewExistingEvent(${duplicate.id})"
+                  class="ml-2 text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded hover:bg-blue-200"
+                >
+                  Voir
+                </button>
+              </div>
+            </div>
+          `;
+        });
+
+        duplicateList.innerHTML = html;
+        suggestionsContainer.classList.remove("hidden");
+      }
+
+      // Masquer les suggestions de doublons
+      function hideDuplicateSuggestions() {
+        const suggestionsContainer = document.getElementById(
+          "duplicate-suggestions"
+        );
+        if (suggestionsContainer) {
+          suggestionsContainer.classList.add("hidden");
+        }
+      }
+
+      // Fonction pour voir un événement existant
+      function viewExistingEvent(eventId) {
+        // Fermer le modal de création et ouvrir les détails de l'événement
+        closeModal();
+        // Ici on pourrait ouvrir un modal de détail de l'événement ou rediriger
+        showNotification(
+          "info",
+          `Vous pouvez consulter l'événement existant dans la liste des événements.`
+        );
+      }
+
+      // Modal de confirmation pour les doublons probables
+      function showDuplicateConfirmationModal(duplicates) {
+        return new Promise((resolve) => {
+          const modal = document.createElement("div");
+          modal.className =
+            "fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4";
+
+          const topDuplicate = duplicates[0];
+          const confidenceIcon = topDuplicate.confidence >= 80 ? "🚨" : "⚠️";
+
+          modal.innerHTML = `
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto">
+              <div class="flex items-center justify-between p-6 border-b border-red-200 bg-red-50">
+                <h2 class="text-xl font-bold text-red-800">
+                  ${confidenceIcon} Événement similaire détecté
+                </h2>
+              </div>
+              <div class="p-6">
+                <div class="mb-4">
+                  <p class="text-gray-700 mb-4">
+                    Un événement très similaire existe déjà. Voulez-vous vraiment créer ce nouvel événement ?
+                  </p>
+                </div>
+                
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                  <h3 class="text-sm font-medium text-yellow-800 mb-3">Événement similaire trouvé :</h3>
+                  ${duplicates
+                    .slice(0, 2)
+                    .map(
+                      (duplicate) => `
+                    <div class="mb-3 p-3 bg-white rounded border border-yellow-300">
+                      <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                          <div class="flex items-center">
+                            <span class="mr-2">${
+                              duplicate.confidence >= 80 ? "🚨" : "⚠️"
+                            }</span>
+                            <span class="font-medium text-gray-900">${
+                              duplicate.title
+                            }</span>
+                            <span class="ml-2 text-xs text-red-600 font-medium">${
+                              duplicate.confidence
+                            }% similaire</span>
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600">
+                            📅 ${formatEventDate(duplicate.date_start)} • 📍 ${
+                        duplicate.location_city
+                      }
+                          </div>
+                          <div class="mt-1 text-xs text-gray-500">
+                            ${duplicate.reason}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `
+                    )
+                    .join("")}
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                  <button 
+                    onclick="resolveDuplicateModal(false)"
+                    class="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                  >
+                    🔄 Modifier mon événement
+                  </button>
+                  <button 
+                    onclick="resolveDuplicateModal(true)"
+                    class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                  >
+                    ✅ Créer quand même
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          document.body.appendChild(modal);
+
+          // Ajouter la fonction de résolution au window temporairement
+          window.resolveDuplicateModal = (confirmed) => {
+            document.body.removeChild(modal);
+            delete window.resolveDuplicateModal;
+            resolve(confirmed);
+          };
+        });
+      }
+
+      async function createNewEvent(event) {
+        event.preventDefault();
+
+        if (!currentUser || !authToken) {
+          showNotification(
+            "error",
+            "Connexion requise",
+            "Vous devez être connecté pour créer un événement"
+          );
+          return;
+        }
+
+        // Vérifier les doublons avant création
+        const title = document.getElementById("event-title").value.trim();
+        const dateStart = document.getElementById("event-start").value;
+        const city = document.getElementById("event-city").value.trim();
+
+        try {
+          const params = new URLSearchParams({ title });
+          if (dateStart) params.append("date_start", dateStart);
+          if (city) params.append("location_city", city);
+
+          const duplicateResponse = await fetch(
+            `${API_BASE}/events/check-duplicates?${params}`
+          );
+
+          if (duplicateResponse.ok) {
+            const duplicateData = await duplicateResponse.json();
+            const highConfidenceDuplicates = duplicateData.duplicates.filter(
+              (d) => d.confidence >= 70
+            );
+
+            if (highConfidenceDuplicates.length > 0) {
+              const confirmed = await showDuplicateConfirmationModal(
+                highConfidenceDuplicates
+              );
+              if (!confirmed) {
+                return; // L'utilisateur a annulé
+              }
+            }
+          }
+        } catch (error) {
+          console.error(
+            "Erreur lors de la vérification finale des doublons:",
+            error
+          );
+          // Continuer quand même si l'API échoue
+        }
+
+        // Collecter les URLs des photos
+        const photoUrls = [];
+        for (let i = 1; i <= 3; i++) {
+          const url = document
+            .getElementById(`event-photo-url-${i}`)
+            .value.trim();
+          if (url) {
+            photoUrls.push(url);
+          }
+        }
+
+        // Mettre à jour selectedPhotoUrls pour la suite du processus
+        selectedPhotoUrls = [...photoUrls];
+
+        const formData = {
+          title: document.getElementById("event-title").value,
+          description: document.getElementById("event-description").value,
+          category: document.getElementById("event-category").value,
+          locationAddress: document.getElementById("event-address").value,
+          locationCity: document.getElementById("event-city").value,
+          dateStart: document.getElementById("event-start").value,
+          dateEnd: document.getElementById("event-end").value,
+          capacity: parseInt(document.getElementById("event-capacity").value),
+          priceAmount:
+            parseFloat(document.getElementById("event-price").value) || 0,
+          priceIsFree: document.getElementById("event-free").checked,
+        };
+
+        console.log("Données à envoyer:", formData);
+
+        // Vérifier les doublons avant de créer
+        try {
+          const duplicateCheck = await fetch(
+            `${API_BASE}/events/check-duplicates`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: JSON.stringify({
+                title: formData.title,
+                locationCity: formData.locationCity,
+                dateStart: formData.dateStart,
+                category: formData.category,
+              }),
+            }
+          );
+
+          const duplicateData = await duplicateCheck.json();
+
+          if (duplicateData.hasDuplicates) {
+            // Afficher le modal de comparaison au lieu d'un simple confirm
+            showDuplicateModal(formData, duplicateData.similarEvents);
+            return;
+          }
+        } catch (error) {
+          console.error("Erreur lors de la vérification des doublons:", error);
+        }
+
+        // Si pas de doublons, créer directement
+        await createEventWithPhotos(formData);
+      }
+
+      // Créer un événement avec photos
+      async function createEventWithPhotos(formData) {
+        try {
+          // Créer d'abord l'événement
+          const response = await fetch(`${API_BASE}/events`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify(formData),
+          });
+
+          console.log("Réponse du serveur:", response.status);
+          const data = await response.json();
+          console.log("Données reçues:", data);
+
+          if (response.ok) {
+            // Si des photos ont été sélectionnées, les envoyer
+            if (selectedPhotoUrls.length > 0) {
+              await updateEventPhotos(
+                data.event._id || data.event.id || data.id,
+                selectedPhotoUrls
+              );
+            }
+
+            showNotification(
+              "success",
+              "Événement créé !",
+              `L'événement "${formData.title}" a été créé avec succès.`
+            );
+
+            // Réinitialiser le formulaire
+            document.getElementById("create-event-form").reset();
+            document.getElementById("photo-preview").classList.add("hidden");
+            selectedPhotoUrls = [];
+            // Vider les champs d'URL
+            for (let i = 1; i <= 3; i++) {
+              document.getElementById(`event-photo-url-${i}`).value = "";
+            }
+
+            showSection("events");
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              data.error || "Erreur lors de la création de l'événement"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
+      // Mettre à jour les photos d'un événement avec des URLs
+      async function updateEventPhotos(eventId, photoUrls) {
+        try {
+          console.log(
+            "Mise à jour photos pour eventId:",
+            eventId,
+            "URLs:",
+            photoUrls
+          );
+
+          const response = await fetch(`${API_BASE}/events/${eventId}/photos`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({ photoUrls: photoUrls }),
+          });
+
+          if (response.ok) {
+            console.log("Photos mises à jour avec succès");
+            // Recharger les événements pour afficher les photos
+            loadEvents();
+          } else {
+            const errorData = await response.json();
+            console.error(
+              "Erreur lors de la mise à jour des photos:",
+              errorData
+            );
+          }
+        } catch (error) {
+          console.error("Erreur mise à jour photos:", error);
+        }
+      }
+
+      // Noter un événement
+      function rateEvent(eventId) {
+        if (!currentUser || !authToken) {
+          showNotification(
+            "error",
+            "Connexion requise",
+            "Vous devez être connecté pour noter un événement"
+          );
+          return;
+        }
+
+        openRatingModal(eventId);
+      }
+
+      // Fonctions pour le modal de notation
+      function openRatingModal(eventId) {
+        document.getElementById("rating-event-id").value = eventId;
+        document.getElementById("rating-modal").classList.remove("hidden");
+
+        // Initialiser le nouveau système de notation intelligent
+        resetRatingForm();
+      }
+
+      function closeRatingModal() {
+        document.getElementById("rating-modal").classList.add("hidden");
+        document.getElementById("detailed-rating-form").reset();
+        resetRatingForm();
+      }
+
+      // Fonctions pour le nouveau système de notation intelligent
+
+      // Variables globales pour les critères
+      let selectedTags = [];
+      let activeCriteria = {};
+
+      // Presets de critères par type d'événement
+      const criteriaPresets = {
+        concert: [
+          { id: "sound-quality", name: "Qualité sonore", icon: "🎵" },
+          { id: "ambiance", name: "Ambiance", icon: "🎭" },
+          { id: "organisation", name: "Organisation", icon: "📋" },
+          { id: "visibility", name: "Visibilité scène", icon: "👀" },
+          { id: "comfort", name: "Confort", icon: "🪑" },
+          { id: "security", name: "Sécurité", icon: "🛡️" },
+        ],
+        conference: [
+          { id: "content-quality", name: "Qualité contenu", icon: "📚" },
+          { id: "speaker-quality", name: "Qualité orateur", icon: "🎤" },
+          { id: "organisation", name: "Organisation", icon: "📋" },
+          { id: "comfort", name: "Confort siège", icon: "🪑" },
+          { id: "accessibility", name: "Accessibilité", icon: "♿" },
+          { id: "networking", name: "Opportunités réseau", icon: "🤝" },
+        ],
+        festival: [
+          { id: "ambiance", name: "Ambiance générale", icon: "🎪" },
+          { id: "variety", name: "Variété activités", icon: "🎨" },
+          { id: "food-quality", name: "Qualité restauration", icon: "🍔" },
+          { id: "organisation", name: "Organisation", icon: "📋" },
+          { id: "cleanliness", name: "Propreté", icon: "🧹" },
+          { id: "value", name: "Rapport qualité/prix", icon: "💰" },
+        ],
+        sport: [
+          { id: "game-quality", name: "Qualité du match", icon: "⚽" },
+          { id: "ambiance", name: "Ambiance stade", icon: "📢" },
+          { id: "visibility", name: "Visibilité terrain", icon: "👀" },
+          { id: "facilities", name: "Installations", icon: "🏟️" },
+          { id: "security", name: "Sécurité", icon: "🛡️" },
+          { id: "accessibility", name: "Accessibilité", icon: "♿" },
+        ],
+        expo: [
+          { id: "content-quality", name: "Qualité exposition", icon: "🎨" },
+          { id: "organisation", name: "Organisation", icon: "📋" },
+          { id: "accessibility", name: "Accessibilité", icon: "♿" },
+          { id: "comfort", name: "Confort visite", icon: "🚶‍♂️" },
+          { id: "value", name: "Rapport qualité/prix", icon: "💰" },
+          { id: "learning", name: "Aspect éducatif", icon: "📖" },
+        ],
+        custom: [
+          { id: "ambiance", name: "Ambiance", icon: "🎭" },
+          { id: "organisation", name: "Organisation", icon: "📋" },
+          { id: "quality", name: "Qualité générale", icon: "⭐" },
+          { id: "value", name: "Rapport qualité/prix", icon: "💰" },
+          { id: "comfort", name: "Confort", icon: "🪑" },
+          { id: "accessibility", name: "Accessibilité", icon: "♿" },
+          { id: "security", name: "Sécurité", icon: "🛡️" },
+          { id: "cleanliness", name: "Propreté", icon: "🧹" },
+        ],
+      };
+
+      // Réinitialiser le formulaire
+      function resetRatingForm() {
+        selectedTags = [];
+        activeCriteria = {};
+        window.editingRatingId = null; // Reset du mode édition
+
+        // Masquer les champs d'édition en mode création
+        const eventTitleSection = document.getElementById(
+          "event-title-section"
+        );
+        const eventPhotosSection = document.getElementById(
+          "event-photos-section"
+        );
+        if (eventTitleSection) {
+          eventTitleSection.style.display = "none";
+        }
+        if (eventPhotosSection) {
+          eventPhotosSection.style.display = "none";
+        }
+
+        document.getElementById("selected-tags").value = "";
+        document.getElementById("detailed-criteria").classList.add("hidden");
+        document.getElementById("toggle-detailed").textContent =
+          "Afficher les critères détaillés";
+
+        // Reset du titre et bouton du modal
+        const modalTitle = document.querySelector("#rating-modal h2");
+        if (modalTitle) {
+          modalTitle.textContent = "⭐ Noter cet événement";
+        }
+
+        const submitBtn = document.querySelector(
+          '#rating-modal button[type="submit"]'
+        );
+        if (submitBtn) {
+          submitBtn.textContent = "Soumettre la notation";
+        }
+
+        updateTagButtons();
+        updateRatingValue("overall-rating");
+        updateCrowdLevel();
+      }
+
+      // Gérer la sélection des heures
+      function toggleDepartureTime() {
+        const stillPresent = document.getElementById("still-present");
+        const departureTime = document.getElementById("departure-time");
+
+        if (stillPresent.checked) {
+          departureTime.disabled = true;
+          departureTime.value = "";
+        } else {
+          departureTime.disabled = false;
+        }
+      }
+
+      // Gérer les boutons de période
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".time-period-btn").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            document
+              .querySelectorAll(".time-period-btn")
+              .forEach((b) =>
+                b.classList.remove("bg-blue-100", "border-blue-300")
+              );
+            this.classList.add("bg-blue-100", "border-blue-300");
+
+            // Auto-remplir les heures selon la période
+            const period = this.dataset.period;
+            fillTimeFromPeriod(period);
+          });
+        });
+      });
+
+      function fillTimeFromPeriod(period) {
+        const arrivalInput = document.getElementById("arrival-time");
+        const departureInput = document.getElementById("departure-time");
+        const stillPresentCheck = document.getElementById("still-present");
+
+        // Réinitialiser
+        stillPresentCheck.checked = false;
+        departureInput.disabled = false;
+
+        switch (period) {
+          case "debut":
+            arrivalInput.value = "14:00";
+            departureInput.value = "16:00";
+            break;
+          case "milieu":
+            arrivalInput.value = "18:00";
+            departureInput.value = "20:00";
+            break;
+          case "fin":
+            arrivalInput.value = "21:00";
+            departureInput.value = "23:00";
+            break;
+          case "complet":
+            arrivalInput.value = "14:00";
+            stillPresentCheck.checked = true;
+            departureInput.disabled = true;
+            departureInput.value = "";
+            break;
+        }
+      }
+
+      // Mettre à jour la valeur de notation
+      function updateRatingValue(sliderId) {
+        const slider = document.getElementById(sliderId);
+        const valueDisplay = document.getElementById(sliderId + "-value");
+        valueDisplay.textContent = parseFloat(slider.value).toFixed(1);
+      }
+
+      // Mettre à jour le niveau de foule
+      function updateCrowdLevel() {
+        const slider = document.getElementById("crowd-level");
+        const textDisplay = document.getElementById("crowd-level-text");
+        const value = parseInt(slider.value);
+
+        const levels = [
+          "Très vide",
+          "Peu de monde",
+          "Modéré",
+          "Bondé",
+          "Très bondé",
+        ];
+        textDisplay.textContent = levels[value - 1];
+      }
+
+      // Gérer les tags rapides
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".tag-btn").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const tag = this.dataset.tag;
+            if (selectedTags.includes(tag)) {
+              selectedTags = selectedTags.filter((t) => t !== tag);
+            } else {
+              selectedTags.push(tag);
+            }
+            document.getElementById("selected-tags").value =
+              selectedTags.join(",");
+            updateTagButtons();
+          });
+        });
+      });
+
+      function updateTagButtons() {
+        document.querySelectorAll(".tag-btn").forEach((btn) => {
+          const tag = btn.dataset.tag;
+          if (selectedTags.includes(tag)) {
+            btn.classList.add(
+              "bg-blue-100",
+              "border-blue-300",
+              "text-blue-800"
+            );
+          } else {
+            btn.classList.remove(
+              "bg-blue-100",
+              "border-blue-300",
+              "text-blue-800"
+            );
+          }
+        });
+      }
+
+      // Basculer l'affichage des critères détaillés
+      function toggleDetailedCriteria() {
+        const detailedSection = document.getElementById("detailed-criteria");
+        const toggleBtn = document.getElementById("toggle-detailed");
+
+        if (detailedSection.classList.contains("hidden")) {
+          detailedSection.classList.remove("hidden");
+          toggleBtn.textContent = "Masquer les critères détaillés";
+          initializeAllCriteria(); // Initialise tous les critères disponibles
+        } else {
+          detailedSection.classList.add("hidden");
+          toggleBtn.textContent = "Afficher les critères détaillés";
+        }
+      }
+
+      // Initialiser tous les critères disponibles
+      function initializeAllCriteria() {
+        const container = document.getElementById("all-criteria-container");
+        if (container.children.length > 0) return; // Déjà initialisé
+
+        const allCriteria = [
+          { id: "sound-quality", name: "🎵 Qualité sonore" },
+          { id: "ambiance", name: "🎭 Ambiance" },
+          { id: "organisation", name: "📋 Organisation" },
+          { id: "security", name: "🛡️ Sécurité" },
+          { id: "visibility", name: "👀 Visibilité" },
+          { id: "comfort", name: "🪑 Confort" },
+          { id: "accessibility", name: "♿ Accessibilité" },
+          { id: "content-quality", name: "📚 Qualité contenu" },
+          { id: "speaker-quality", name: "🎤 Orateur" },
+          { id: "learning", name: "📖 Éducatif" },
+          { id: "food-quality", name: "🍔 Restauration" },
+          { id: "cleanliness", name: "🧹 Propreté" },
+          { id: "value", name: "💰 Rapport Q/P" },
+          { id: "game-quality", name: "⚽ Qualité match" },
+          { id: "facilities", name: "🏟️ Installations" },
+          { id: "networking", name: "🤝 Réseau" },
+          { id: "variety", name: "🎨 Variété" },
+        ];
+
+        allCriteria.forEach((criterion) => {
+          const criterionHtml = `
+            <div class="criterion-item" data-criterion="${criterion.id}">
+              <label class="flex items-center space-x-2 cursor-pointer p-2 rounded border hover:bg-gray-50">
+                <input type="checkbox" class="criterion-checkbox" onchange="toggleCriterionRating('${criterion.id}')">
+                <span class="text-sm font-medium">${criterion.name}</span>
+              </label>
+              <div class="criterion-rating hidden mt-2 pl-6">
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs text-gray-500">1</span>
+                  <input type="range" id="${criterion.id}" min="1" max="5" value="3" class="flex-1 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateCriterionValue('${criterion.id}')">
+                  <span class="text-xs text-gray-500">5</span>
+                  <span id="${criterion.id}-value" class="text-sm font-bold text-blue-600 min-w-[2rem]">3</span>
+                </div>
+              </div>
+            </div>
+          `;
+          container.innerHTML += criterionHtml;
+        });
+      }
+
+      // Toggle un critère spécifique
+      function toggleCriterionRating(criterionId) {
+        const checkbox = document.querySelector(
+          `[data-criterion="${criterionId}"] .criterion-checkbox`
+        );
+        const ratingDiv = document.querySelector(
+          `[data-criterion="${criterionId}"] .criterion-rating`
+        );
+
+        if (checkbox.checked) {
+          ratingDiv.classList.remove("hidden");
+          activeCriteria[criterionId] = parseInt(
+            document.getElementById(criterionId).value
+          );
+        } else {
+          ratingDiv.classList.add("hidden");
+          delete activeCriteria[criterionId];
+        }
+      }
+
+      // Mettre à jour la valeur d'un critère et l'objet activeCriteria
+      function updateCriterionValue(criterionId) {
+        const slider = document.getElementById(criterionId);
+        const valueSpan = document.getElementById(`${criterionId}-value`);
+        const checkbox = document.querySelector(
+          `[data-criterion="${criterionId}"] .criterion-checkbox`
+        );
+
+        if (slider && valueSpan) {
+          valueSpan.textContent = slider.value;
+
+          // Mettre à jour activeCriteria si le critère est coché
+          if (checkbox && checkbox.checked) {
+            activeCriteria[criterionId] = parseInt(slider.value);
+          }
+        }
+      }
+
+      // Prévisualiser une photo en mode édition
+      function previewEditPhoto(input, index) {
+        const preview = document.getElementById(`edit-photo-preview-${index}`);
+        if (input.value) {
+          preview.innerHTML = `
+            <img src="${input.value}"
+                 class="w-full h-24 object-cover rounded-md border"
+                 onerror="this.style.display='none'"
+                 alt="Aperçu photo ${index}">
+          `;
+        } else {
+          preview.innerHTML = "";
+        }
+      }
+
+      // Charger les photos actuelles de l'événement
+      async function loadCurrentEventPhotos(eventId) {
+        try {
+          console.log("Chargement photos pour event ID:", eventId);
+          const response = await fetch(`${API_BASE}/events/${eventId}`, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          console.log("Response status:", response.status);
+
+          if (response.ok) {
+            const event = await response.json();
+            console.log("Event data received:", event);
+
+            // Les photos peuvent être dans event.photos ou event.data.photos
+            const photos = event.photos || event.data?.photos || [];
+            console.log("Photos found:", photos);
+
+            // Pré-remplir les champs photo
+            for (let i = 1; i <= 3; i++) {
+              const input = document.getElementById(`edit-photo-url-${i}`);
+              const preview = document.getElementById(
+                `edit-photo-preview-${i}`
+              );
+
+              if (photos[i - 1]) {
+                console.log(`Setting photo ${i}:`, photos[i - 1]);
+                input.value = photos[i - 1];
+                previewEditPhoto(input, i);
+              } else {
+                input.value = "";
+                preview.innerHTML = "";
+              }
+            }
+          } else {
+            console.error(
+              "Erreur response:",
+              response.status,
+              response.statusText
+            );
+          }
+        } catch (error) {
+          console.error("Erreur chargement photos:", error);
+        }
+      }
+
+      async function submitDetailedRating(event) {
+        event.preventDefault();
+
+        const eventId = document.getElementById("rating-event-id").value;
+
+        // Nouveau système de données structurées
+        const ratingData = {
+          eventId: parseInt(eventId),
+
+          // Note principale
+          overallRating: parseFloat(
+            document.getElementById("overall-rating").value
+          ),
+
+          // Timing de présence
+          presenceTiming: {
+            arrivalTime: document.getElementById("arrival-time").value,
+            departureTime: document.getElementById("still-present").checked
+              ? null
+              : document.getElementById("departure-time").value,
+            stillPresent: document.getElementById("still-present").checked,
+          },
+
+          // Tags rapides sélectionnés
+          quickTags: selectedTags,
+
+          // Critères détaillés (seulement ceux qui ont été notés)
+          detailedCriteria: activeCriteria,
+
+          // Contexte
+          contextInfo: {
+            crowdLevel: parseInt(document.getElementById("crowd-level").value),
+            weatherConditions:
+              document.getElementById("weather-conditions").value,
+          },
+
+          // Commentaire
+          comment: document.getElementById("rating-comment").value,
+
+          // Métadonnées pour l'analyse
+          ratingMetadata: {
+            hasDetailedCriteria: Object.keys(activeCriteria).length > 0,
+            criteriaCount: Object.keys(activeCriteria).length,
+            hasQuickTags: selectedTags.length > 0,
+            tagsCount: selectedTags.length,
+            submissionTimestamp: new Date().toISOString(),
+          },
+        };
+
+        try {
+          let response, data;
+
+          // Mode édition ou création ?
+          if (window.editingRatingId) {
+            // Mode édition : PUT request
+            response = await fetch(
+              `${API_BASE}/ratings/${window.editingRatingId}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${authToken}`,
+                },
+                body: JSON.stringify(ratingData),
+              }
+            );
+          } else {
+            // Mode création : POST request
+            response = await fetch(`${API_BASE}/ratings/detailed`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: JSON.stringify(ratingData),
+            });
+          }
+
+          data = await response.json();
+
+          if (response.ok) {
+            const isEditing = !!window.editingRatingId;
+            showNotification(
+              "success",
+              isEditing ? "Avis modifié !" : "Notation enregistrée !",
+              isEditing
+                ? "Votre avis a été modifié avec succès."
+                : "Votre avis détaillé a été enregistré avec succès."
+            );
+
+            // Nettoyer le mode édition
+            window.editingRatingId = null;
+
+            closeRatingModal();
+            loadEvents(); // Recharger les événements pour mettre à jour les notes
+
+            // Si le modal "Mes avis" est ouvert, le recharger aussi
+            if (
+              !document
+                .getElementById("my-ratings-modal")
+                .classList.contains("hidden")
+            ) {
+              await loadMyRatings();
+            }
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              data.error || "Erreur lors de l'enregistrement de la notation"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
+      // Gestion de la case "Événement gratuit"
+      document
+        .getElementById("event-free")
+        .addEventListener("change", function () {
+          const priceInput = document.getElementById("event-price");
+          if (this.checked) {
+            priceInput.value = "0";
+            priceInput.disabled = true;
+          } else {
+            priceInput.disabled = false;
+          }
+        });
+
+      // Initialisation
+      document.addEventListener("DOMContentLoaded", function () {
+        // Pré-remplir le formulaire de connexion si identifiants sauvegardés
+        fillLoginForm();
+
+        // Démarrer le timer d'inactivité si déjà connecté
+        if (authToken) {
+          resetInactivityTimer();
+        }
+
+        // Vérifier si un token existe déjà
+        if (authToken) {
+          console.log("Token trouvé:", authToken);
+
+          // Décoder le token pour récupérer les informations utilisateur
+          try {
+            const tokenPayload = JSON.parse(atob(authToken.split(".")[1]));
+            currentUser = {
+              id: tokenPayload.userId,
+              username: tokenPayload.username,
+            };
+
+            console.log("Utilisateur récupéré du token:", currentUser);
+          } catch (error) {
+            console.error("Erreur décodage token:", error);
+            // Token invalide, le supprimer
+            localStorage.removeItem("authToken");
+            authToken = null;
+          }
+        }
+
+        updateNavigation();
+        loadEvents();
+      });
+    </script>
+  </body>
+</html>

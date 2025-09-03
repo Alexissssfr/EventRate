@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+
+# Logs
+logs/
+*.log
+
+# Cache
+.next/
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build outputs
+dist/
+build/
+
+# Server files not needed in production
+server/
+start-servers.sh
+setup-database.sh
+install.sh
+
+# Demo files not needed
+demo.html
+demo-interactive.html
+rating-modal.html
+test-simple.html

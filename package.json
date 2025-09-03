@@ -1,0 +1,20 @@
+{
+  "name": "eventrate-app",
+  "version": "1.0.0",
+  "description": "Application de notation d'événements",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build needed'",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "pg": "^8.11.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5"
+  },
+  "keywords": ["events", "rating", "community"],
+  "author": "Robert",
+  "license": "MIT"
+}

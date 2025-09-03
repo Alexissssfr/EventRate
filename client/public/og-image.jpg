@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#1e40af"/>
+  <rect x="100" y="100" width="1000" height="430" rx="20" fill="#2563eb"/>
+  <text x="600" y="280" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="120" font-weight="bold">EventRate</text>
+  <text x="600" y="380" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="40">Plateforme d'événements avec notation</text>
+</svg>
