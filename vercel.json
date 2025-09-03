@@ -9,9 +9,5 @@
       "source": "/api/auth/(.*)",
       "destination": "/api/auth?path=$1"
     }
-  ],
-  "env": {
-    "SUPABASE_DB_URL": "@supabase_db_url",
-    "JWT_SECRET": "@jwt_secret"
-  }
+  ]
 }
