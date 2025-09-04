@@ -2493,6 +2493,15 @@
       }
 
       // Fonctions utilitaires pour le formatage
+      function isValidUrl(string) {
+        try {
+          new URL(string);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+
       function formatEventDateRange(event) {
         if (!event.date_start) return "Date non définie";
 
@@ -3491,7 +3500,7 @@
           const data = await response.json();
 
           if (response.ok) {
-            displayMyRatings(data.ratings);
+            displayMyRatings(data);
           } else {
             showNotification(
               "error",
