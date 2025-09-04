@@ -39,7 +39,7 @@ module.exports = async function handler(req, res) {
 
     // Récupérer les avis de l'utilisateur avec les informations des événements
     const result = await db.query(`
-      SELECT r.id, r.overall_rating as rating, r.comment, r.created_at, r.updated_at,
+      SELECT r.id, r.overall_rating, r.comment, r.created_at, r.updated_at,
              e.id as event_id, e.title as event_title, 
              e.date_start as event_date, e.location_city
       FROM ratings r

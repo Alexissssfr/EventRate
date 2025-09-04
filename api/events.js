@@ -23,13 +23,19 @@ module.exports = async function handler(req, res) {
     if (req.method === "GET") {
       // Récupérer tous les événements
       const result = await pool.query(`
-        SELECT id, title, description, category,
-               date_start, date_end, location_address, location_city,
-               capacity, price_amount, price_is_free, 
-               photos, creator_id, created_at, updated_at,
-               0 as current_attendees, 0 as rating_average, 0 as rating_count
-        FROM events 
-        ORDER BY date_start ASC
+        SELECT e.id, e.title, e.description, e.category,
+               e.date_start, e.date_end, e.location_address, e.location_city,
+               e.capacity, e.price_amount, e.price_is_free, 
+               e.photos, e.creator_id, e.created_at, e.updated_at,
+               0 as current_attendees,
+               COALESCE(AVG(r.overall_rating), 0) as rating_average,
+               COUNT(r.id) as rating_count
+        FROM events e
+        LEFT JOIN ratings r ON e.id = r.event_id AND r.status = 'active'
+        GROUP BY e.id, e.title, e.description, e.category, e.date_start, e.date_end, 
+                 e.location_address, e.location_city, e.capacity, e.price_amount, 
+                 e.price_is_free, e.photos, e.creator_id, e.created_at, e.updated_at
+        ORDER BY e.date_start ASC
       `);
 
       return res.status(200).json(result.rows);

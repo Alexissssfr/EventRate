@@ -56,7 +56,7 @@ module.exports = async function handler(req, res) {
         WHERE id = $9
         RETURNING *
       `,
-        [title, description, category, date_start, date_end, location_address, location_city, JSON.stringify(photos || []), id]
+        [title, description, category, date_start, date_end, location_address, location_city, photos || [], id]
       );
 
       if (result.rows.length === 0) {

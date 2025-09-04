@@ -2785,7 +2785,7 @@
                          ).join("")}
                    </div>
                        <span class="text-xl font-bold text-gray-900">${
-                         rating.overall_rating
+                         rating.overall_rating || 0
                        }/5</span>
                    </div>
                      <p class="text-sm text-gray-500">${formatRatingDate(
@@ -3555,7 +3555,7 @@
                         ).join("")}
                       </div>
                       <span class="text-lg font-bold text-gray-900">${
-                        rating.overall_rating
+                        rating.overall_rating || 0
                       }/5</span>
                     </div>
                   </div>
@@ -3662,8 +3662,7 @@
           });
 
           if (response.ok) {
-            const data = await response.json();
-            const rating = data.rating;
+            const rating = await response.json();
 
             // Pré-remplir le modal de notation avec les données existantes
             await prepareEditRatingModal(rating);
