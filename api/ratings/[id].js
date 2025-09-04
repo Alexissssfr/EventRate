@@ -64,8 +64,10 @@ module.exports = async function handler(req, res) {
       res.status(500).json({ error: "Erreur serveur" });
     }
   } else if (req.method === "PUT") {
-    // Modifier un avis
+    // Modifier un avis - NOUVELLE LOGIQUE COMPLÈTE
     try {
+      console.log("🔄 Mise à jour avis avec PUT");
+      
       // Vérifier le token JWT
       const authHeader = req.headers.authorization;
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -76,6 +78,7 @@ module.exports = async function handler(req, res) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       const {
+        eventId,
         overallRating,
         presenceTiming,
         quickTags,
@@ -85,8 +88,19 @@ module.exports = async function handler(req, res) {
         ratingMetadata,
       } = req.body;
 
+      console.log("📊 Données reçues pour mise à jour:", {
+        eventId,
+        overallRating,
+        presenceTiming,
+        quickTags,
+        detailedCriteria,
+        contextInfo,
+        comment,
+        ratingMetadata,
+      });
+
       // Vérifier que l'avis appartient à l'utilisateur
-      const checkQuery = "SELECT user_id FROM ratings WHERE id = $1";
+      const checkQuery = "SELECT user_id, event_id FROM ratings WHERE id = $1";
       const checkResult = await db.query(checkQuery, [id]);
 
       if (checkResult.rows.length === 0) {
@@ -97,7 +111,18 @@ module.exports = async function handler(req, res) {
         return res.status(403).json({ error: "Accès non autorisé" });
       }
 
-      // Mettre à jour l'avis
+      // Préparer les données de timing
+      const arrivalTime = presenceTiming?.arrivalTime || null;
+      const departureTime = presenceTiming?.stillPresent
+        ? null
+        : presenceTiming?.departureTime || null;
+      const stillPresent = presenceTiming?.stillPresent || false;
+
+      // Préparer les données contextuelles
+      const crowdLevel = contextInfo?.crowdLevel || null;
+      const weatherConditions = contextInfo?.weatherConditions || null;
+
+      // Mettre à jour l'avis avec TOUTES les données
       const updateQuery = `
         UPDATE ratings SET
           overall_rating = $1,
@@ -117,13 +142,13 @@ module.exports = async function handler(req, res) {
 
       const values = [
         overallRating,
-        presenceTiming?.arrivalTime || null,
-        presenceTiming?.departureTime || null,
-        presenceTiming?.stillPresent || false,
+        arrivalTime,
+        departureTime,
+        stillPresent,
         JSON.stringify(quickTags || []),
         JSON.stringify(detailedCriteria || {}),
-        contextInfo?.crowdLevel || null,
-        contextInfo?.weatherConditions || null,
+        crowdLevel,
+        weatherConditions,
         comment || null,
         JSON.stringify({
           ...ratingMetadata,
@@ -133,14 +158,17 @@ module.exports = async function handler(req, res) {
         decoded.userId,
       ];
 
+      console.log("🔄 Exécution de la mise à jour...");
       const result = await db.query(updateQuery, values);
+
+      console.log("✅ Avis mis à jour:", result.rows[0]);
 
       res.json({
         message: "Avis modifié avec succès",
         rating: result.rows[0],
       });
     } catch (error) {
-      console.error("Erreur modification avis:", error);
+      console.error("❌ Erreur modification avis:", error);
       if (error.name === "JsonWebTokenError") {
         return res.status(401).json({ error: "Token invalide" });
       }
@@ -183,6 +211,7 @@ module.exports = async function handler(req, res) {
       res.status(500).json({ error: "Erreur serveur" });
     }
   } else {
+    console.log("❌ Méthode non autorisée:", req.method);
     res.status(405).json({ error: "Méthode non autorisée" });
   }
 };
