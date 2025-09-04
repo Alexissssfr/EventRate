@@ -2733,7 +2733,7 @@
           const data = await response.json();
 
           if (response.ok) {
-            displayEventRatings(data.ratings);
+            displayEventRatings(data);
             document.getElementById("ratings-modal").classList.remove("hidden");
           } else {
             showNotification(
