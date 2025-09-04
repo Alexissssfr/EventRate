@@ -19,6 +19,10 @@ module.exports = async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // Debug: vérifier les variables d'environnement
+  console.log("DATABASE_URL exists:", !!process.env.DATABASE_URL);
+  console.log("SUPABASE_DB_URL exists:", !!process.env.SUPABASE_DB_URL);
+  
   try {
     if (req.method === "GET") {
       // Récupérer tous les événements
