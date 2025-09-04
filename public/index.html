@@ -1877,6 +1877,11 @@
         window.location.hostname === "localhost"
           ? "http://localhost:5001/api"
           : window.location.origin + "/api";
+      
+      // Pour le débogage, utilisons la version simple sur Vercel
+      const EVENTS_ENDPOINT = window.location.hostname === "localhost" 
+        ? API_BASE + "/events"
+        : window.location.origin + "/api/events-simple";
 
       // Fonctions de gestion de l'inactivité
       function resetInactivityTimer() {
@@ -2079,7 +2084,7 @@
       // Charger les événements depuis l'API
       async function loadEvents() {
         try {
-          const response = await fetch(`${API_BASE}/events`);
+          const response = await fetch(EVENTS_ENDPOINT);
           const data = await response.json();
 
           allEvents = data.events || [];
