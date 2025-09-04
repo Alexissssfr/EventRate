@@ -26,8 +26,10 @@ module.exports = async function handler(req, res) {
       // Récupérer un événement spécifique
       const result = await pool.query(
         `
-        SELECT id, title, date, time, location, description, category, 
-               created_at, updated_at 
+        SELECT id, title, description, category,
+               date_start, date_end, location_address, location_city,
+               capacity, price_amount, price_is_free, 
+               photos, creator_id, created_at, updated_at
         FROM events 
         WHERE id = $1
       `,
@@ -43,17 +45,18 @@ module.exports = async function handler(req, res) {
 
     if (req.method === "PUT") {
       // Modifier un événement
-      const { title, date, time, location, description, category } = req.body;
+      const { title, description, category, date_start, date_end, location_address, location_city } = req.body;
 
       const result = await pool.query(
         `
         UPDATE events 
-        SET title = $1, date = $2, time = $3, location = $4, 
-            description = $5, category = $6, updated_at = NOW()
-        WHERE id = $7
+        SET title = $1, description = $2, category = $3, 
+            date_start = $4, date_end = $5, location_address = $6, 
+            location_city = $7, updated_at = NOW()
+        WHERE id = $8
         RETURNING *
       `,
-        [title, date, time, location, description, category, id]
+        [title, description, category, date_start, date_end, location_address, location_city, id]
       );
 
       if (result.rows.length === 0) {
