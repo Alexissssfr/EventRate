@@ -45,8 +45,8 @@ module.exports = async function handler(req, res) {
 
     // Créer l'utilisateur
     const result = await db.query(
-      'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email',
-      [username, email, hashedPassword]
+      'INSERT INTO users (username, email, password_hash, first_name, last_name) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email',
+      [username, email, hashedPassword, '', '']
     );
 
     const user = result.rows[0];

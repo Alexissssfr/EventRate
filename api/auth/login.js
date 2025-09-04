@@ -31,7 +31,7 @@ module.exports = async function handler(req, res) {
 
     // Trouver l'utilisateur
     const result = await db.query(
-      'SELECT id, username, email, password FROM users WHERE email = $1',
+      'SELECT id, username, email, password_hash FROM users WHERE email = $1',
       [email]
     );
 
@@ -42,7 +42,7 @@ module.exports = async function handler(req, res) {
     const user = result.rows[0];
 
     // Vérifier le mot de passe
-    const isValidPassword = await bcrypt.compare(password, user.password);
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
     
     if (!isValidPassword) {
       return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
