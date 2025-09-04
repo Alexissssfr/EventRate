@@ -2085,28 +2085,9 @@
           const response = await fetch(EVENTS_ENDPOINT);
           const data = await response.json();
 
-          allEvents = data.events || [];
+          allEvents = data;
 
-          // Adapter le format des événements pour l'interface
-          allEvents = allEvents.map((event) => ({
-            id: event._id,
-            title: event.title,
-            description: event.description,
-            category: event.category,
-            location_city: event.location.city,
-            location_address: event.location.address,
-            date_start: event.date.start,
-            date_end: event.date.end,
-            capacity: event.capacity,
-            current_attendees: event.currentAttendees,
-            price_amount: event.price.amount,
-            price_is_free: event.price.isFree,
-            rating_average: event.rating.average,
-            rating_count: event.rating.count,
-            photos: event.photos || [], // Ajouter les photos
-            creator_username: event.creator.username,
-            created_at: event.createdAt,
-          }));
+          // Les événements sont déjà dans le bon format depuis l'API
           filteredEvents = [...allEvents];
           populateFilterOptions();
           applyFilters();
