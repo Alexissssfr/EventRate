@@ -8,6 +8,14 @@ const db = new Pool({
 });
 
 module.exports = async function handler(req, res) {
+  // LOGGING POUR DEBUG
+  console.log("🔍 API RATINGS [ID] APPELÉE:");
+  console.log("📝 Méthode:", req.method);
+  console.log("🌐 URL:", req.url);
+  console.log("🆔 ID:", req.query.id);
+  console.log("📋 Headers:", req.headers);
+  console.log("📦 Body:", req.body);
+
   // Configuration CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -17,6 +25,7 @@ module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method === "OPTIONS") {
+    console.log("✅ OPTIONS request - CORS OK");
     return res.status(200).end();
   }
 

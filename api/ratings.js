@@ -8,6 +8,13 @@ const db = new Pool({
 });
 
 module.exports = async function handler(req, res) {
+  // LOGGING POUR DEBUG
+  console.log("🔍 API RATINGS APPELÉE:");
+  console.log("📝 Méthode:", req.method);
+  console.log("🌐 URL:", req.url);
+  console.log("📋 Headers:", req.headers);
+  console.log("📦 Body:", req.body);
+
   // Configuration CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -17,12 +24,16 @@ module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method === "OPTIONS") {
+    console.log("✅ OPTIONS request - CORS OK");
     return res.status(200).end();
   }
 
   if (!["POST", "PUT", "PATCH"].includes(req.method)) {
+    console.log("❌ Méthode non autorisée:", req.method);
     return res.status(405).json({ error: "Méthode non autorisée" });
   }
+
+  console.log("✅ Méthode autorisée:", req.method);
 
   try {
     // Vérifier le token JWT
