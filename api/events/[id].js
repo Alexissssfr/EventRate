@@ -46,13 +46,16 @@ module.exports = async function handler(req, res) {
     if (req.method === "PUT") {
       // Modifier un événement
       const { title, description, category, date_start, date_end, location_address, location_city, photos } = req.body;
+      
+      // Debug temporaire
+      console.log('Photos reçues:', photos);
 
       const result = await pool.query(
         `
         UPDATE events 
         SET title = $1, description = $2, category = $3, 
             date_start = $4, date_end = $5, location_address = $6, 
-            location_city = $7, photos = $8, updated_at = NOW()
+            location_city = $7, photos = $8, images = $8, updated_at = NOW()
         WHERE id = $9
         RETURNING *
       `,

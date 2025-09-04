@@ -26,7 +26,7 @@ module.exports = async function handler(req, res) {
         SELECT e.id, e.title, e.description, e.category,
                e.date_start, e.date_end, e.location_address, e.location_city,
                e.capacity, e.price_amount, e.price_is_free, 
-               e.photos, e.creator_id, e.created_at, e.updated_at,
+               COALESCE(e.photos, e.images, '{}') as photos, e.creator_id, e.created_at, e.updated_at,
                0 as current_attendees,
                COALESCE(AVG(r.overall_rating), 0) as rating_average,
                COUNT(r.id) as rating_count
@@ -58,7 +58,7 @@ module.exports = async function handler(req, res) {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *
       `,
-        [title, date, date, location, '', description, category, 1]
+        [title, date, date, location, "", description, category, 1]
       );
 
       return res.status(201).json(result.rows[0]);
