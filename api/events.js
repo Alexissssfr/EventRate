@@ -23,10 +23,13 @@ module.exports = async function handler(req, res) {
     if (req.method === "GET") {
       // Récupérer tous les événements
       const result = await pool.query(`
-        SELECT id, title, date, time, location, description, category, 
-               created_at, updated_at 
+        SELECT id, title, description, category,
+               date_start, date_end, location_address, location_city,
+               capacity, price_amount, price_is_free, 
+               photos, creator_id, created_at, updated_at,
+               0 as current_attendees, 0 as rating_average, 0 as rating_count
         FROM events 
-        ORDER BY date ASC, time ASC
+        ORDER BY date_start ASC
       `);
 
       return res.status(200).json(result.rows);
@@ -45,11 +48,11 @@ module.exports = async function handler(req, res) {
 
       const result = await pool.query(
         `
-        INSERT INTO events (title, date, time, location, description, category)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO events (title, date_start, date_end, location_address, location_city, description, category, creator_id)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *
       `,
-        [title, date, time, location, description, category]
+        [title, date, date, location, '', description, category, 1]
       );
 
       return res.status(201).json(result.rows[0]);
