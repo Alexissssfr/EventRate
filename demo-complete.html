@@ -2816,12 +2816,7 @@
                          rating.overall_rating
                        }/5</span>
                      </div>
-                     <p class="text-sm text-gray-500 break-words">${formatRatingDate(
-                       rating.created_at
-                     )}</p>
-                   </div>
-                   <div class="flex flex-col sm:items-end gap-2">
-                     ${formatPresenceTiming(rating)}
+                     ${formatRatingDate(rating.created_at, rating)}
                    </div>
                  </div>
                  
@@ -2895,7 +2890,7 @@
 
       // Fonctions utilitaires pour l'affichage des avis intelligents
 
-      function formatRatingDate(dateString) {
+      function formatRatingDate(dateString, rating = null) {
         const date = new Date(dateString);
         const now = new Date();
         const diffTime = Math.abs(now - date);
@@ -2922,9 +2917,44 @@
           relativeTime = "Il y a plus d'un mois";
         }
 
+        // Ajouter l'horaire si disponible
+        let timingText = "";
+        if (rating && (rating.arrival_time || rating.departure_time)) {
+          if (rating.arrival_time && rating.departure_time) {
+            // Calculer la durée
+            const arrival = new Date(`2000-01-01T${rating.arrival_time}`);
+            const departure = new Date(`2000-01-01T${rating.departure_time}`);
+            const diffMs = departure - arrival;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            
+            let durationText = "";
+            if (diffHours > 0) {
+              durationText = ` (${diffHours}h${diffMinutes > 0 ? diffMinutes : ''})`;
+            } else {
+              durationText = ` (${diffMinutes}min)`;
+            }
+            
+            timingText = ` • ${rating.arrival_time} → ${rating.departure_time}${durationText}`;
+          } else if (rating.arrival_time && rating.still_present) {
+            // En cours : seulement si c'est aujourd'hui
+            const ratingDate = new Date(rating.created_at);
+            const today = new Date();
+            const isToday = ratingDate.toDateString() === today.toDateString();
+            
+            if (isToday) {
+              timingText = ` • Depuis ${rating.arrival_time}`;
+            } else {
+              timingText = ` • Arrivé à ${rating.arrival_time}`;
+            }
+          } else if (rating.arrival_time) {
+            timingText = ` • Arrivé à ${rating.arrival_time}`;
+          }
+        }
+
         return `
           <div class="text-sm text-gray-500">
-            <div class="font-medium text-gray-700">${preciseDate}</div>
+            <div class="font-medium text-gray-700">${preciseDate}${timingText}</div>
             <div class="text-xs text-gray-400">${relativeTime}</div>
           </div>
         `;
@@ -3672,9 +3702,7 @@
                     <h3 class="text-lg font-semibold text-gray-900 mb-1">${
                       rating.event_title
                     }</h3>
-                    <p class="text-sm text-gray-500">${formatRatingDate(
-                      rating.created_at
-                    )}</p>
+                    ${formatRatingDate(rating.created_at, rating)}
                     <!-- Photo de l'événement -->
                     <div id="event-photo-${rating.id}" class="mt-2"></div>
                     <div class="flex items-center mt-2">
@@ -3687,7 +3715,6 @@
                         rating.overall_rating
                       }/5</span>
                     </div>
-                    ${formatPresenceTiming(rating)}
                   </div>
                   <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:ml-4 mt-4 sm:mt-0">
                     <button
