@@ -1605,7 +1605,10 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeRatingsModal()"
     >
-      <div class="flex items-center justify-center min-h-screen p-4" onclick="event.stopPropagation()">
+      <div
+        class="flex items-center justify-center min-h-screen p-4"
+        onclick="event.stopPropagation()"
+      >
         <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto">
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b">
@@ -1857,7 +1860,10 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeMyEventsModal()"
     >
-      <div class="flex items-center justify-center min-h-screen p-2 sm:p-4" onclick="event.stopPropagation()">
+      <div
+        class="flex items-center justify-center min-h-screen p-2 sm:p-4"
+        onclick="event.stopPropagation()"
+      >
         <div
           class="modal-glass max-w-6xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
         >
@@ -1902,7 +1908,10 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeMyRatingsModal()"
     >
-      <div class="flex items-center justify-center min-h-screen p-2 sm:p-4" onclick="event.stopPropagation()">
+      <div
+        class="flex items-center justify-center min-h-screen p-2 sm:p-4"
+        onclick="event.stopPropagation()"
+      >
         <div
           class="modal-glass max-w-5xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
         >
@@ -2885,11 +2894,11 @@
         }
 
         content.innerHTML = `
-           <div class="space-y-4 sm:space-y-6">
+           <div class="space-y-4">
              ${ratings
                .map(
                  (rating) => `
-               <div class="glass-card p-4 sm:p-6 overflow-hidden">
+               <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                  <!-- En-tête avec note et timing -->
                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-3">
                    <div class="flex-1 min-w-0">
@@ -3184,24 +3193,29 @@
         // Version simplifiée pour les performances
         const tagEmojis = {
           excellent: "😍",
-          bondé: "👥", 
+          bondé: "👥",
           calme: "😌",
           bruyant: "🔊",
           famille: "👨‍👩‍👧‍👦",
           cher: "💸",
           "bon-prix": "💰",
           "mal-organisé": "🤷‍♂️",
-          "bien-organisé": "✅"
+          "bien-organisé": "✅",
         };
 
         return `
           <div class="mb-4">
             <div class="flex flex-wrap gap-2">
-              ${quickTags.map(tag => 
-                `<span class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                  ${tagEmojis[tag] || "🏷️"} ${tag.charAt(0).toUpperCase() + tag.slice(1)}
+              ${quickTags
+                .map(
+                  (tag) =>
+                    `<span class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                  ${tagEmojis[tag] || "🏷️"} ${
+                      tag.charAt(0).toUpperCase() + tag.slice(1)
+                    }
                 </span>`
-              ).join("")}
+                )
+                .join("")}
             </div>
           </div>
         `;
@@ -3211,48 +3225,45 @@
         if (!detailedCriteria || Object.keys(detailedCriteria).length === 0)
           return "";
 
+        // Version ultra-simplifiée pour les performances
         const criteriaLabels = {
-          "sound-quality": { name: "Qualité sonore", icon: "🎵" },
-          ambiance: { name: "Ambiance", icon: "🎭" },
-          organisation: { name: "Organisation", icon: "📋" },
-          visibility: { name: "Visibilité", icon: "👀" },
-          comfort: { name: "Confort", icon: "🪑" },
-          security: { name: "Sécurité", icon: "🛡️" },
-          "content-quality": { name: "Qualité contenu", icon: "📚" },
-          "speaker-quality": { name: "Orateur", icon: "🎤" },
-          accessibility: { name: "Accessibilité", icon: "♿" },
-          networking: { name: "Réseau", icon: "🤝" },
-          variety: { name: "Variété", icon: "🎨" },
-          "food-quality": { name: "Restauration", icon: "🍔" },
-          cleanliness: { name: "Propreté", icon: "🧹" },
-          value: { name: "Rapport Q/P", icon: "💰" },
-          "game-quality": { name: "Qualité match", icon: "⚽" },
-          facilities: { name: "Installations", icon: "🏟️" },
-          learning: { name: "Éducatif", icon: "📖" },
-          quality: { name: "Qualité", icon: "⭐" },
+          "sound-quality": "🎵 Qualité sonore",
+          ambiance: "🎭 Ambiance", 
+          organisation: "📋 Organisation",
+          visibility: "👀 Visibilité",
+          comfort: "🪑 Confort",
+          security: "🛡️ Sécurité",
+          "content-quality": "📚 Qualité contenu",
+          "speaker-quality": "🎤 Orateur",
+          accessibility: "♿ Accessibilité",
+          networking: "🤝 Réseau",
+          variety: "🎨 Variété",
+          "food-quality": "🍔 Restauration",
+          cleanliness: "🧹 Propreté",
+          value: "💰 Rapport Q/P",
+          "game-quality": "⚽ Qualité match",
+          facilities: "🏟️ Installations",
+          learning: "📖 Éducatif",
+          quality: "⭐ Qualité"
         };
 
         return `
           <div class="mb-4">
             <h4 class="text-sm font-medium text-gray-700 mb-2">Critères détaillés :</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <div class="space-y-2">
               ${Object.entries(detailedCriteria)
                 .map(([key, value]) => {
-                  const criteria = criteriaLabels[key] || {
-                    name: key,
-                    icon: "📊",
-                  };
+                  const label = criteriaLabels[key] || `📊 ${key}`;
                   return `
-                  <div class="flex items-center justify-between bg-gray-50 p-2 rounded border">
-                    <span class="text-xs text-gray-600">${criteria.icon} ${criteria.name}</span>
-                    <span class="font-semibold text-sm">${value}/5</span>
-                  </div>
-                `;
+                  <div class="flex justify-between items-center bg-gray-50 p-2 rounded">
+                    <span class="text-xs text-gray-700">${label}</span>
+                    <span class="text-sm font-bold text-gray-900">${value}/5</span>
+                  </div>`;
                 })
                 .join("")}
-               </div>
-           </div>
-         `;
+            </div>
+          </div>
+        `;
       }
 
       function formatContextInfo(rating) {
@@ -3358,7 +3369,10 @@
 
           if (response.ok) {
             const events = await response.json();
-            displayMyEvents(events);
+            // Lazy loading pour améliorer les performances
+            setTimeout(() => {
+              displayMyEvents(events);
+            }, 50);
           } else {
             console.error("Erreur chargement événements:", response.status);
             document.getElementById("my-events-list").innerHTML = `
@@ -3401,11 +3415,11 @@
         }
 
         content.innerHTML = `
-          <div class="space-y-6">
+          <div class="space-y-4">
             ${events
               .map(
                 (event) => `
-              <div class="glass-card p-6">
+              <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                 <div class="flex justify-between items-start mb-4">
                   <div class="flex-1">
                     <div class="flex items-center gap-2 mb-2">
@@ -3818,7 +3832,10 @@
           const data = await response.json();
 
           if (response.ok) {
-            displayMyRatings(data);
+            // Lazy loading pour améliorer les performances
+            setTimeout(() => {
+              displayMyRatings(data);
+            }, 50);
           } else {
             showNotification(
               "error",
@@ -3850,11 +3867,11 @@
         }
 
         content.innerHTML = `
-          <div class="space-y-4 sm:space-y-6">
+          <div class="space-y-4">
             ${ratings
               .map(
                 (rating) => `
-              <div class="glass-card p-4 sm:p-6">
+              <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                 <!-- En-tête avec événement et actions -->
                 <div class="flex justify-between items-start mb-4">
                   <div class="flex-1">
