@@ -41,7 +41,9 @@
             </div>
             <span class="text-xl font-bold text-gray-900">EventRate</span>
           </div>
-          <div class="flex items-center space-x-4">
+          
+          <!-- Navigation desktop -->
+          <div class="hidden md:flex items-center space-x-4">
             <a
               href="#"
               class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium"
@@ -99,6 +101,33 @@
             >
               Se déconnecter
             </button>
+          </div>
+          
+          <!-- Bouton hamburger mobile -->
+          <div class="md:hidden flex items-center">
+            <button
+              type="button"
+              class="text-gray-700 hover:text-primary-600 focus:outline-none focus:text-primary-600"
+              onclick="toggleMobileMenu()"
+            >
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Menu mobile -->
+        <div class="md:hidden hidden" id="mobile-menu">
+          <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
+            <a href="#" class="text-gray-700 hover:text-primary-600 block px-3 py-2 text-base font-medium" onclick="showSection('home'); toggleMobileMenu()">Accueil</a>
+            <a href="#" class="text-gray-700 hover:text-primary-600 block px-3 py-2 text-base font-medium" onclick="showSection('events'); toggleMobileMenu()">Événements</a>
+            <button class="w-full text-left text-gray-700 hover:text-primary-600 block px-3 py-2 text-base font-medium" onclick="handleCreateEvent(); toggleMobileMenu()">Créer un événement</button>
+            <button class="w-full text-left text-gray-700 hover:text-primary-600 block px-3 py-2 text-base font-medium" onclick="showSection('register'); toggleMobileMenu()" id="mobile-register-btn">S'inscrire</button>
+            <button class="w-full text-left text-gray-700 hover:text-primary-600 block px-3 py-2 text-base font-medium" onclick="showSection('login'); toggleMobileMenu()" id="mobile-login-btn">Se connecter</button>
+            <button class="w-full text-left text-gray-700 hover:text-primary-600 block px-3 py-2 text-base font-medium" onclick="openMyRatingsModal(); toggleMobileMenu()" id="mobile-my-ratings-btn" style="display: none">Mes avis</button>
+            <button class="w-full text-left text-gray-700 hover:text-primary-600 block px-3 py-2 text-base font-medium" onclick="openMyEventsModal(); toggleMobileMenu()" id="mobile-my-events-btn" style="display: none">Mes événements</button>
+            <button class="w-full text-left text-gray-700 hover:text-primary-600 block px-3 py-2 text-base font-medium" onclick="logout(); toggleMobileMenu()" id="mobile-logout-btn" style="display: none">Se déconnecter</button>
           </div>
         </div>
       </div>
@@ -1930,6 +1959,12 @@
         }
       }
 
+      // Gestion du menu mobile
+      function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.classList.toggle('hidden');
+      }
+
       // Gestion des sections
       function showSection(sectionId) {
         document.querySelectorAll(".section").forEach((section) => {
@@ -1962,6 +1997,13 @@
         const logoutBtn = document.getElementById("logout-btn");
         const myRatingsBtn = document.getElementById("my-ratings-btn");
         const myEventsBtn = document.getElementById("my-events-btn");
+        
+        // Boutons mobiles
+        const mobileLoginBtn = document.getElementById("mobile-login-btn");
+        const mobileRegisterBtn = document.getElementById("mobile-register-btn");
+        const mobileLogoutBtn = document.getElementById("mobile-logout-btn");
+        const mobileMyRatingsBtn = document.getElementById("mobile-my-ratings-btn");
+        const mobileMyEventsBtn = document.getElementById("mobile-my-events-btn");
         const createEventBtn = document.getElementById("create-event-btn");
 
         if (currentUser && authToken) {
@@ -1974,6 +2016,13 @@
           createEventBtn.textContent = "Créer un événement";
           createEventBtn.className =
             "bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700";
+          
+          // Boutons mobiles
+          mobileLoginBtn.style.display = "none";
+          mobileRegisterBtn.style.display = "none";
+          mobileLogoutBtn.style.display = "block";
+          mobileMyRatingsBtn.style.display = "block";
+          mobileMyEventsBtn.style.display = "block";
         } else {
           // Visiteur : afficher connexion/inscription, masquer déconnexion et mes avis/événements
           loginBtn.style.display = "block";
@@ -1984,6 +2033,13 @@
           createEventBtn.textContent = "Se connecter pour créer";
           createEventBtn.className =
             "bg-gray-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-600 cursor-not-allowed";
+          
+          // Boutons mobiles
+          mobileLoginBtn.style.display = "block";
+          mobileRegisterBtn.style.display = "block";
+          mobileLogoutBtn.style.display = "none";
+          mobileMyRatingsBtn.style.display = "none";
+          mobileMyEventsBtn.style.display = "none";
         }
       }
 
