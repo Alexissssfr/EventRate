@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EventRate - Application Complète</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="modern-styles.css">
     <script>
       tailwind.config = {
         theme: {
@@ -28,65 +32,66 @@
       };
     </script>
   </head>
-  <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
+  <body>
+    <!-- Navigation Moderne -->
+    <nav class="nav-modern">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
             <div
-              class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center mr-3"
+              class="w-10 h-10 rounded-xl flex items-center justify-center mr-3"
+              style="background: var(--primary-gradient);"
             >
               <span class="text-white font-bold text-lg">E</span>
             </div>
-            <span class="text-xl font-bold text-gray-900">EventRate</span>
+            <span class="text-xl font-bold text-white">EventRate</span>
           </div>
           
           <!-- Navigation desktop -->
           <div class="hidden md:flex items-center space-x-4">
             <a
               href="#"
-              class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium"
+              class="text-white hover:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white hover:bg-opacity-10"
               onclick="showSection('home')"
               >Accueil</a
             >
             <a
               href="#"
-              class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium"
+              class="text-white hover:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white hover:bg-opacity-10"
               onclick="showSection('events')"
               >Événements</a
             >
             <button
-              class="bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-700"
+              class="btn-gradient"
               onclick="handleCreateEvent()"
               id="create-event-btn"
             >
-              Créer un événement
+              ✨ Créer un événement
             </button>
             <button
-              class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+              class="btn-gradient"
               onclick="showSection('register')"
               id="register-btn"
             >
-              S'inscrire
+              🚀 S'inscrire
             </button>
             <button
-              class="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700"
+              class="glass-card text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300"
               onclick="showSection('login')"
               id="login-btn"
             >
-              Se connecter
+              🔑 Se connecter
             </button>
             <button
-              class="bg-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-700"
+              class="glass-card text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300"
               onclick="openMyRatingsModal()"
               id="my-ratings-btn"
               style="display: none"
             >
-              📝 Mes avis
+              ⭐ Mes avis
             </button>
             <button
-              class="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700"
+              class="glass-card text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300"
               onclick="openMyEventsModal()"
               id="my-events-btn"
               style="display: none"
@@ -94,12 +99,12 @@
               🎪 Mes événements
             </button>
             <button
-              class="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700"
+              class="glass-card text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300"
               onclick="logout()"
               id="logout-btn"
               style="display: none"
             >
-              Se déconnecter
+              🚪 Se déconnecter
             </button>
           </div>
           
@@ -135,29 +140,27 @@
 
     <!-- Section Accueil -->
     <section id="home" class="section active">
-      <!-- Hero Section -->
-      <div
-        class="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white"
-      >
-        <div class="absolute inset-0 bg-black opacity-20"></div>
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <!-- Hero Section Moderne -->
+      <div class="relative min-h-screen flex items-center justify-center">
+        <div class="absolute inset-0" style="background: var(--primary-gradient);"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
           <div class="text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">
+            <h1 class="text-5xl md:text-7xl font-bold mb-8 text-white animate-slide-up">
               Découvrez et créez des
-              <span class="block text-yellow-400">événements incroyables</span>
+              <span class="block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">événements incroyables</span>
             </h1>
             <p
-              class="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto"
+              class="text-xl md:text-2xl mb-12 text-white text-opacity-90 max-w-3xl mx-auto animate-fade-in"
             >
               La plateforme qui révolutionne la création et la découverte
               d'événements. Notez, partagez et vivez des expériences uniques.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <div class="flex flex-col sm:flex-row gap-6 justify-center animate-slide-up">
               <button
-                class="bg-white text-primary-700 hover:bg-gray-100 px-8 py-3 rounded-md text-lg font-medium inline-flex items-center"
+                class="glass-card text-white px-8 py-4 rounded-2xl text-lg font-semibold inline-flex items-center hover:bg-white hover:bg-opacity-20 transition-all duration-300"
                 onclick="showSection('events')"
               >
-                Découvrir des événements
+                🎯 Découvrir des événements
                 <svg
                   class="ml-2 h-5 w-5"
                   fill="none"
@@ -173,10 +176,10 @@
                 </svg>
               </button>
               <button
-                class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary-700 px-8 py-3 rounded-md text-lg font-medium"
+                class="btn-gradient px-8 py-4 rounded-2xl text-lg font-semibold"
                 onclick="showSection('register')"
               >
-                Commencer gratuitement
+                🚀 Commencer gratuitement
               </button>
             </div>
           </div>
@@ -1528,16 +1531,16 @@
     >
       <div class="flex items-center justify-center min-h-screen p-4">
         <div
-          class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto"
+          class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto"
         >
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b">
-            <h2 class="text-2xl font-bold text-gray-900">
-              Avis des participants
+            <h2 class="text-2xl font-bold text-white">
+              ⭐ Avis des participants
             </h2>
             <button
               onclick="closeRatingsModal()"
-              class="text-gray-400 hover:text-gray-600"
+              class="text-white hover:text-gray-300 transition-colors"
             >
               <svg
                 class="h-6 w-6"
@@ -1781,14 +1784,14 @@
     >
       <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
         <div
-          class="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
+          class="modal-glass max-w-6xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
         >
           <!-- Header -->
           <div class="flex items-center justify-between p-4 sm:p-6 border-b">
-            <h2 class="text-xl sm:text-2xl font-bold text-gray-900">🎪 Mes événements</h2>
+            <h2 class="text-xl sm:text-2xl font-bold text-white">🎪 Mes événements</h2>
             <button
               onclick="closeMyEventsModal()"
-              class="text-gray-400 hover:text-gray-600"
+              class="text-white hover:text-gray-300 transition-colors"
             >
               <svg
                 class="h-6 w-6"
@@ -1823,14 +1826,14 @@
     >
       <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
         <div
-          class="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
+          class="modal-glass max-w-5xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
         >
           <!-- Header -->
           <div class="flex items-center justify-between p-4 sm:p-6 border-b">
-            <h2 class="text-xl sm:text-2xl font-bold text-gray-900">📝 Mes avis</h2>
+            <h2 class="text-xl sm:text-2xl font-bold text-white">⭐ Mes avis</h2>
             <button
               onclick="closeMyRatingsModal()"
-              class="text-gray-400 hover:text-gray-600"
+              class="text-white hover:text-gray-300 transition-colors"
             >
               <svg
                 class="h-6 w-6"
@@ -2158,8 +2161,7 @@
       // Créer une carte d'événement
       function createEventCard(event) {
         const card = document.createElement("div");
-        card.className =
-          "bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200 overflow-hidden";
+        card.className = "event-card animate-slide-up";
 
         // Afficher les photos si disponibles
         const photosHtml =
@@ -2195,16 +2197,16 @@
                 event.title
               }</h3>
               <div class="flex flex-col sm:flex-row gap-1 sm:gap-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 flex-shrink-0">
-                  ${event.category || "Général"}
-                </span>
+                <span class="tag-modern">
+                ${event.category || "Général"}
+              </span>
                 ${(() => {
                   const status = getEventStatus(event);
-                  return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${status.color} flex-shrink-0">
+                  return `<span class="status-badge ${status.status === 'upcoming' ? 'status-upcoming' : status.status === 'ongoing' ? 'status-ongoing' : 'status-ended'}">
                     ${status.icon} ${status.text}
                   </span>`;
                 })()}
-              </div>
+            </div>
             </div>
             <p class="text-gray-600 text-sm leading-relaxed break-words overflow-hidden">${
               event.description
@@ -2281,15 +2283,15 @@
           </div>
 
           <!-- Boutons d'action -->
-          <div class="flex flex-col sm:flex-row gap-2">
+          <div class="flex flex-col sm:flex-row gap-3">
             <button onclick="rateEvent(${
               event.id
-            })" class="flex-1 bg-yellow-500 text-white py-2 px-3 rounded-md text-sm font-medium hover:bg-yellow-600 transition-colors">
+            })" class="btn-gradient flex-1">
               ⭐ Noter
             </button>
             <button onclick="showEventRatings(${
               event.id
-            })" class="flex-1 bg-blue-500 text-white py-2 px-3 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
+            })" class="glass-card text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300 flex-1">
               💬 Voir avis
             </button>
           </div>
@@ -2795,7 +2797,7 @@
              ${ratings
                .map(
                  (rating) => `
-               <div class="bg-gray-50 p-4 sm:p-6 rounded-lg border border-gray-200 overflow-hidden">
+               <div class="glass-card p-4 sm:p-6 overflow-hidden">
                  <!-- En-tête avec note et timing -->
                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-3">
                    <div class="flex-1 min-w-0">
@@ -2808,9 +2810,9 @@
                              ? "☆"
                              : "☆"
                          ).join("")}
-                       </div>
+                   </div>
                        <span class="text-lg sm:text-xl font-bold text-gray-900 flex-shrink-0">${formatRating(rating.overall_rating)}</span>
-                     </div>
+                   </div>
                      ${formatRatingDate(rating.created_at, rating)}
                    </div>
                  </div>
@@ -3006,8 +3008,8 @@
         } else if (rating.arrival_time && rating.still_present) {
           // En cours : seulement si c'est aujourd'hui
           if (isToday) {
-            timingText = `Depuis ${rating.arrival_time}`;
-            timingIcon = "🔴";
+          timingText = `Depuis ${rating.arrival_time}`;
+          timingIcon = "🔴";
             badgeColor = "bg-red-100 text-red-800";
           } else {
             // Pour les jours passés, afficher juste l'heure d'arrivée
@@ -3025,11 +3027,11 @@
         return timingText
           ? `
           <div class="text-right sm:text-right">
-            <div class="inline-flex items-center px-2 py-1 ${badgeColor} text-xs font-medium rounded-full max-w-full">
+            <div class="tag-modern max-w-full">
               <span class="mr-1 flex-shrink-0">${timingIcon}</span>
               <span class="truncate">${timingText}</span>
-            </div>
-          </div>
+                   </div>
+                     </div>
                    `
           : "";
       }
@@ -3055,7 +3057,7 @@
               ${quickTags
                 .map(
                   (tag) => `
-                <span class="inline-flex items-center px-2 py-1 bg-gray-200 text-gray-800 text-xs font-medium rounded-full">
+                <span class="tag-modern">
                   <span class="mr-1">${tagEmojis[tag] || "🏷️"}</span>
                   ${tag.charAt(0).toUpperCase() + tag.slice(1)}
                 </span>
@@ -3103,7 +3105,7 @@
                     icon: "📊",
                   };
                   return `
-                  <div class="flex items-center space-x-2 bg-white p-2 rounded border min-w-0">
+                  <div class="flex items-center space-x-2 glass-card p-2 min-w-0">
                     <span class="flex-shrink-0">${criteria.icon}</span>
                     <span class="text-xs text-gray-600 flex-1 min-w-0 break-words">${criteria.name}</span>
                     <span class="font-semibold text-sm flex-shrink-0">${formatRating(value)}</span>
@@ -3154,13 +3156,13 @@
               <span class="text-xs font-medium break-words">${
                 rating.weather_conditions
               }</span>
-            </div>
+                   </div>
           `);
         }
 
         return contextItems.length > 0
           ? `
-          <div class="flex flex-wrap gap-3 pt-3 border-t border-gray-200">
+          <div class="flex flex-wrap gap-3 pt-3 border-t border-white border-opacity-20">
             ${contextItems.join("")}
                      </div>
                    `
@@ -3264,13 +3266,13 @@
             ${events
               .map(
                 (event) => `
-              <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+              <div class="glass-card p-6">
                 <div class="flex justify-between items-start mb-4">
                   <div class="flex-1">
                     <div class="flex items-center gap-2 mb-2">
                       <h3 class="text-xl font-bold text-gray-900">${
-                        event.title
-                      }</h3>
+                      event.title
+                    }</h3>
                       ${(() => {
                         const status = getEventStatus(event);
                         return `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${status.color}">
@@ -3312,13 +3314,13 @@
                   <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:ml-4 mt-4 sm:mt-0">
                     <button 
                       onclick="editEvent(${event.id})" 
-                      class="px-3 py-2 bg-blue-100 text-blue-700 rounded-full text-sm hover:bg-blue-200 w-full sm:w-auto"
+                      class="btn-gradient w-full sm:w-auto"
                     >
                       ✏️ Modifier
                     </button>
                     <button 
                       onclick="deleteEvent(${event.id})" 
-                      class="px-3 py-2 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200 w-full sm:w-auto"
+                      class="glass-card text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300 w-full sm:w-auto"
                     >
                       🗑️ Supprimer
                     </button>
@@ -3705,7 +3707,7 @@
             ${ratings
               .map(
                 (rating) => `
-              <div class="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-sm">
+              <div class="glass-card p-4 sm:p-6">
                 <!-- En-tête avec événement et actions -->
                 <div class="flex justify-between items-start mb-4">
                   <div class="flex-1">
@@ -3727,14 +3729,14 @@
                   <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:ml-4 mt-4 sm:mt-0">
                     <button
                       onclick="editRating(${rating.id})"
-                      class="px-3 py-2 bg-blue-100 text-blue-700 rounded-full text-sm hover:bg-blue-200 transition-colors w-full sm:w-auto"
+                      class="btn-gradient w-full sm:w-auto"
                       title="Modifier cet avis"
                     >
                       ✏️ Modifier
                     </button>
                     <button
                       onclick="deleteRating(${rating.id})"
-                      class="px-3 py-2 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200 transition-colors w-full sm:w-auto"
+                      class="glass-card text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300 w-full sm:w-auto"
                       title="Supprimer cet avis"
                     >
                       🗑️ Supprimer
