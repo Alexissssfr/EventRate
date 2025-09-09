@@ -18,6 +18,10 @@ export default async function handler(req, res) {
   try {
     const { token, newPassword } = req.body;
 
+    console.log('=== RÉINITIALISATION MOT DE PASSE ===');
+    console.log('Token reçu:', token);
+    console.log('Nouveau mot de passe:', newPassword ? '***' : 'non fourni');
+
     // Vérifier que le token et le nouveau mot de passe sont fournis
     if (!token || !newPassword) {
       return res.status(400).json({ error: 'Token et nouveau mot de passe requis' });
@@ -29,18 +33,19 @@ export default async function handler(req, res) {
     }
 
     // Créer la table si elle n'existe pas
-    const createTableQuery = `
-      CREATE TABLE IF NOT EXISTS password_reset_tokens (
-        id SERIAL PRIMARY KEY,
-        user_id INTEGER NOT NULL,
-        token VARCHAR(255) NOT NULL,
-        expires_at TIMESTAMP NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        used_at TIMESTAMP NULL
-      );
-    `;
-    
-    await pool.query(createTableQuery);
+    try {
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS password_reset_tokens (
+          id SERIAL PRIMARY KEY,
+          user_id INTEGER NOT NULL,
+          token VARCHAR(255) NOT NULL,
+          expires_at TIMESTAMP NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+    } catch (tableError) {
+      console.log('Table creation error:', tableError.message);
+    }
 
     // Vérifier que le token existe et n'est pas expiré
     const tokenQuery = `
@@ -53,12 +58,14 @@ export default async function handler(req, res) {
     const tokenResult = await pool.query(tokenQuery, [token]);
 
     if (tokenResult.rows.length === 0) {
+      console.log('Token invalide ou expiré');
       return res.status(400).json({ 
         error: 'Token invalide ou expiré. Veuillez demander un nouveau lien de réinitialisation.' 
       });
     }
 
     const { user_id, email, first_name } = tokenResult.rows[0];
+    console.log('Token valide pour utilisateur:', email);
 
     // Hasher le nouveau mot de passe (version simplifiée)
     const hashedPassword = crypto.createHash('sha256').update(newPassword).digest('hex');
@@ -71,17 +78,17 @@ export default async function handler(req, res) {
     const deleteTokenQuery = 'DELETE FROM password_reset_tokens WHERE user_id = $1';
     await pool.query(deleteTokenQuery, [user_id]);
 
-    // Log pour le suivi
-    console.log(`Mot de passe réinitialisé pour l'utilisateur: ${email}`);
+    console.log(`✅ Mot de passe réinitialisé pour: ${email}`);
 
     return res.status(200).json({
       message: 'Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.'
     });
 
   } catch (error) {
-    console.error('Erreur lors de la réinitialisation du mot de passe:', error);
+    console.error('❌ Erreur lors de la réinitialisation du mot de passe:', error);
     return res.status(500).json({ 
-      error: 'Erreur interne du serveur' 
+      error: 'Erreur interne du serveur',
+      details: error.message
     });
   }
 }
