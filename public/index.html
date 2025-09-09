@@ -3546,7 +3546,7 @@
         const email = document.getElementById("forgot-email").value;
         
         try {
-          const response = await fetch(`${API_BASE}/auth/forgot-password`, {
+          const response = await fetch(`${API_BASE}/test/forgot-password-simple`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

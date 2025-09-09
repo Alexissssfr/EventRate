@@ -46,57 +46,51 @@ export default async function handler(req, res) {
     const resetToken = crypto.randomBytes(32).toString('hex');
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 heure
 
-    // Créer la table si elle n'existe pas
-    const createTableQuery = `
-      CREATE TABLE IF NOT EXISTS password_reset_tokens (
-        id SERIAL PRIMARY KEY,
-        user_id INTEGER NOT NULL,
-        token VARCHAR(255) NOT NULL,
-        expires_at TIMESTAMP NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        used_at TIMESTAMP NULL
+    // Créer la table si elle n'existe pas (version simplifiée)
+    try {
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS password_reset_tokens (
+          id SERIAL PRIMARY KEY,
+          user_id INTEGER NOT NULL,
+          token VARCHAR(255) NOT NULL,
+          expires_at TIMESTAMP NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+    } catch (tableError) {
+      console.log('Table creation error (might already exist):', tableError.message);
+    }
+
+    // Supprimer les anciens tokens pour cet utilisateur
+    try {
+      await pool.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [user.id]);
+    } catch (deleteError) {
+      console.log('Delete old tokens error:', deleteError.message);
+    }
+
+    // Insérer le nouveau token
+    try {
+      await pool.query(
+        'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+        [user.id, resetToken, resetTokenExpiry]
       );
-    `;
-    
-    await pool.query(createTableQuery);
-
-    // Créer les index si ils n'existent pas
-    const createIndexesQuery = `
-      CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token);
-      CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user_id ON password_reset_tokens(user_id);
-      CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_expires_at ON password_reset_tokens(expires_at);
-    `;
-    
-    await pool.query(createIndexesQuery);
-
-    // Supprimer d'abord les anciens tokens pour cet utilisateur
-    const deleteOldTokensQuery = 'DELETE FROM password_reset_tokens WHERE user_id = $1';
-    await pool.query(deleteOldTokensQuery, [user.id]);
-
-    // Sauvegarder le nouveau token dans la base de données
-    const tokenQuery = `
-      INSERT INTO password_reset_tokens (user_id, token, expires_at, created_at)
-      VALUES ($1, $2, $3, NOW())
-    `;
-    
-    await pool.query(tokenQuery, [user.id, resetToken, resetTokenExpiry]);
+    } catch (insertError) {
+      console.log('Insert token error:', insertError.message);
+      return res.status(500).json({ 
+        error: 'Erreur lors de la sauvegarde du token',
+        details: insertError.message
+      });
+    }
 
     // Construire le lien de réinitialisation
     const resetLink = `${process.env.FRONTEND_URL || 'https://eventrate.vercel.app'}/reset-password?token=${resetToken}`;
 
-    // Envoyer l'email (simulation pour l'instant)
-    // Dans un vrai projet, vous utiliseriez un service comme SendGrid, Mailgun, etc.
+    // Log pour le développement
     console.log('=== EMAIL DE RÉINITIALISATION ===');
     console.log(`Destinataire: ${user.email}`);
     console.log(`Nom: ${user.first_name}`);
     console.log(`Lien de réinitialisation: ${resetLink}`);
     console.log('================================');
-
-    // Pour l'instant, on simule l'envoi d'email
-    // Dans un environnement de production, vous devriez :
-    // 1. Utiliser un service d'email comme SendGrid, Mailgun, ou AWS SES
-    // 2. Créer un template d'email professionnel
-    // 3. Gérer les erreurs d'envoi d'email
 
     return res.status(200).json({
       message: 'Si cet email existe dans notre système, vous recevrez un lien de réinitialisation.',
@@ -107,7 +101,8 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('Erreur lors de la réinitialisation de mot de passe:', error);
     return res.status(500).json({ 
-      error: 'Erreur interne du serveur' 
+      error: 'Erreur interne du serveur',
+      details: error.message
     });
   }
 }

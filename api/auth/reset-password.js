@@ -32,8 +32,8 @@ export default async function handler(req, res) {
     const createTableQuery = `
       CREATE TABLE IF NOT EXISTS password_reset_tokens (
         id SERIAL PRIMARY KEY,
-        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-        token VARCHAR(255) NOT NULL UNIQUE,
+        user_id INTEGER NOT NULL,
+        token VARCHAR(255) NOT NULL,
         expires_at TIMESTAMP NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         used_at TIMESTAMP NULL
