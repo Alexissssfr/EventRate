@@ -28,6 +28,20 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 6 caractères' });
     }
 
+    // Créer la table si elle n'existe pas
+    const createTableQuery = `
+      CREATE TABLE IF NOT EXISTS password_reset_tokens (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        token VARCHAR(255) NOT NULL UNIQUE,
+        expires_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        used_at TIMESTAMP NULL
+      );
+    `;
+    
+    await pool.query(createTableQuery);
+
     // Vérifier que le token existe et n'est pas expiré
     const tokenQuery = `
       SELECT prt.user_id, prt.expires_at, u.email, u.first_name

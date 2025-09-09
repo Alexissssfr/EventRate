@@ -46,6 +46,29 @@ export default async function handler(req, res) {
     const resetToken = crypto.randomBytes(32).toString('hex');
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 heure
 
+    // Créer la table si elle n'existe pas
+    const createTableQuery = `
+      CREATE TABLE IF NOT EXISTS password_reset_tokens (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        token VARCHAR(255) NOT NULL UNIQUE,
+        expires_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        used_at TIMESTAMP NULL
+      );
+    `;
+    
+    await pool.query(createTableQuery);
+
+    // Créer les index si ils n'existent pas
+    const createIndexesQuery = `
+      CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token);
+      CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user_id ON password_reset_tokens(user_id);
+      CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_expires_at ON password_reset_tokens(expires_at);
+    `;
+    
+    await pool.query(createIndexesQuery);
+
     // Sauvegarder le token dans la base de données
     const tokenQuery = `
       INSERT INTO password_reset_tokens (user_id, token, expires_at, created_at)
