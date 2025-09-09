@@ -2812,9 +2812,7 @@
                              : "☆"
                          ).join("")}
                        </div>
-                       <span class="text-lg sm:text-xl font-bold text-gray-900 flex-shrink-0">${
-                         rating.overall_rating
-                       }/5</span>
+                       <span class="text-lg sm:text-xl font-bold text-gray-900 flex-shrink-0">${formatRating(rating.overall_rating)}</span>
                      </div>
                      ${formatRatingDate(rating.created_at, rating)}
                    </div>
@@ -2889,6 +2887,21 @@
       }
 
       // Fonctions utilitaires pour l'affichage des avis intelligents
+
+      function formatRating(rating) {
+        if (!rating || rating === 0) return "0/5";
+        
+        // Convertir en nombre si c'est une chaîne
+        const numRating = typeof rating === 'string' ? parseFloat(rating) : rating;
+        
+        // Si c'est un nombre entier, afficher sans décimales
+        if (numRating % 1 === 0) {
+          return `${numRating}/5`;
+        }
+        
+        // Sinon, afficher avec une décimale maximum
+        return `${numRating.toFixed(1)}/5`;
+      }
 
       function formatRatingDate(dateString, rating = null) {
         const date = new Date(dateString);
@@ -3096,7 +3109,7 @@
                   <div class="flex items-center space-x-2 bg-white p-2 rounded border min-w-0">
                     <span class="flex-shrink-0">${criteria.icon}</span>
                     <span class="text-xs text-gray-600 flex-1 min-w-0 break-words">${criteria.name}</span>
-                    <span class="font-semibold text-sm flex-shrink-0">${value}/5</span>
+                    <span class="font-semibold text-sm flex-shrink-0">${formatRating(value)}</span>
                      </div>
                 `;
                 })
@@ -3711,9 +3724,7 @@
                           i < Math.floor(rating.overall_rating) ? "★" : "☆"
                         ).join("")}
                       </div>
-                      <span class="text-lg font-bold text-gray-900">${
-                        rating.overall_rating
-                      }/5</span>
+                      <span class="text-lg font-bold text-gray-900">${formatRating(rating.overall_rating)}</span>
                     </div>
                   </div>
                   <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:ml-4 mt-4 sm:mt-0">
