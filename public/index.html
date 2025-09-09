@@ -911,6 +911,76 @@
       </div>
     </section>
 
+    <!-- Section Réinitialisation de mot de passe -->
+    <section id="reset-password" class="section hidden">
+      <div class="py-20 bg-white">
+        <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Nouveau mot de passe</h2>
+            <p class="text-gray-600">Entrez votre nouveau mot de passe</p>
+          </div>
+
+          <form class="space-y-6" onsubmit="resetPassword(event)">
+            <div>
+              <label for="reset-token" class="block text-sm font-medium text-gray-700 mb-2"
+                >Token de réinitialisation</label
+              >
+              <input
+                type="text"
+                id="reset-token"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
+                placeholder="Token reçu par email"
+              />
+            </div>
+            <div>
+              <label for="reset-password" class="block text-sm font-medium text-gray-700 mb-2"
+                >Nouveau mot de passe</label
+              >
+              <input
+                type="password"
+                id="reset-password"
+                required
+                minlength="6"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
+                placeholder="••••••••"
+              />
+            </div>
+            <div>
+              <label for="reset-password-confirm" class="block text-sm font-medium text-gray-700 mb-2"
+                >Confirmer le mot de passe</label
+              >
+              <input
+                type="password"
+                id="reset-password-confirm"
+                required
+                minlength="6"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
+                placeholder="••••••••"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary-600 text-white py-3 px-4 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              Réinitialiser le mot de passe
+            </button>
+          </form>
+          <div class="mt-6 text-center">
+            <p class="text-gray-600">
+              Retour à la
+              <button
+                onclick="showSection('login')"
+                class="text-primary-600 hover:text-primary-800 font-semibold"
+              >
+                connexion
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Section Connexion -->
     <section id="login" class="section hidden">
       <div class="py-20 bg-white">
@@ -2002,13 +2072,21 @@
           <div class="p-4 sm:p-6">
             <div class="text-center mb-6">
               <p class="text-gray-600 mb-4">
-                Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+                Entrez votre adresse email et nous vous enverrons un lien pour
+                réinitialiser votre mot de passe.
               </p>
             </div>
 
-            <form id="forgot-password-form" onsubmit="handleForgotPassword(event)" class="space-y-4">
+            <form
+              id="forgot-password-form"
+              onsubmit="handleForgotPassword(event)"
+              class="space-y-4"
+            >
               <div>
-                <label for="forgot-email" class="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  for="forgot-email"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Adresse email
                 </label>
                 <input
@@ -2138,6 +2216,26 @@
 
           // Afficher un message visuel que les identifiants sont chargés
           console.log("✅ Identifiants pré-remplis depuis le stockage local");
+        }
+      }
+
+      // Vérifier s'il y a un token de réinitialisation dans l'URL
+      function checkResetPasswordToken() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        
+        if (token) {
+          // Pré-remplir le champ token et afficher la page de réinitialisation
+          const tokenInput = document.getElementById("reset-token");
+          if (tokenInput) {
+            tokenInput.value = token;
+            showSection("reset-password");
+            showNotification(
+              "info",
+              "Token détecté",
+              "Vous pouvez maintenant définir votre nouveau mot de passe."
+            );
+          }
         }
       }
 
@@ -3429,11 +3527,15 @@
 
       // Modal de récupération de mot de passe
       function showForgotPasswordModal() {
-        document.getElementById("forgot-password-modal").classList.remove("hidden");
+        document
+          .getElementById("forgot-password-modal")
+          .classList.remove("hidden");
       }
 
       function closeForgotPasswordModal() {
-        document.getElementById("forgot-password-modal").classList.add("hidden");
+        document
+          .getElementById("forgot-password-modal")
+          .classList.add("hidden");
         document.getElementById("forgot-password-form").reset();
       }
 
@@ -3458,9 +3560,14 @@
             showNotification(
               "success",
               "Email envoyé !",
-              "Vérifiez votre boîte email pour le lien de réinitialisation."
+              data.message || "Vérifiez votre boîte email pour le lien de réinitialisation."
             );
             closeForgotPasswordModal();
+            
+            // En développement, afficher le lien dans la console
+            if (data.resetLink) {
+              console.log("🔗 Lien de réinitialisation (développement):", data.resetLink);
+            }
           } else {
             showNotification(
               "error",
@@ -3470,13 +3577,83 @@
           }
         } catch (error) {
           console.error("Erreur:", error);
-          // Pour l'instant, simuler un succès car l'API n'est pas encore implémentée
           showNotification(
-            "info",
-            "Fonctionnalité en développement",
-            "La récupération de mot de passe sera bientôt disponible. Contactez le support pour l'instant."
+            "error",
+            "Erreur",
+            "Erreur de connexion au serveur"
           );
-          closeForgotPasswordModal();
+        }
+      }
+
+      // Gérer la réinitialisation de mot de passe
+      async function resetPassword(event) {
+        event.preventDefault();
+        
+        const token = document.getElementById("reset-token").value;
+        const newPassword = document.getElementById("reset-password").value;
+        const confirmPassword = document.getElementById("reset-password-confirm").value;
+        
+        // Vérifier que les mots de passe correspondent
+        if (newPassword !== confirmPassword) {
+          showNotification(
+            "error",
+            "Erreur",
+            "Les mots de passe ne correspondent pas"
+          );
+          return;
+        }
+        
+        // Vérifier la longueur du mot de passe
+        if (newPassword.length < 6) {
+          showNotification(
+            "error",
+            "Erreur",
+            "Le mot de passe doit contenir au moins 6 caractères"
+          );
+          return;
+        }
+        
+        try {
+          const response = await fetch(`${API_BASE}/auth/reset-password`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+              token: token,
+              newPassword: newPassword 
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            showNotification(
+              "success",
+              "Mot de passe réinitialisé !",
+              data.message || "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+            );
+            
+            // Rediriger vers la page de connexion
+            setTimeout(() => {
+              showSection("login");
+              // Réinitialiser le formulaire
+              event.target.reset();
+            }, 2000);
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              data.error || "Impossible de réinitialiser le mot de passe"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification(
+            "error",
+            "Erreur",
+            "Erreur de connexion au serveur"
+          );
         }
       }
 
@@ -3544,8 +3721,8 @@
             <div class="text-center py-12">
               <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full flex items-center justify-center">
                 <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
               </div>
               <h3 class="text-2xl font-bold text-gray-900 mb-2">Aucun événement créé</h3>
               <p class="text-gray-600 mb-6">Créez votre premier événement pour le voir ici !</p>
@@ -3555,7 +3732,7 @@
               >
                 🎪 Créer un événement
               </button>
-            </div>
+                     </div>
           `;
           return;
         }
@@ -3568,18 +3745,22 @@
               <div class="event-card group">
                 <!-- Header avec image et statut -->
                 <div class="relative mb-4">
-                  ${event.photos && event.photos.length > 0 ? `
+                  ${
+                    event.photos && event.photos.length > 0
+                      ? `
                     <img src="${event.photos[0]}" 
                          class="w-full h-48 object-cover rounded-t-lg" 
                          alt="Photo événement" 
                          onerror="this.style.display='none'">
-                  ` : `
+                  `
+                      : `
                     <div class="w-full h-48 bg-gradient-to-br from-purple-100 to-blue-100 rounded-t-lg flex items-center justify-center">
                       <svg class="w-16 h-16 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                       </svg>
                     </div>
-                  `}
+                  `
+                  }
                   
                   <!-- Badge de statut -->
                   <div class="absolute top-3 right-3">
@@ -3599,11 +3780,15 @@
                     <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
                       ${event.title}
                     </h3>
-                    ${event.category ? `
+                    ${
+                      event.category
+                        ? `
                       <span class="tag-modern bg-purple-100 text-purple-700">
                         🏷️ ${event.category}
                       </span>
-                    ` : ''}
+                    `
+                        : ""
+                    }
                   </div>
 
                   <!-- Informations principales -->
@@ -3617,7 +3802,9 @@
                       </div>
                       <div>
                         <p class="text-sm font-medium text-gray-500">Date</p>
-                        <p class="text-gray-900 font-semibold">${formatEventDateRange(event)}</p>
+                        <p class="text-gray-900 font-semibold">${formatEventDateRange(
+                        event
+                        )}</p>
                       </div>
                     </div>
 
@@ -3631,7 +3818,9 @@
                       </div>
                       <div>
                         <p class="text-sm font-medium text-gray-500">Lieu</p>
-                        <p class="text-gray-900 font-semibold">${event.location || "Non spécifié"}</p>
+                        <p class="text-gray-900 font-semibold">${
+                        event.location || "Non spécifié"
+                        }</p>
                       </div>
                     </div>
 
@@ -3645,13 +3834,19 @@
                       <div>
                         <p class="text-sm font-medium text-gray-500">Prix</p>
                         <p class="text-gray-900 font-semibold">
-                          ${event.price_is_free ? "🆓 Gratuit" : `€${event.price_amount || 0}`}
+                          ${
+                            event.price_is_free
+                              ? "🆓 Gratuit"
+                              : `€${event.price_amount || 0}`
+                          }
                         </p>
                       </div>
                     </div>
 
                     <!-- Note moyenne -->
-                    ${event.rating_average && event.rating_average > 0 ? `
+                      ${
+                        event.rating_average && event.rating_average > 0
+                        ? `
                       <div class="flex items-center text-gray-600">
                         <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
                           <svg class="w-4 h-4 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
@@ -3660,20 +3855,28 @@
                         </div>
                         <div>
                           <p class="text-sm font-medium text-gray-500">Note moyenne</p>
-                          <p class="text-gray-900 font-semibold">${formatRating(event)}</p>
+                          <p class="text-gray-900 font-semibold">${formatRating(
+                              event
+                          )}</p>
                         </div>
                       </div>
-                    ` : ''}
-                  </div>
+                    `
+                          : ""
+                      }
+                     </div>
 
                   <!-- Description -->
-                  ${event.description ? `
+                  ${
+                    event.description
+                      ? `
                     <div class="mb-6">
                       <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">
                         ${event.description}
                       </p>
-                    </div>
-                  ` : ''}
+                  </div>
+                  `
+                      : ""
+                  }
 
                   <!-- Actions -->
                   <div class="flex space-x-3">
@@ -3696,7 +3899,7 @@
                     </button>
                   </div>
                 </div>
-              </div>
+               </div>
              `
               )
               .join("")}
@@ -4054,8 +4257,8 @@
             <div class="text-center py-12">
               <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full flex items-center justify-center">
                 <svg class="w-12 h-12 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                </svg>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+              </svg>
               </div>
               <h3 class="text-2xl font-bold text-gray-900 mb-2">Aucun avis pour le moment</h3>
               <p class="text-gray-600 mb-6">Notez votre premier événement pour voir vos avis ici !</p>
@@ -4072,7 +4275,9 @@
               <div class="event-card group">
                 <!-- Header avec image et note -->
                 <div class="relative mb-4">
-                  <div id="event-photo-${rating.id}" class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-t-lg flex items-center justify-center">
+                  <div id="event-photo-${
+                    rating.id
+                  }" class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-t-lg flex items-center justify-center">
                     <svg class="w-16 h-16 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                     </svg>
@@ -4104,34 +4309,40 @@
                           i < Math.floor(rating.overall_rating) ? "★" : "☆"
                         ).join("")}
                       </div>
-                      <span class="text-2xl font-bold text-gray-900">${formatRating(rating.overall_rating)}</span>
-                    </div>
+                      <span class="text-2xl font-bold text-gray-900">${formatRating(
+                        rating.overall_rating
+                      )}</span>
                   </div>
+                </div>
 
-                  <!-- Tags rapides -->
-                  ${formatQuickTags(rating.quick_tags)}
+                <!-- Tags rapides -->
+                ${formatQuickTags(rating.quick_tags)}
 
-                  <!-- Commentaire -->
-                  ${rating.comment ? `
+                <!-- Commentaire -->
+                ${
+                  rating.comment
+                    ? `
                     <div class="mb-6">
                       <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
                         <div class="flex items-start space-x-3">
                           <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                             <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                            </svg>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                      </svg>
                           </div>
                           <p class="text-gray-700 italic text-sm leading-relaxed">"${rating.comment}"</p>
                         </div>
-                      </div>
                     </div>
-                  ` : ''}
+                     </div>
+                   `
+                    : ""
+                }
 
                   <!-- Critères détaillés -->
                   ${formatDetailedCriteria(rating.detailed_criteria)}
 
-                  <!-- Informations contextuelles -->
-                  ${formatContextInfo(rating)}
+                <!-- Informations contextuelles -->
+                ${formatContextInfo(rating)}
 
                   <!-- Actions -->
                   <div class="flex space-x-3 mt-6">
@@ -4154,7 +4365,7 @@
                     </button>
                   </div>
                 </div>
-              </div>
+               </div>
              `
               )
               .join("")}
@@ -5513,6 +5724,9 @@
       document.addEventListener("DOMContentLoaded", function () {
         // Pré-remplir le formulaire de connexion si identifiants sauvegardés
         fillLoginForm();
+        
+        // Vérifier s'il y a un token de réinitialisation dans l'URL
+        checkResetPasswordToken();
 
         // Démarrer le timer d'inactivité si déjà connecté
         if (authToken) {
