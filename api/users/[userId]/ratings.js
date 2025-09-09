@@ -8,6 +8,8 @@ const db = new Pool({
 });
 
 module.exports = async function handler(req, res) {
+  console.log('API ratings appelée:', req.method, req.url);
+  
   // Configuration CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -41,7 +43,7 @@ module.exports = async function handler(req, res) {
     const result = await db.query(`
       SELECT r.id, r.overall_rating, r.comment, r.created_at, r.updated_at,
              r.detailed_criteria, r.quick_tags, r.rating_metadata,
-             r.presence_start_time, r.presence_end_time, r.crowd_level, r.weather_conditions,
+             r.arrival_time, r.departure_time, r.still_present, r.crowd_level, r.weather_conditions,
              e.id as event_id, e.title as event_title, 
              e.date_start as event_date, e.location_city
       FROM ratings r
@@ -77,9 +79,10 @@ module.exports = async function handler(req, res) {
 
   } catch (error) {
     console.error('Erreur récupération avis utilisateur:', error);
+    console.error('Stack trace:', error.stack);
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ error: 'Token invalide' });
     }
-    res.status(500).json({ error: 'Erreur serveur' });
+    res.status(500).json({ error: 'Erreur serveur', details: error.message });
   }
 };
