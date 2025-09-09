@@ -40,6 +40,8 @@ module.exports = async function handler(req, res) {
     // Récupérer les avis de l'utilisateur avec les informations des événements
     const result = await db.query(`
       SELECT r.id, r.overall_rating, r.comment, r.created_at, r.updated_at,
+             r.detailed_criteria, r.quick_tags, r.rating_metadata,
+             r.presence_start_time, r.presence_end_time, r.crowd_level, r.weather_conditions,
              e.id as event_id, e.title as event_title, 
              e.date_start as event_date, e.location_city
       FROM ratings r
@@ -48,7 +50,30 @@ module.exports = async function handler(req, res) {
       ORDER BY r.created_at DESC
     `, [userId]);
 
-    res.status(200).json(result.rows);
+    // Parser les champs JSONB
+    const ratings = result.rows.map((rating) => ({
+      ...rating,
+      quick_tags:
+        typeof rating.quick_tags === "string"
+          ? rating.quick_tags
+            ? JSON.parse(rating.quick_tags)
+            : []
+          : rating.quick_tags || [],
+      detailed_criteria:
+        typeof rating.detailed_criteria === "string"
+          ? rating.detailed_criteria
+            ? JSON.parse(rating.detailed_criteria)
+            : {}
+          : rating.detailed_criteria || {},
+      rating_metadata:
+        typeof rating.rating_metadata === "string"
+          ? rating.rating_metadata
+            ? JSON.parse(rating.rating_metadata)
+            : {}
+          : rating.rating_metadata || {},
+    }));
+
+    res.status(200).json(ratings);
 
   } catch (error) {
     console.error('Erreur récupération avis utilisateur:', error);

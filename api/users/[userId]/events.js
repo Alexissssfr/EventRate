@@ -49,7 +49,20 @@ module.exports = async function handler(req, res) {
       ORDER BY date_start ASC
     `, [userId]);
 
-    res.status(200).json(result.rows);
+    // Parser les photos JSON et mapper les colonnes
+    const events = result.rows.map((event) => ({
+      ...event,
+      location:
+        (event.location_address || '') +
+        (event.location_city ? `, ${event.location_city}` : ""),
+      photos: event.photos
+        ? typeof event.photos === "string"
+          ? JSON.parse(event.photos)
+          : event.photos
+        : [],
+    }));
+
+    res.status(200).json(events);
 
   } catch (error) {
     console.error('Erreur récupération événements utilisateur:', error);
