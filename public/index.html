@@ -1779,13 +1779,13 @@
       id="my-events-modal"
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
     >
-      <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
         <div
-          class="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-screen overflow-y-auto"
+          class="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
         >
           <!-- Header -->
-          <div class="flex items-center justify-between p-6 border-b">
-            <h2 class="text-2xl font-bold text-gray-900">🎪 Mes événements</h2>
+          <div class="flex items-center justify-between p-4 sm:p-6 border-b">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900">🎪 Mes événements</h2>
             <button
               onclick="closeMyEventsModal()"
               class="text-gray-400 hover:text-gray-600"
@@ -1806,8 +1806,8 @@
             </button>
           </div>
           <!-- Contenu -->
-          <div class="p-6">
-            <div id="my-events-list" class="space-y-6">
+          <div class="p-4 sm:p-6">
+            <div id="my-events-list" class="space-y-4 sm:space-y-6">
               <!-- Les événements de l'utilisateur seront chargés ici -->
               <p class="text-gray-500">Chargement de vos événements...</p>
             </div>
@@ -1821,13 +1821,13 @@
       id="my-ratings-modal"
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
     >
-      <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
         <div
-          class="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-screen overflow-y-auto"
+          class="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
         >
           <!-- Header -->
-          <div class="flex items-center justify-between p-6 border-b">
-            <h2 class="text-2xl font-bold text-gray-900">📝 Mes avis</h2>
+          <div class="flex items-center justify-between p-4 sm:p-6 border-b">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900">📝 Mes avis</h2>
             <button
               onclick="closeMyRatingsModal()"
               class="text-gray-400 hover:text-gray-600"
@@ -1849,7 +1849,7 @@
           </div>
 
           <!-- Contenu -->
-          <div class="p-6">
+          <div class="p-4 sm:p-6">
             <div id="my-ratings-content">
               <!-- Les avis de l'utilisateur seront chargés ici -->
               <div class="flex items-center justify-center py-8">
@@ -3126,40 +3126,47 @@
                     <h3 class="text-xl font-bold text-gray-900 mb-2">${
                       event.title
                     }</h3>
-                    <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                      <div><span class="font-medium">📅 Date:</span> ${formatEventDateRange(
-                        event
-                      )}</div>
-                      <div><span class="font-medium">📍 Lieu:</span> ${
-                        event.location || "Non spécifié"
-                      }</div>
-                      <div><span class="font-medium">🏷️ Catégorie:</span> ${
-                        event.category || "Non spécifiée"
-                      }</div>
-                      <div><span class="font-medium">💰 Prix:</span> ${
-                        event.price_is_free 
-                          ? "🆓 Gratuit" 
-                          : `€${event.price_amount || 0}`
-                      }</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600">
+                      <div class="flex flex-col sm:flex-row sm:items-center">
+                        <span class="font-medium text-gray-500 sm:mr-2">📅 Date:</span>
+                        <span class="text-gray-900">${formatEventDateRange(event)}</span>
+                      </div>
+                      <div class="flex flex-col sm:flex-row sm:items-center">
+                        <span class="font-medium text-gray-500 sm:mr-2">📍 Lieu:</span>
+                        <span class="text-gray-900">${event.location || "Non spécifié"}</span>
+                      </div>
+                      <div class="flex flex-col sm:flex-row sm:items-center">
+                        <span class="font-medium text-gray-500 sm:mr-2">🏷️ Catégorie:</span>
+                        <span class="text-gray-900">${event.category || "Non spécifiée"}</span>
+                      </div>
+                      <div class="flex flex-col sm:flex-row sm:items-center">
+                        <span class="font-medium text-gray-500 sm:mr-2">💰 Prix:</span>
+                        <span class="text-gray-900">${
+                          event.price_is_free 
+                            ? "🆓 Gratuit" 
+                            : `€${event.price_amount || 0}`
+                        }</span>
+                      </div>
                       ${
                         event.rating_average && event.rating_average > 0
-                          ? `<div><span class="font-medium">⭐ Note moyenne:</span> ${formatRating(
-                              event
-                            )}</div>`
+                          ? `<div class="flex flex-col sm:flex-row sm:items-center">
+                              <span class="font-medium text-gray-500 sm:mr-2">⭐ Note moyenne:</span>
+                              <span class="text-gray-900">${formatRating(event)}</span>
+                            </div>`
                           : ""
                       }
                      </div>
                   </div>
-                  <div class="flex space-x-2 ml-4">
+                  <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:ml-4 mt-4 sm:mt-0">
                     <button 
                       onclick="editEvent(${event.id})" 
-                      class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm hover:bg-blue-200"
+                      class="px-3 py-2 bg-blue-100 text-blue-700 rounded-full text-sm hover:bg-blue-200 w-full sm:w-auto"
                     >
                       ✏️ Modifier
                     </button>
                     <button 
                       onclick="deleteEvent(${event.id})" 
-                      class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200"
+                      class="px-3 py-2 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200 w-full sm:w-auto"
                     >
                       🗑️ Supprimer
                     </button>
@@ -3542,11 +3549,11 @@
         }
 
         content.innerHTML = `
-          <div class="space-y-6">
+          <div class="space-y-4 sm:space-y-6">
             ${ratings
               .map(
                 (rating) => `
-              <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+              <div class="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-sm">
                 <!-- En-tête avec événement et actions -->
                 <div class="flex justify-between items-start mb-4">
                   <div class="flex-1">
@@ -3569,17 +3576,17 @@
                       }/5</span>
                     </div>
                   </div>
-                  <div class="flex space-x-2 ml-4">
+                  <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:ml-4 mt-4 sm:mt-0">
                     <button
                       onclick="editRating(${rating.id})"
-                      class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm hover:bg-blue-200 transition-colors"
+                      class="px-3 py-2 bg-blue-100 text-blue-700 rounded-full text-sm hover:bg-blue-200 transition-colors w-full sm:w-auto"
                       title="Modifier cet avis"
                     >
                       ✏️ Modifier
                     </button>
                     <button
                       onclick="deleteRating(${rating.id})"
-                      class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200 transition-colors"
+                      class="px-3 py-2 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200 transition-colors w-full sm:w-auto"
                       title="Supprimer cet avis"
                     >
                       🗑️ Supprimer
