@@ -2901,13 +2901,33 @@
         const diffTime = Math.abs(now - date);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-        if (diffDays === 1) return "Hier";
-        if (diffDays < 7) return `Il y a ${diffDays} jours`;
-        return date.toLocaleDateString("fr-FR", {
+        // Date précise
+        const preciseDate = date.toLocaleDateString("fr-FR", {
+          weekday: "long",
           day: "numeric",
           month: "long",
           year: "numeric",
         });
+
+        // Temps relatif
+        let relativeTime = "";
+        if (diffDays === 1) {
+          relativeTime = "Hier";
+        } else if (diffDays < 7) {
+          relativeTime = `Il y a ${diffDays} jours`;
+        } else if (diffDays < 30) {
+          const weeks = Math.floor(diffDays / 7);
+          relativeTime = `Il y a ${weeks} semaine${weeks > 1 ? "s" : ""}`;
+        } else {
+          relativeTime = "Il y a plus d'un mois";
+        }
+
+        return `
+          <div class="text-sm text-gray-500">
+            <div class="font-medium text-gray-700">${preciseDate}</div>
+            <div class="text-xs text-gray-400">${relativeTime}</div>
+          </div>
+        `;
       }
 
       function formatPresenceTiming(rating) {
@@ -3686,9 +3706,6 @@
                     </button>
                   </div>
                 </div>
-
-                <!-- Timing de présence -->
-                ${formatPresenceTiming(rating)}
 
                 <!-- Tags rapides -->
                 ${formatQuickTags(rating.quick_tags)}
