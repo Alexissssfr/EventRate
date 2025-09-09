@@ -916,13 +916,17 @@
       <div class="py-20 bg-white">
         <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Nouveau mot de passe</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">
+              Nouveau mot de passe
+            </h2>
             <p class="text-gray-600">Entrez votre nouveau mot de passe</p>
           </div>
 
           <form class="space-y-6" onsubmit="resetPassword(event)">
             <div>
-              <label for="reset-token" class="block text-sm font-medium text-gray-700 mb-2"
+              <label
+                for="reset-token"
+                class="block text-sm font-medium text-gray-700 mb-2"
                 >Token de réinitialisation</label
               >
               <input
@@ -934,7 +938,9 @@
               />
             </div>
             <div>
-              <label for="reset-password" class="block text-sm font-medium text-gray-700 mb-2"
+              <label
+                for="reset-password"
+                class="block text-sm font-medium text-gray-700 mb-2"
                 >Nouveau mot de passe</label
               >
               <input
@@ -947,7 +953,9 @@
               />
             </div>
             <div>
-              <label for="reset-password-confirm" class="block text-sm font-medium text-gray-700 mb-2"
+              <label
+                for="reset-password-confirm"
+                class="block text-sm font-medium text-gray-700 mb-2"
                 >Confirmer le mot de passe</label
               >
               <input
@@ -1679,10 +1687,10 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeRatingsModal()"
     >
-        <div
+      <div
         class="flex items-center justify-center min-h-screen p-4"
         onclick="event.stopPropagation()"
-        >
+      >
         <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto">
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b">
@@ -2222,8 +2230,8 @@
       // Vérifier s'il y a un token de réinitialisation dans l'URL
       function checkResetPasswordToken() {
         const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        
+        const token = urlParams.get("token");
+
         if (token) {
           // Pré-remplir le champ token et afficher la page de réinitialisation
           const tokenInput = document.getElementById("reset-token");
@@ -3341,8 +3349,8 @@
         } else if (rating.arrival_time && rating.still_present) {
           // En cours : seulement si c'est aujourd'hui
           if (isToday) {
-          timingText = `Depuis ${rating.arrival_time}`;
-          timingIcon = "🔴";
+            timingText = `Depuis ${rating.arrival_time}`;
+            timingIcon = "🔴";
             badgeColor = "bg-red-100 text-red-800";
           } else {
             // Pour les jours passés, afficher juste l'heure d'arrivée
@@ -3542,17 +3550,20 @@
       // Gérer la récupération de mot de passe
       async function handleForgotPassword(event) {
         event.preventDefault();
-        
+
         const email = document.getElementById("forgot-email").value;
-        
+
         try {
-          const response = await fetch(`${API_BASE}/test/forgot-password-simple`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }),
-          });
+          const response = await fetch(
+            `${API_BASE}/auth/forgot-password`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email }),
+            }
+          );
 
           const data = await response.json();
 
@@ -3560,13 +3571,17 @@
             showNotification(
               "success",
               "Email envoyé !",
-              data.message || "Vérifiez votre boîte email pour le lien de réinitialisation."
+              data.message ||
+                "Vérifiez votre boîte email pour le lien de réinitialisation."
             );
             closeForgotPasswordModal();
-            
+
             // En développement, afficher le lien dans la console
             if (data.resetLink) {
-              console.log("🔗 Lien de réinitialisation (développement):", data.resetLink);
+              console.log(
+                "🔗 Lien de réinitialisation (développement):",
+                data.resetLink
+              );
             }
           } else {
             showNotification(
@@ -3577,22 +3592,20 @@
           }
         } catch (error) {
           console.error("Erreur:", error);
-          showNotification(
-            "error",
-            "Erreur",
-            "Erreur de connexion au serveur"
-          );
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
         }
       }
 
       // Gérer la réinitialisation de mot de passe
       async function resetPassword(event) {
         event.preventDefault();
-        
+
         const token = document.getElementById("reset-token").value;
         const newPassword = document.getElementById("reset-password").value;
-        const confirmPassword = document.getElementById("reset-password-confirm").value;
-        
+        const confirmPassword = document.getElementById(
+          "reset-password-confirm"
+        ).value;
+
         // Vérifier que les mots de passe correspondent
         if (newPassword !== confirmPassword) {
           showNotification(
@@ -3602,7 +3615,7 @@
           );
           return;
         }
-        
+
         // Vérifier la longueur du mot de passe
         if (newPassword.length < 6) {
           showNotification(
@@ -3612,16 +3625,16 @@
           );
           return;
         }
-        
+
         try {
           const response = await fetch(`${API_BASE}/auth/reset-password`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
               token: token,
-              newPassword: newPassword 
+              newPassword: newPassword,
             }),
           });
 
@@ -3631,9 +3644,10 @@
             showNotification(
               "success",
               "Mot de passe réinitialisé !",
-              data.message || "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+              data.message ||
+                "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
             );
-            
+
             // Rediriger vers la page de connexion
             setTimeout(() => {
               showSection("login");
@@ -3649,11 +3663,7 @@
           }
         } catch (error) {
           console.error("Erreur:", error);
-          showNotification(
-            "error",
-            "Erreur",
-            "Erreur de connexion au serveur"
-          );
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
         }
       }
 
@@ -3686,7 +3696,7 @@
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-            displayMyEvents(events);
+                displayMyEvents(events);
               }, 100);
             } else {
               // Desktop : délai normal
@@ -3803,7 +3813,7 @@
                       <div>
                         <p class="text-sm font-medium text-gray-500">Date</p>
                         <p class="text-gray-900 font-semibold">${formatEventDateRange(
-                        event
+                          event
                         )}</p>
                       </div>
                     </div>
@@ -3819,7 +3829,7 @@
                       <div>
                         <p class="text-sm font-medium text-gray-500">Lieu</p>
                         <p class="text-gray-900 font-semibold">${
-                        event.location || "Non spécifié"
+                          event.location || "Non spécifié"
                         }</p>
                       </div>
                     </div>
@@ -3846,7 +3856,7 @@
                     <!-- Note moyenne -->
                       ${
                         event.rating_average && event.rating_average > 0
-                        ? `
+                          ? `
                       <div class="flex items-center text-gray-600">
                         <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
                           <svg class="w-4 h-4 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
@@ -3856,7 +3866,7 @@
                         <div>
                           <p class="text-sm font-medium text-gray-500">Note moyenne</p>
                           <p class="text-gray-900 font-semibold">${formatRating(
-                              event
+                            event
                           )}</p>
                         </div>
                       </div>
@@ -4227,7 +4237,7 @@
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-            displayMyRatings(data);
+                displayMyRatings(data);
               }, 100);
             } else {
               // Desktop : délai normal
@@ -5724,7 +5734,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         // Pré-remplir le formulaire de connexion si identifiants sauvegardés
         fillLoginForm();
-        
+
         // Vérifier s'il y a un token de réinitialisation dans l'URL
         checkResetPasswordToken();
 
