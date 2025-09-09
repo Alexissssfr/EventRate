@@ -47,20 +47,20 @@
             >
               <span class="text-white font-bold text-lg">E</span>
             </div>
-            <span class="text-xl font-bold text-white">EventRate</span>
+            <span class="text-xl font-bold text-gray-900">EventRate</span>
           </div>
 
           <!-- Navigation desktop -->
           <div class="hidden md:flex items-center space-x-4">
             <a
               href="#"
-              class="text-white hover:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white hover:bg-opacity-20"
+              class="text-gray-700 hover:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-gray-100"
               onclick="showSection('home')"
               >Accueil</a
             >
             <a
               href="#"
-              class="text-white hover:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white hover:bg-opacity-20"
+              class="text-gray-700 hover:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-gray-100"
               onclick="showSection('events')"
               >Événements</a
             >
@@ -214,7 +214,7 @@
         >
           <div class="text-center">
             <h1
-              class="text-5xl md:text-7xl font-bold mb-8 text-white animate-slide-up"
+              class="text-5xl md:text-7xl font-bold mb-8 text-gray-900 animate-slide-up"
             >
               Découvrez et créez des
               <span
@@ -223,7 +223,7 @@
               >
             </h1>
             <p
-              class="text-xl md:text-2xl mb-12 text-white text-opacity-90 max-w-3xl mx-auto animate-fade-in"
+              class="text-xl md:text-2xl mb-12 text-gray-700 max-w-3xl mx-auto animate-fade-in"
             >
               La plateforme qui révolutionne la création et la découverte
               d'événements. Notez, partagez et vivez des expériences uniques.
@@ -3182,8 +3182,8 @@
             <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded-full">
               ${timingIcon} ${timingText}
             </span>
-          </div>
-          `
+                     </div>
+                   `
           : "";
       }
 
@@ -3216,7 +3216,7 @@
                 </span>`
                 )
                 .join("")}
-            </div>
+                     </div>
           </div>
         `;
       }
@@ -3228,7 +3228,7 @@
         // Version ultra-simplifiée pour les performances
         const criteriaLabels = {
           "sound-quality": "🎵 Qualité sonore",
-          ambiance: "🎭 Ambiance", 
+          ambiance: "🎭 Ambiance",
           organisation: "📋 Organisation",
           visibility: "👀 Visibilité",
           comfort: "🪑 Confort",
@@ -3244,7 +3244,7 @@
           "game-quality": "⚽ Qualité match",
           facilities: "🏟️ Installations",
           learning: "📖 Éducatif",
-          quality: "⭐ Qualité"
+          quality: "⭐ Qualité",
         };
 
         return `
@@ -3261,9 +3261,9 @@
                   </div>`;
                 })
                 .join("")}
-            </div>
-          </div>
-        `;
+               </div>
+           </div>
+         `;
       }
 
       function formatContextInfo(rating) {
@@ -3314,8 +3314,8 @@
           ? `
           <div class="flex flex-wrap gap-3 pt-3 border-t border-gray-200">
             ${contextItems.join("")}
-          </div>
-          `
+                     </div>
+                   `
           : "";
       }
 
