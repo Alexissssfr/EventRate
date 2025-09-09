@@ -2206,9 +2206,17 @@
               <h3 class="text-lg sm:text-xl font-semibold text-gray-900 flex-1 break-words min-w-0">${
                 event.title
               }</h3>
-              <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 flex-shrink-0">
-                ${event.category || "Général"}
-              </span>
+              <div class="flex flex-col sm:flex-row gap-1 sm:gap-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 flex-shrink-0">
+                  ${event.category || "Général"}
+                </span>
+                ${(() => {
+                  const status = getEventStatus(event);
+                  return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${status.color} flex-shrink-0">
+                    ${status.icon} ${status.text}
+                  </span>`;
+                })()}
+              </div>
             </div>
             <p class="text-gray-600 text-sm leading-relaxed break-words overflow-hidden">${
               event.description
@@ -2808,11 +2816,18 @@
                          rating.overall_rating
                        }/5</span>
                      </div>
-                     <p class="text-sm text-gray-500 break-words">${formatRatingDate(
-                       rating.created_at
-                     )}</p>
+                     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                       <p class="text-sm text-gray-500 break-words">${formatRatingDate(
+                         rating.created_at
+                       )}</p>
+                       ${rating.event_date ? `
+                         <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
+                           📅 ${formatEventDate(new Date(rating.event_date))}
+                         </span>
+                       ` : ''}
+                     </div>
                    </div>
-                   <div class="flex-shrink-0">
+                   <div class="flex flex-col sm:items-end gap-2">
                      ${formatPresenceTiming(rating)}
                    </div>
                  </div>
@@ -2849,6 +2864,42 @@
          `;
       }
 
+      // Fonction pour déterminer le statut d'un événement
+      function getEventStatus(event) {
+        const now = new Date();
+        const startDate = new Date(event.date_start);
+        const endDate = event.date_end ? new Date(event.date_end) : startDate;
+        
+        // Si l'événement n'a pas encore commencé
+        if (startDate > now) {
+          const diffDays = Math.ceil((startDate - now) / (1000 * 60 * 60 * 24));
+          if (diffDays === 1) {
+            return { status: 'upcoming', text: 'Demain', color: 'bg-blue-100 text-blue-800', icon: '📅' };
+          } else if (diffDays <= 7) {
+            return { status: 'upcoming', text: `Dans ${diffDays} jours`, color: 'bg-blue-100 text-blue-800', icon: '📅' };
+          } else {
+            return { status: 'upcoming', text: 'À venir', color: 'bg-blue-100 text-blue-800', icon: '📅' };
+          }
+        }
+        
+        // Si l'événement est en cours
+        if (startDate <= now && endDate >= now) {
+          return { status: 'ongoing', text: 'En cours', color: 'bg-green-100 text-green-800', icon: '🟢' };
+        }
+        
+        // Si l'événement est terminé
+        const diffDays = Math.floor((now - endDate) / (1000 * 60 * 60 * 24));
+        if (diffDays === 0) {
+          return { status: 'ended', text: 'Terminé aujourd\'hui', color: 'bg-gray-100 text-gray-800', icon: '🔴' };
+        } else if (diffDays === 1) {
+          return { status: 'ended', text: 'Terminé hier', color: 'bg-gray-100 text-gray-800', icon: '🔴' };
+        } else if (diffDays <= 7) {
+          return { status: 'ended', text: `Terminé il y a ${diffDays} jours`, color: 'bg-gray-100 text-gray-800', icon: '🔴' };
+        } else {
+          return { status: 'ended', text: 'Terminé', color: 'bg-gray-100 text-gray-800', icon: '🔴' };
+        }
+      }
+
       // Fonctions utilitaires pour l'affichage des avis intelligents
 
       function formatRatingDate(dateString) {
@@ -2869,24 +2920,44 @@
       function formatPresenceTiming(rating) {
         if (!rating.arrival_time && !rating.departure_time) return "";
 
+        // Calculer la durée de présence si on a les deux heures
+        let durationText = "";
+        if (rating.arrival_time && rating.departure_time) {
+          const arrival = new Date(`2000-01-01T${rating.arrival_time}`);
+          const departure = new Date(`2000-01-01T${rating.departure_time}`);
+          const diffMs = departure - arrival;
+          const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+          const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+          
+          if (diffHours > 0) {
+            durationText = ` (${diffHours}h${diffMinutes > 0 ? diffMinutes : ''})`;
+          } else {
+            durationText = ` (${diffMinutes}min)`;
+          }
+        }
+
         let timingText = "";
         let timingIcon = "🕐";
+        let badgeColor = "bg-blue-100 text-blue-800";
 
         if (rating.arrival_time && rating.departure_time) {
-          timingText = `${rating.arrival_time} → ${rating.departure_time}`;
+          timingText = `${rating.arrival_time} → ${rating.departure_time}${durationText}`;
           timingIcon = "⏰";
+          badgeColor = "bg-green-100 text-green-800";
         } else if (rating.arrival_time && rating.still_present) {
           timingText = `Depuis ${rating.arrival_time}`;
           timingIcon = "🔴";
+          badgeColor = "bg-red-100 text-red-800";
         } else if (rating.arrival_time) {
           timingText = `Arrivé à ${rating.arrival_time}`;
           timingIcon = "🕐";
+          badgeColor = "bg-blue-100 text-blue-800";
         }
 
         return timingText
           ? `
           <div class="text-right sm:text-right">
-            <div class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full max-w-full">
+            <div class="inline-flex items-center px-2 py-1 ${badgeColor} text-xs font-medium rounded-full max-w-full">
               <span class="mr-1 flex-shrink-0">${timingIcon}</span>
               <span class="truncate">${timingText}</span>
             </div>
