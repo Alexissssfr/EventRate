@@ -2783,16 +2783,16 @@
         }
 
         content.innerHTML = `
-           <div class="space-y-6">
+           <div class="space-y-4 sm:space-y-6">
              ${ratings
                .map(
                  (rating) => `
-               <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+               <div class="bg-gray-50 p-4 sm:p-6 rounded-lg border border-gray-200 overflow-hidden">
                  <!-- En-tête avec note et timing -->
-                 <div class="flex items-start justify-between mb-4">
-                   <div class="flex-1">
-                     <div class="flex items-center space-x-3 mb-2">
-                       <div class="flex text-yellow-400 text-xl">
+                 <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-3">
+                   <div class="flex-1 min-w-0">
+                     <div class="flex items-center space-x-2 sm:space-x-3 mb-2">
+                       <div class="flex text-yellow-400 text-lg sm:text-xl flex-shrink-0">
                          ${Array.from({ length: 5 }, (_, i) =>
                            i < Math.floor(rating.overall_rating)
                              ? "★"
@@ -2800,16 +2800,18 @@
                              ? "☆"
                              : "☆"
                          ).join("")}
-                   </div>
-                       <span class="text-xl font-bold text-gray-900">${
+                       </div>
+                       <span class="text-lg sm:text-xl font-bold text-gray-900 flex-shrink-0">${
                          rating.overall_rating || 0
                        }/5</span>
-                   </div>
-                     <p class="text-sm text-gray-500">${formatRatingDate(
+                     </div>
+                     <p class="text-sm text-gray-500 break-words">${formatRatingDate(
                        rating.created_at
                      )}</p>
                    </div>
-                   ${formatPresenceTiming(rating)}
+                   <div class="flex-shrink-0">
+                     ${formatPresenceTiming(rating)}
+                   </div>
                  </div>
                  
                  <!-- Tags rapides -->
@@ -2822,12 +2824,12 @@
                  ${
                    rating.comment
                      ? `
-                   <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500 mb-4">
+                   <div class="bg-white p-3 sm:p-4 rounded-lg border-l-4 border-blue-500 mb-4">
                      <div class="flex items-start space-x-2">
-                       <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                        </svg>
-                       <p class="text-gray-700 italic">"${rating.comment}"</p>
+                       <p class="text-gray-700 italic text-sm sm:text-base break-words">"${rating.comment}"</p>
                    </div>
                    </div>
                  `
@@ -2880,12 +2882,12 @@
 
         return timingText
           ? `
-          <div class="text-right">
-            <div class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-              <span class="mr-1">${timingIcon}</span>
-              ${timingText}
-                   </div>
-                     </div>
+          <div class="text-right sm:text-right">
+            <div class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full max-w-full">
+              <span class="mr-1 flex-shrink-0">${timingIcon}</span>
+              <span class="truncate">${timingText}</span>
+            </div>
+          </div>
                    `
           : "";
       }
@@ -2986,10 +2988,10 @@
           const crowdText =
             crowdLevels[rating.crowd_level - 1] || `${rating.crowd_level}/5`;
           contextItems.push(`
-            <div class="flex items-center space-x-1">
-              <span>👥</span>
-              <span class="text-xs text-gray-600">Affluence:</span>
-              <span class="text-xs font-medium">${crowdText}</span>
+            <div class="flex items-center space-x-1 min-w-0">
+              <span class="flex-shrink-0">👥</span>
+              <span class="text-xs text-gray-600 flex-shrink-0">Affluence:</span>
+              <span class="text-xs font-medium break-words">${crowdText}</span>
             </div>
           `);
         }
@@ -3004,13 +3006,13 @@
             orageux: "⛈️",
           };
           contextItems.push(`
-            <div class="flex items-center space-x-1">
-              <span>${weatherEmojis[rating.weather_conditions] || "🌤️"}</span>
-              <span class="text-xs text-gray-600">Météo:</span>
-              <span class="text-xs font-medium">${
+            <div class="flex items-center space-x-1 min-w-0">
+              <span class="flex-shrink-0">${weatherEmojis[rating.weather_conditions] || "🌤️"}</span>
+              <span class="text-xs text-gray-600 flex-shrink-0">Météo:</span>
+              <span class="text-xs font-medium break-words">${
                 rating.weather_conditions
               }</span>
-                   </div>
+            </div>
           `);
         }
 
