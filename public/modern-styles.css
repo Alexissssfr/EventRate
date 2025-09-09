@@ -307,51 +307,100 @@ body::before {
   animation: fadeIn 0.4s ease-out;
 }
 
-/* Responsive */
+/* Responsive - Optimisations MOBILE */
 @media (max-width: 768px) {
   .bottom-nav {
     display: flex;
     justify-content: space-around;
   }
   
+  /* DÉSACTIVER TOUS les effets de performance sur mobile */
   .event-card {
     margin: 16px;
     padding: 20px;
-    /* Réduire les effets sur mobile pour les performances */
-    backdrop-filter: blur(10px);
-    transition: none;
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    transition: none !important;
+    transform: none !important;
   }
   
   .event-card:hover {
-    transform: none;
+    transform: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
   }
   
   .glass-card {
     margin: 16px;
-    backdrop-filter: blur(10px);
-  }
-  
-  /* Désactiver les animations complexes sur mobile */
-  .animate-slide-up,
-  .animate-fade-in {
-    animation: none;
-  }
-  
-  /* Réduire les effets de background */
-  body::before {
-    animation: none;
-  }
-  
-  /* Optimiser les transitions */
-  * {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     transition: none !important;
   }
   
-  /* Garder seulement les transitions essentielles */
-  .btn-gradient,
-  .glass-card,
-  .tag-modern {
-    transition: opacity 0.2s ease;
+  .modal-glass {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* DÉSACTIVER toutes les animations sur mobile */
+  .animate-slide-up,
+  .animate-fade-in {
+    animation: none !important;
+  }
+  
+  /* DÉSACTIVER le background animé */
+  body::before {
+    display: none !important;
+  }
+  
+  /* DÉSACTIVER toutes les transitions sur mobile */
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  /* DÉSACTIVER les effets hover sur mobile */
+  .btn-gradient:hover,
+  .glass-card:hover,
+  .tag-modern:hover,
+  .event-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Optimiser le scroll pour mobile */
+  body {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
+  }
+  
+  /* Optimiser le rendu des cartes */
+  .event-card,
+  .glass-card {
+    will-change: auto;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  
+  /* Désactiver les effets de parallaxe */
+  * {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  
+  /* Désactiver les effets de blur coûteux */
+  .nav-modern {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #ffffff !important;
   }
 }
 

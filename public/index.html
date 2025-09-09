@@ -3369,10 +3369,18 @@
 
           if (response.ok) {
             const events = await response.json();
-            // Lazy loading pour améliorer les performances
-            setTimeout(() => {
-              displayMyEvents(events);
-            }, 50);
+            // Lazy loading optimisé pour mobile
+            if (window.innerWidth <= 768) {
+              // Mobile : délai plus long pour éviter les lags
+              setTimeout(() => {
+                displayMyEvents(events);
+              }, 100);
+            } else {
+              // Desktop : délai normal
+              setTimeout(() => {
+                displayMyEvents(events);
+              }, 50);
+            }
           } else {
             console.error("Erreur chargement événements:", response.status);
             document.getElementById("my-events-list").innerHTML = `
@@ -3832,10 +3840,18 @@
           const data = await response.json();
 
           if (response.ok) {
-            // Lazy loading pour améliorer les performances
-            setTimeout(() => {
-              displayMyRatings(data);
-            }, 50);
+            // Lazy loading optimisé pour mobile
+            if (window.innerWidth <= 768) {
+              // Mobile : délai plus long pour éviter les lags
+              setTimeout(() => {
+                displayMyRatings(data);
+              }, 100);
+            } else {
+              // Desktop : délai normal
+              setTimeout(() => {
+                displayMyRatings(data);
+              }, 50);
+            }
           } else {
             showNotification(
               "error",
