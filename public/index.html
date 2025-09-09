@@ -3196,9 +3196,17 @@
               <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                 <div class="flex justify-between items-start mb-4">
                   <div class="flex-1">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">${
-                      event.title
-                    }</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                      <h3 class="text-xl font-bold text-gray-900">${
+                        event.title
+                      }</h3>
+                      ${(() => {
+                        const status = getEventStatus(event);
+                        return `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${status.color}">
+                          ${status.icon} ${status.text}
+                        </span>`;
+                      })()}
+                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600">
                       <div class="flex flex-col sm:flex-row sm:items-center">
                         <span class="font-medium text-gray-500 sm:mr-2">📅 Date:</span>
@@ -3630,9 +3638,16 @@
                 <!-- En-tête avec événement et actions -->
                 <div class="flex justify-between items-start mb-4">
                   <div class="flex-1">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-1">${
-                      rating.event_title
-                    }</h3>
+                    <div class="flex items-center gap-2 mb-1">
+                      <h3 class="text-lg font-semibold text-gray-900">${
+                        rating.event_title
+                      }</h3>
+                      ${rating.event_date ? `
+                        <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
+                          📅 ${formatEventDate(new Date(rating.event_date))}
+                        </span>
+                      ` : ''}
+                    </div>
                     <p class="text-sm text-gray-500">${formatRatingDate(
                       rating.created_at
                     )}</p>
@@ -3648,6 +3663,7 @@
                         rating.overall_rating || 0
                       }/5</span>
                     </div>
+                    ${formatPresenceTiming(rating)}
                   </div>
                   <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:ml-4 mt-4 sm:mt-0">
                     <button
