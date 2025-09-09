@@ -2816,16 +2816,9 @@
                          rating.overall_rating
                        }/5</span>
                      </div>
-                     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                       <p class="text-sm text-gray-500 break-words">${formatRatingDate(
-                         rating.created_at
-                       )}</p>
-                       ${rating.event_date ? `
-                         <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
-                           📅 ${formatEventDate(new Date(rating.event_date))}
-                         </span>
-                       ` : ''}
-                     </div>
+                     <p class="text-sm text-gray-500 break-words">${formatRatingDate(
+                       rating.created_at
+                     )}</p>
                    </div>
                    <div class="flex flex-col sm:items-end gap-2">
                      ${formatPresenceTiming(rating)}
@@ -2920,6 +2913,11 @@
       function formatPresenceTiming(rating) {
         if (!rating.arrival_time && !rating.departure_time) return "";
 
+        // Déterminer si l'avis est du jour même ou d'un jour passé
+        const ratingDate = new Date(rating.created_at);
+        const today = new Date();
+        const isToday = ratingDate.toDateString() === today.toDateString();
+        
         // Calculer la durée de présence si on a les deux heures
         let durationText = "";
         if (rating.arrival_time && rating.departure_time) {
@@ -2941,14 +2939,24 @@
         let badgeColor = "bg-blue-100 text-blue-800";
 
         if (rating.arrival_time && rating.departure_time) {
+          // Arrivée + départ : toujours afficher la plage horaire
           timingText = `${rating.arrival_time} → ${rating.departure_time}${durationText}`;
           timingIcon = "⏰";
           badgeColor = "bg-green-100 text-green-800";
         } else if (rating.arrival_time && rating.still_present) {
-          timingText = `Depuis ${rating.arrival_time}`;
-          timingIcon = "🔴";
-          badgeColor = "bg-red-100 text-red-800";
+          // En cours : seulement si c'est aujourd'hui
+          if (isToday) {
+            timingText = `Depuis ${rating.arrival_time}`;
+            timingIcon = "🔴";
+            badgeColor = "bg-red-100 text-red-800";
+          } else {
+            // Pour les jours passés, afficher juste l'heure d'arrivée
+            timingText = `Arrivé à ${rating.arrival_time}`;
+            timingIcon = "🕐";
+            badgeColor = "bg-gray-100 text-gray-700";
+          }
         } else if (rating.arrival_time) {
+          // Arrivée seule
           timingText = `Arrivé à ${rating.arrival_time}`;
           timingIcon = "🕐";
           badgeColor = "bg-blue-100 text-blue-800";
@@ -3641,16 +3649,9 @@
                 <!-- En-tête avec événement et actions -->
                 <div class="flex justify-between items-start mb-4">
                   <div class="flex-1">
-                    <div class="flex items-center gap-2 mb-1">
-                      <h3 class="text-lg font-semibold text-gray-900">${
-                        rating.event_title
-                      }</h3>
-                      ${rating.event_date ? `
-                        <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
-                          📅 ${formatEventDate(new Date(rating.event_date))}
-                        </span>
-                      ` : ''}
-                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-1">${
+                      rating.event_title
+                    }</h3>
                     <p class="text-sm text-gray-500">${formatRatingDate(
                       rating.created_at
                     )}</p>
