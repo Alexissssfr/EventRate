@@ -960,9 +960,13 @@
                   Se souvenir de moi
                 </label>
               </div>
-              <div class="text-sm">
-                <span class="text-gray-500">Évite de re-saisir vos infos</span>
-              </div>
+              <button
+                type="button"
+                onclick="showForgotPasswordModal()"
+                class="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Mot de passe oublié ?
+              </button>
             </div>
 
             <button
@@ -1605,10 +1609,10 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeRatingsModal()"
     >
-      <div
+        <div
         class="flex items-center justify-center min-h-screen p-4"
         onclick="event.stopPropagation()"
-      >
+        >
         <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto">
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b">
@@ -1958,6 +1962,85 @@
       </div>
     </div>
 
+    <!-- Modal de récupération de mot de passe -->
+    <div
+      id="forgot-password-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+      onclick="closeForgotPasswordModal()"
+    >
+      <div
+        class="flex items-center justify-center min-h-screen p-2 sm:p-4"
+        onclick="event.stopPropagation()"
+      >
+        <div class="modal-glass max-w-md w-full mx-2 sm:mx-0">
+          <!-- Header -->
+          <div class="flex items-center justify-between p-4 sm:p-6 border-b">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900">
+              🔑 Mot de passe oublié
+            </h2>
+            <button
+              onclick="closeForgotPasswordModal()"
+              class="text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Contenu -->
+          <div class="p-4 sm:p-6">
+            <div class="text-center mb-6">
+              <p class="text-gray-600 mb-4">
+                Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+              </p>
+            </div>
+
+            <form id="forgot-password-form" onsubmit="handleForgotPassword(event)" class="space-y-4">
+              <div>
+                <label for="forgot-email" class="block text-sm font-medium text-gray-700 mb-2">
+                  Adresse email
+                </label>
+                <input
+                  type="email"
+                  id="forgot-email"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  placeholder="votre@email.com"
+                />
+              </div>
+
+              <button
+                type="submit"
+                class="w-full btn-gradient text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+              >
+                Envoyer le lien de réinitialisation
+              </button>
+            </form>
+
+            <div class="mt-6 text-center">
+              <button
+                onclick="closeForgotPasswordModal(); showSection('login')"
+                class="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                ← Retour à la connexion
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
       // Variables globales
       let currentUser = null;
@@ -2201,7 +2284,7 @@
 
         setTimeout(() => {
           notification.classList.add("hidden");
-        }, 5000);
+        }, 2000);
       }
 
       // Variables globales pour les filtres
@@ -3160,8 +3243,8 @@
         } else if (rating.arrival_time && rating.still_present) {
           // En cours : seulement si c'est aujourd'hui
           if (isToday) {
-            timingText = `Depuis ${rating.arrival_time}`;
-            timingIcon = "🔴";
+          timingText = `Depuis ${rating.arrival_time}`;
+          timingIcon = "🔴";
             badgeColor = "bg-red-100 text-red-800";
           } else {
             // Pour les jours passés, afficher juste l'heure d'arrivée
@@ -3344,6 +3427,57 @@
         document.getElementById("my-ratings-modal").classList.add("hidden");
       }
 
+      // Modal de récupération de mot de passe
+      function showForgotPasswordModal() {
+        document.getElementById("forgot-password-modal").classList.remove("hidden");
+      }
+
+      function closeForgotPasswordModal() {
+        document.getElementById("forgot-password-modal").classList.add("hidden");
+        document.getElementById("forgot-password-form").reset();
+      }
+
+      // Gérer la récupération de mot de passe
+      async function handleForgotPassword(event) {
+        event.preventDefault();
+        
+        const email = document.getElementById("forgot-email").value;
+        
+        try {
+          const response = await fetch(`${API_BASE}/auth/forgot-password`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            showNotification(
+              "success",
+              "Email envoyé !",
+              "Vérifiez votre boîte email pour le lien de réinitialisation."
+            );
+            closeForgotPasswordModal();
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              data.error || "Impossible d'envoyer l'email de réinitialisation"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification(
+            "error",
+            "Erreur",
+            "Erreur de connexion au serveur"
+          );
+        }
+      }
+
       // Modal "Mes événements" - VERSION COMPLÈTE
       async function openMyEventsModal() {
         document.getElementById("my-events-modal").classList.remove("hidden");
@@ -3373,7 +3507,7 @@
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-                displayMyEvents(events);
+            displayMyEvents(events);
               }, 100);
             } else {
               // Desktop : délai normal
@@ -3406,117 +3540,161 @@
         if (events.length === 0) {
           content.innerHTML = `
             <div class="text-center py-12">
-              <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-              </svg>
-              <h3 class="mt-2 text-lg font-medium text-gray-900">Aucun événement créé</h3>
-              <p class="mt-1 text-gray-500">Créez votre premier événement pour le voir ici !</p>
+              <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full flex items-center justify-center">
+                <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-2">Aucun événement créé</h3>
+              <p class="text-gray-600 mb-6">Créez votre premier événement pour le voir ici !</p>
               <button
                 onclick="closeMyEventsModal(); showSection('home')"
-                class="mt-4 bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
+                class="btn-gradient text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
               >
                 🎪 Créer un événement
               </button>
-                     </div>
+            </div>
           `;
           return;
         }
 
         content.innerHTML = `
-          <div class="space-y-4">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             ${events
               .map(
                 (event) => `
-              <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                <div class="flex justify-between items-start mb-4">
-                  <div class="flex-1">
-                    <div class="flex items-center gap-2 mb-2">
-                      <h3 class="text-xl font-bold text-gray-900">${
-                        event.title
-                      }</h3>
-                      ${(() => {
-                        const status = getEventStatus(event);
-                        return `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${status.color}">
-                          ${status.icon} ${status.text}
-                        </span>`;
-                      })()}
+              <div class="event-card group">
+                <!-- Header avec image et statut -->
+                <div class="relative mb-4">
+                  ${event.photos && event.photos.length > 0 ? `
+                    <img src="${event.photos[0]}" 
+                         class="w-full h-48 object-cover rounded-t-lg" 
+                         alt="Photo événement" 
+                         onerror="this.style.display='none'">
+                  ` : `
+                    <div class="w-full h-48 bg-gradient-to-br from-purple-100 to-blue-100 rounded-t-lg flex items-center justify-center">
+                      <svg class="w-16 h-16 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                      </svg>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600">
-                      <div class="flex flex-col sm:flex-row sm:items-center">
-                        <span class="font-medium text-gray-500 sm:mr-2">📅 Date:</span>
-                        <span class="text-gray-900">${formatEventDateRange(
-                          event
-                        )}</span>
-                      </div>
-                      <div class="flex flex-col sm:flex-row sm:items-center">
-                        <span class="font-medium text-gray-500 sm:mr-2">📍 Lieu:</span>
-                        <span class="text-gray-900">${
-                          event.location || "Non spécifié"
-                        }</span>
-                      </div>
-                      <div class="flex flex-col sm:flex-row sm:items-center">
-                        <span class="font-medium text-gray-500 sm:mr-2">🏷️ Catégorie:</span>
-                        <span class="text-gray-900">${
-                          event.category || "Non spécifiée"
-                        }</span>
-                      </div>
-                      <div class="flex flex-col sm:flex-row sm:items-center">
-                        <span class="font-medium text-gray-500 sm:mr-2">💰 Prix:</span>
-                        <span class="text-gray-900">${
-                          event.price_is_free
-                            ? "🆓 Gratuit"
-                            : `€${event.price_amount || 0}`
-                        }</span>
-                      </div>
-                      ${
-                        event.rating_average && event.rating_average > 0
-                          ? `<div class="flex flex-col sm:flex-row sm:items-center">
-                              <span class="font-medium text-gray-500 sm:mr-2">⭐ Note moyenne:</span>
-                              <span class="text-gray-900">${formatRating(
-                                event
-                              )}</span>
-                            </div>`
-                          : ""
-                      }
-                     </div>
+                  `}
+                  
+                  <!-- Badge de statut -->
+                  <div class="absolute top-3 right-3">
+                    ${(() => {
+                      const status = getEventStatus(event);
+                      return `<span class="status-badge ${status.color}">
+                        ${status.icon} ${status.text}
+                      </span>`;
+                    })()}
                   </div>
-                  <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:ml-4 mt-4 sm:mt-0">
+                </div>
+
+                <!-- Contenu principal -->
+                <div class="p-6">
+                  <!-- Titre et catégorie -->
+                  <div class="mb-4">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
+                      ${event.title}
+                    </h3>
+                    ${event.category ? `
+                      <span class="tag-modern bg-purple-100 text-purple-700">
+                        🏷️ ${event.category}
+                      </span>
+                    ` : ''}
+                  </div>
+
+                  <!-- Informations principales -->
+                  <div class="space-y-3 mb-6">
+                    <!-- Date -->
+                    <div class="flex items-center text-gray-600">
+                      <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm font-medium text-gray-500">Date</p>
+                        <p class="text-gray-900 font-semibold">${formatEventDateRange(event)}</p>
+                      </div>
+                    </div>
+
+                    <!-- Lieu -->
+                    <div class="flex items-center text-gray-600">
+                      <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm font-medium text-gray-500">Lieu</p>
+                        <p class="text-gray-900 font-semibold">${event.location || "Non spécifié"}</p>
+                      </div>
+                    </div>
+
+                    <!-- Prix -->
+                    <div class="flex items-center text-gray-600">
+                      <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm font-medium text-gray-500">Prix</p>
+                        <p class="text-gray-900 font-semibold">
+                          ${event.price_is_free ? "🆓 Gratuit" : `€${event.price_amount || 0}`}
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Note moyenne -->
+                    ${event.rating_average && event.rating_average > 0 ? `
+                      <div class="flex items-center text-gray-600">
+                        <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
+                          <svg class="w-4 h-4 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="text-sm font-medium text-gray-500">Note moyenne</p>
+                          <p class="text-gray-900 font-semibold">${formatRating(event)}</p>
+                        </div>
+                      </div>
+                    ` : ''}
+                  </div>
+
+                  <!-- Description -->
+                  ${event.description ? `
+                    <div class="mb-6">
+                      <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">
+                        ${event.description}
+                      </p>
+                    </div>
+                  ` : ''}
+
+                  <!-- Actions -->
+                  <div class="flex space-x-3">
                     <button 
                       onclick="editEvent(${event.id})" 
-                      class="btn-gradient w-full sm:w-auto"
+                      class="flex-1 btn-gradient text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center"
                     >
-                      ✏️ Modifier
+                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                      Modifier
                     </button>
                     <button 
                       onclick="deleteEvent(${event.id})" 
-                      class="glass-card text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-300 w-full sm:w-auto"
+                      class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all duration-300 flex items-center justify-center"
                     >
-                      🗑️ Supprimer
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
                     </button>
                   </div>
                 </div>
-
-                <div class="mb-4">
-                  <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    ${(event.photos || [])
-                      .slice(0, 3)
-                      .map(
-                        (photo) => `
-                      <img src="${photo}" class="w-full h-24 object-cover rounded-md border" alt="Photo événement" onerror="this.style.display='none'">
-                    `
-                      )
-                      .join("")}
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <p class="text-gray-700">${
-                    event.description || "Aucune description"
-                  }</p>
-                </div>
-
-
-               </div>
+              </div>
              `
               )
               .join("")}
@@ -3844,7 +4022,7 @@
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-                displayMyRatings(data);
+            displayMyRatings(data);
               }, 100);
             } else {
               // Desktop : délai normal
