@@ -3555,7 +3555,7 @@
 
         try {
           const response = await fetch(
-            `${API_BASE}/auth/forgot-password`,
+            `${API_BASE}/auth/simple-password-reset`,
             {
               method: "POST",
               headers: {
@@ -3568,31 +3568,75 @@
           const data = await response.json();
 
           if (response.ok) {
-            showNotification(
-              "success",
-              "Email envoyé !",
-              data.message ||
-                "Vérifiez votre boîte email pour le lien de réinitialisation."
-            );
+            // Afficher le code et le lien directement dans l'application
+            showCodeModal(data.code, data.resetUrl, data.userEmail);
             closeForgotPasswordModal();
-
-            // En développement, afficher le lien dans la console
-            if (data.resetLink) {
-              console.log(
-                "🔗 Lien de réinitialisation (développement):",
-                data.resetLink
-              );
-            }
           } else {
             showNotification(
               "error",
               "Erreur",
-              data.error || "Impossible d'envoyer l'email de réinitialisation"
+              data.error || "Impossible de générer le code de récupération"
             );
           }
         } catch (error) {
           console.error("Erreur:", error);
           showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
+      // Afficher la modal avec le code de récupération
+      function showCodeModal(code, resetUrl, userEmail) {
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+        modal.innerHTML = `
+          <div class="bg-white rounded-lg max-w-md w-full p-6 relative" onclick="event.stopPropagation()">
+            <button onclick="closeCodeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+            
+            <div class="text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              
+              <h3 class="text-xl font-bold text-gray-900 mb-2">🔑 Code de récupération généré !</h3>
+              <p class="text-gray-600 mb-4">Pour ${userEmail}</p>
+              
+              <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-4">
+                <p class="text-sm text-blue-800 mb-2">Votre code de récupération :</p>
+                <div class="text-2xl font-mono font-bold text-blue-900 bg-blue-100 px-4 py-2 rounded border-2 border-blue-300">
+                  ${code}
+                </div>
+              </div>
+              
+              <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4">
+                <p class="text-sm text-gray-700 mb-2">Ou cliquez sur ce lien :</p>
+                <a href="${resetUrl}" class="text-blue-600 hover:text-blue-800 underline text-sm break-all">
+                  ${resetUrl}
+                </a>
+              </div>
+              
+              <p class="text-xs text-gray-500">⏰ Ce code expire dans 1 heure</p>
+              
+              <button onclick="closeCodeModal()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                Compris !
+              </button>
+            </div>
+          </div>
+        `;
+        
+        modal.onclick = closeCodeModal;
+        document.body.appendChild(modal);
+      }
+
+      function closeCodeModal() {
+        const modal = document.querySelector('.fixed.inset-0.bg-black.bg-opacity-50');
+        if (modal) {
+          modal.remove();
         }
       }
 
