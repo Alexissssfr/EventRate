@@ -3785,13 +3785,26 @@
       // Gérer la réinitialisation de mot de passe
       async function resetPassword(event) {
         event.preventDefault();
+        
+        console.log("🔧 DEBUG - Début de resetPassword");
+        console.log("🔧 DEBUG - DOM chargé:", document.readyState);
 
         const tokenInput = document.getElementById("reset-token");
         const newPasswordInput = document.getElementById("reset-password");
         const confirmPasswordInput = document.getElementById("reset-password-confirm");
 
+        console.log("🔧 DEBUG - Éléments trouvés:");
+        console.log("🔧 DEBUG - tokenInput:", tokenInput);
+        console.log("🔧 DEBUG - newPasswordInput:", newPasswordInput);
+        console.log("🔧 DEBUG - confirmPasswordInput:", confirmPasswordInput);
+
         // Vérifier que tous les éléments existent
         if (!tokenInput || !newPasswordInput || !confirmPasswordInput) {
+          console.error("❌ ERREUR - Éléments manquants:", {
+            tokenInput: !!tokenInput,
+            newPasswordInput: !!newPasswordInput,
+            confirmPasswordInput: !!confirmPasswordInput
+          });
           showNotification(
             "error",
             "Erreur",
