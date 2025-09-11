@@ -912,7 +912,7 @@
     </section>
 
     <!-- Section Réinitialisation de mot de passe -->
-    <section id="reset-password" class="section hidden">
+    <section id="reset-password-section" class="section hidden">
       <div class="py-20 bg-white">
         <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center mb-16">
@@ -2350,7 +2350,7 @@
             const tokenInput = document.getElementById("reset-token");
             if (tokenInput) {
               tokenInput.value = token;
-              showSection("reset-password");
+              showSection("reset-password-section");
               showNotification(
                 "info",
                 "Token détecté",
@@ -3785,13 +3785,15 @@
       // Gérer la réinitialisation de mot de passe
       async function resetPassword(event) {
         event.preventDefault();
-        
+
         console.log("🔧 DEBUG - Début de resetPassword");
         console.log("🔧 DEBUG - DOM chargé:", document.readyState);
 
         const tokenInput = document.getElementById("reset-token");
         const newPasswordInput = document.getElementById("reset-password");
-        const confirmPasswordInput = document.getElementById("reset-password-confirm");
+        const confirmPasswordInput = document.getElementById(
+          "reset-password-confirm"
+        );
 
         console.log("🔧 DEBUG - Éléments trouvés:");
         console.log("🔧 DEBUG - tokenInput:", tokenInput);
@@ -3803,7 +3805,7 @@
           console.error("❌ ERREUR - Éléments manquants:", {
             tokenInput: !!tokenInput,
             newPasswordInput: !!newPasswordInput,
-            confirmPasswordInput: !!confirmPasswordInput
+            confirmPasswordInput: !!confirmPasswordInput,
           });
           showNotification(
             "error",
