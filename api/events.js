@@ -21,19 +21,34 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === "GET") {
-      // Récupérer tous les événements
+      console.log('🔍 Tentative de récupération des événements...');
+      
+      // Vérifier d'abord si la table events existe
+      const tableCheck = await pool.query(`
+        SELECT EXISTS (
+          SELECT FROM information_schema.tables 
+          WHERE table_name = 'events'
+        );
+      `);
+      
+      if (!tableCheck.rows[0].exists) {
+        console.log('❌ Table events n\'existe pas');
+        return res.status(200).json([]);
+      }
+      
+      // Récupérer tous les événements (sans les colonnes qui n'existent pas)
       const result = await pool.query(`
         SELECT id, title, description, category,
                date_start, date_end, location_address, location_city,
-               price, capacity, created_by, created_at,
-               photos
+               created_by, created_at
         FROM events 
         ORDER BY date_start DESC
       `);
 
       // S'assurer que result.rows est un tableau
       const events = result.rows || [];
-      console.log('Événements récupérés:', events.length);
+      console.log('✅ Événements récupérés:', events.length);
+      console.log('📋 Premiers événements:', events.slice(0, 2));
       
       return res.status(200).json(events);
     }
