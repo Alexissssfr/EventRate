@@ -2658,7 +2658,8 @@
           const response = await fetch(EVENTS_ENDPOINT);
           const data = await response.json();
 
-          allEvents = data;
+          // S'assurer que data est un tableau
+          allEvents = Array.isArray(data) ? data : [];
 
           // Les événements sont déjà dans le bon format depuis l'API
           filteredEvents = [...allEvents];

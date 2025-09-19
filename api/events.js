@@ -31,7 +31,11 @@ export default async function handler(req, res) {
         ORDER BY date_start DESC
       `);
 
-      return res.status(200).json(result.rows);
+      // S'assurer que result.rows est un tableau
+      const events = result.rows || [];
+      console.log('Événements récupérés:', events.length);
+      
+      return res.status(200).json(events);
     }
 
     if (req.method === "POST") {
