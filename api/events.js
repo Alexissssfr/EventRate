@@ -60,15 +60,15 @@ export default async function handler(req, res) {
         title,
         description,
         category,
-        date_start,
-        date_end,
-        location_address,
-        location_city,
-        price_amount,
-        price_currency,
-        price_is_free,
+        dateStart,
+        dateEnd,
+        locationAddress,
+        locationCity,
+        priceAmount,
+        priceCurrency,
+        priceIsFree,
         capacity,
-        creator_id
+        creatorId
       } = req.body;
 
       const result = await pool.query(
@@ -81,15 +81,15 @@ export default async function handler(req, res) {
           title,
           description,
           category,
-          date_start,
-          date_end,
-          location_address,
-          location_city,
-          price_amount,
-          price_currency || 'EUR',
-          price_is_free !== undefined ? price_is_free : true,
+          dateStart,
+          dateEnd,
+          locationAddress,
+          locationCity,
+          priceAmount,
+          priceCurrency || 'EUR',
+          priceIsFree !== undefined ? priceIsFree : true,
           capacity || 0,
-          creator_id
+          creatorId
         ]
       );
 
