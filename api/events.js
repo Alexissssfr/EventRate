@@ -36,11 +36,11 @@ export default async function handler(req, res) {
         return res.status(200).json([]);
       }
       
-      // Récupérer tous les événements (sans les colonnes qui n'existent pas)
+      // Récupérer tous les événements avec les bonnes colonnes Supabase
       const result = await pool.query(`
         SELECT id, title, description, category,
                date_start, date_end, location_address, location_city,
-               created_by, created_at
+               price_amount, created_by, created_at
         FROM events 
         ORDER BY date_start DESC
       `);
@@ -62,16 +62,14 @@ export default async function handler(req, res) {
         date_end,
         location_address,
         location_city,
-        price,
-        capacity,
-        created_by,
-        photos
+        price_amount,
+        created_by
       } = req.body;
 
       const result = await pool.query(
         `INSERT INTO events (title, description, category, date_start, date_end, 
-                           location_address, location_city, price, capacity, created_by, photos)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+                           location_address, location_city, price_amount, created_by)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
          RETURNING *`,
         [
           title,
@@ -81,10 +79,8 @@ export default async function handler(req, res) {
           date_end,
           location_address,
           location_city,
-          price,
-          capacity,
-          created_by,
-          photos
+          price_amount,
+          created_by
         ]
       );
 
