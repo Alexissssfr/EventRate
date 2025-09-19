@@ -21,8 +21,8 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === "GET") {
-      console.log('🔍 Tentative de récupération des événements...');
-      
+      console.log("🔍 Tentative de récupération des événements...");
+
       // Vérifier d'abord si la table events existe
       const tableCheck = await pool.query(`
         SELECT EXISTS (
@@ -30,26 +30,28 @@ export default async function handler(req, res) {
           WHERE table_name = 'events'
         );
       `);
-      
+
       if (!tableCheck.rows[0].exists) {
-        console.log('❌ Table events n\'existe pas');
+        console.log("❌ Table events n'existe pas");
         return res.status(200).json([]);
       }
-      
-      // Récupérer tous les événements avec les bonnes colonnes Supabase
+
+      // Récupérer tous les événements avec les vraies colonnes Supabase
       const result = await pool.query(`
         SELECT id, title, description, category,
                date_start, date_end, location_address, location_city,
-               price_amount, created_by, created_at
+               price_amount, price_currency, price_is_free, capacity,
+               current_attendees, creator_id, status, rating_average,
+               rating_count, created_at
         FROM events 
         ORDER BY date_start DESC
       `);
 
       // S'assurer que result.rows est un tableau
       const events = result.rows || [];
-      console.log('✅ Événements récupérés:', events.length);
-      console.log('📋 Premiers événements:', events.slice(0, 2));
-      
+      console.log("✅ Événements récupérés:", events.length);
+      console.log("📋 Premiers événements:", events.slice(0, 2));
+
       return res.status(200).json(events);
     }
 
@@ -63,13 +65,17 @@ export default async function handler(req, res) {
         location_address,
         location_city,
         price_amount,
-        created_by
+        price_currency,
+        price_is_free,
+        capacity,
+        creator_id
       } = req.body;
 
       const result = await pool.query(
         `INSERT INTO events (title, description, category, date_start, date_end, 
-                           location_address, location_city, price_amount, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+                           location_address, location_city, price_amount, price_currency, 
+                           price_is_free, capacity, creator_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
          RETURNING *`,
         [
           title,
@@ -80,7 +86,10 @@ export default async function handler(req, res) {
           location_address,
           location_city,
           price_amount,
-          created_by
+          price_currency || 'EUR',
+          price_is_free !== undefined ? price_is_free : true,
+          capacity || 0,
+          creator_id
         ]
       );
 
@@ -88,12 +97,11 @@ export default async function handler(req, res) {
     }
 
     return res.status(405).json({ error: "Méthode non autorisée" });
-
   } catch (error) {
     console.error("Erreur API events:", error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: "Erreur interne du serveur",
-      details: error.message 
+      details: error.message,
     });
   }
 }
