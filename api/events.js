@@ -42,7 +42,7 @@ export default async function handler(req, res) {
                date_start, date_end, location_address, location_city,
                price_amount, price_currency, price_is_free, capacity,
                current_attendees, creator_id, status, rating_average,
-               rating_count, created_at
+               rating_count, images, photos, created_at
         FROM events 
         ORDER BY date_start DESC
       `);
@@ -51,6 +51,14 @@ export default async function handler(req, res) {
       const events = result.rows || [];
       console.log("✅ Événements récupérés:", events.length);
       console.log("📋 Premiers événements:", events.slice(0, 2));
+      
+      // Debug des photos
+      events.forEach((event, index) => {
+        if (index < 3) { // Log seulement les 3 premiers
+          console.log(`📸 Événement ${index + 1} - Photos:`, event.photos);
+          console.log(`📸 Événement ${index + 1} - Images:`, event.images);
+        }
+      });
 
       return res.status(200).json(events);
     }
