@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 // Configuration de la base de données
 const pool = new Pool({
@@ -57,10 +57,11 @@ export default async function handler(req, res) {
     const { id: user_id, email: userEmail, first_name } = userResult.rows[0];
     console.log('✅ Utilisateur trouvé:', userEmail, 'ID:', user_id);
 
-    // Hasher le nouveau mot de passe
-    console.log('🔐 Hachage du nouveau mot de passe...');
-    const hashedPassword = crypto.createHash('sha256').update(newPassword).digest('hex');
-    console.log('🔐 Mot de passe haché:', hashedPassword.substring(0, 20) + '...');
+    // Hasher le nouveau mot de passe avec bcrypt (comme dans login.js)
+    console.log('🔐 Hachage du nouveau mot de passe avec bcrypt...');
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    console.log('🔐 Mot de passe haché avec bcrypt');
 
     // Mettre à jour le mot de passe de l'utilisateur
     console.log('💾 Mise à jour du mot de passe en base...');
