@@ -1072,10 +1072,10 @@
                 >Mot de passe</label
               >
               <div class="relative">
-                <input
-                  type="password"
-                  id="login-password"
-                  required
+              <input
+                type="password"
+                id="login-password"
+                required
                   class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
                 />
                 <button
@@ -1124,7 +1124,7 @@
               </div>
               <button
                 type="button"
-                onclick="showForgotPasswordModal()"
+                onclick="showRecoveryCodeSection()"
                 class="text-sm text-blue-600 hover:text-blue-800 font-medium"
               >
                 Mot de passe oublié ?
@@ -1220,10 +1220,10 @@
                 >Mot de passe</label
               >
               <div class="relative">
-                <input
-                  type="password"
-                  id="register-password"
-                  required
+              <input
+                type="password"
+                id="register-password"
+                required
                   class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
                 />
                 <button
@@ -1253,6 +1253,22 @@
                   </svg>
                 </button>
               </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Code de récupération</label
+              >
+              <input
+                type="text"
+                id="register-recovery-code"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white font-mono"
+                placeholder="Votre code secret (ex: RC-ABC123-XYZ789)"
+              />
+              <p class="text-xs text-gray-500 mt-1">
+                ⚠️ <strong>GARDEZ CE CODE PRÉCIEUSEMENT !</strong> Il vous servira à réinitialiser votre mot de passe si vous l'oubliez.
+              </p>
             </div>
 
             <!-- Option "Se souvenir de moi" -->
@@ -1294,6 +1310,128 @@
               </p>
             </div>
           </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Réinitialisation avec code de récupération -->
+    <section id="recovery-code-section" class="section hidden">
+      <div class="py-20 bg-white">
+        <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">
+              🔑 Réinitialisation de mot de passe
+            </h2>
+            <p class="text-gray-600">Entrez votre email et votre code de récupération</p>
+          </div>
+
+          <form class="space-y-6" onsubmit="resetPasswordWithRecoveryCode(event)">
+            <div>
+              <label
+                for="recovery-email"
+                class="block text-sm font-medium text-gray-700 mb-2"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="recovery-email"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
+                placeholder="votre@email.com"
+              />
+            </div>
+            <div>
+              <label
+                for="recovery-code"
+                class="block text-sm font-medium text-gray-700 mb-2"
+                >Code de récupération</label
+              >
+              <input
+                type="text"
+                id="recovery-code"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white font-mono"
+                placeholder="Votre code secret"
+              />
+              <p class="text-xs text-gray-500 mt-1">
+                Le code que vous avez défini lors de votre inscription
+              </p>
+            </div>
+            <div>
+              <label
+                for="new-password"
+                class="block text-sm font-medium text-gray-700 mb-2"
+                >Nouveau mot de passe</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  id="new-password"
+                  required
+                  minlength="6"
+                  class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onclick="togglePasswordVisibility('new-password', 'new-password-toggle')"
+                  id="new-password-toggle"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div>
+              <label
+                for="confirm-new-password"
+                class="block text-sm font-medium text-gray-700 mb-2"
+                >Confirmer le nouveau mot de passe</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  id="confirm-new-password"
+                  required
+                  minlength="6"
+                  class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onclick="togglePasswordVisibility('confirm-new-password', 'confirm-new-password-toggle')"
+                  id="confirm-new-password-toggle"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary-600 text-white py-3 px-4 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              Réinitialiser le mot de passe
+            </button>
+          </form>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+              Vous vous souvenez de votre mot de passe ?
+              <button
+                onclick="showSection('login')"
+                class="text-primary-600 hover:text-primary-500 font-medium"
+              >
+                Se connecter
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -1799,10 +1937,10 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeRatingsModal()"
     >
-      <div
+        <div
         class="flex items-center justify-center min-h-screen p-4"
         onclick="event.stopPropagation()"
-      >
+        >
         <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto">
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b">
@@ -3465,8 +3603,8 @@
         } else if (rating.arrival_time && rating.still_present) {
           // En cours : seulement si c'est aujourd'hui
           if (isToday) {
-            timingText = `Depuis ${rating.arrival_time}`;
-            timingIcon = "🔴";
+          timingText = `Depuis ${rating.arrival_time}`;
+          timingIcon = "🔴";
             badgeColor = "bg-red-100 text-red-800";
           } else {
             // Pour les jours passés, afficher juste l'heure d'arrivée
@@ -3759,6 +3897,79 @@
         }
       }
 
+      // Fonction pour afficher la section de réinitialisation
+      function showRecoveryCodeSection() {
+        showSection("recovery-code-section");
+      }
+
+      // Fonction pour réinitialiser le mot de passe avec le code de récupération
+      async function resetPasswordWithRecoveryCode(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("recovery-email").value;
+        const recoveryCode = document.getElementById("recovery-code").value;
+        const newPassword = document.getElementById("new-password").value.trim();
+        const confirmPassword = document.getElementById("confirm-new-password").value.trim();
+
+        // Vérifier que les mots de passe correspondent
+        if (newPassword !== confirmPassword) {
+          showNotification(
+            "error",
+            "Erreur",
+            "Les mots de passe ne correspondent pas"
+          );
+          return;
+        }
+
+        // Vérifier la longueur du mot de passe
+        if (newPassword.length < 6) {
+          showNotification(
+            "error",
+            "Erreur",
+            "Le mot de passe doit contenir au moins 6 caractères"
+          );
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/auth/reset-with-recovery-code`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              recoveryCode: recoveryCode,
+              newPassword: newPassword,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            showNotification(
+              "success",
+              "Mot de passe réinitialisé !",
+              data.message || "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+            );
+
+            // Rediriger vers la page de connexion
+            setTimeout(() => {
+              showSection("login");
+            }, 2000);
+          } else {
+            showNotification(
+              "error",
+              "Erreur",
+              data.error || "Erreur lors de la réinitialisation"
+            );
+          }
+        } catch (error) {
+          console.error("Erreur:", error);
+          showNotification("error", "Erreur", "Erreur de connexion au serveur");
+        }
+      }
+
       // Fonction pour basculer la visibilité des mots de passe
       function togglePasswordVisibility(inputId, buttonId) {
         const input = document.getElementById(inputId);
@@ -3919,7 +4130,7 @@
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-                displayMyEvents(events);
+            displayMyEvents(events);
               }, 100);
             } else {
               // Desktop : délai normal
@@ -4036,7 +4247,7 @@
                       <div>
                         <p class="text-sm font-medium text-gray-500">Date</p>
                         <p class="text-gray-900 font-semibold">${formatEventDateRange(
-                          event
+                        event
                         )}</p>
                       </div>
                     </div>
@@ -4052,7 +4263,7 @@
                       <div>
                         <p class="text-sm font-medium text-gray-500">Lieu</p>
                         <p class="text-gray-900 font-semibold">${
-                          event.location || "Non spécifié"
+                        event.location || "Non spécifié"
                         }</p>
                       </div>
                     </div>
@@ -4089,7 +4300,7 @@
                         <div>
                           <p class="text-sm font-medium text-gray-500">Note moyenne</p>
                           <p class="text-gray-900 font-semibold">${formatRating(
-                            event
+                              event
                           )}</p>
                         </div>
                       </div>
@@ -4460,7 +4671,7 @@
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-                displayMyRatings(data);
+            displayMyRatings(data);
               }, 100);
             } else {
               // Desktop : délai normal
@@ -4840,6 +5051,7 @@
           password: password,
           firstName: document.getElementById("register-firstname").value,
           lastName: document.getElementById("register-lastname").value,
+          recoveryCode: document.getElementById("register-recovery-code").value,
         };
 
         try {
@@ -4869,7 +5081,7 @@
             showNotification(
               "success",
               "Compte créé !",
-              `Bienvenue ${formData.firstName} ${formData.lastName} !`
+              `Bienvenue ${formData.firstName} ${formData.lastName} ! Votre code de récupération a été enregistré.`
             );
 
             event.target.reset();
