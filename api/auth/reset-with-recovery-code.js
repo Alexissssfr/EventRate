@@ -41,7 +41,11 @@ export default async function handler(req, res) {
     `;
     
     console.log('🔍 Recherche de l\'utilisateur avec le code de récupération...');
+    console.log('🔍 Email recherché:', email);
+    console.log('🔍 Code recherché:', recoveryCode);
+    
     const userResult = await pool.query(userQuery, [email, recoveryCode]);
+    console.log('🔍 Résultat de la requête:', userResult.rows.length, 'utilisateur(s) trouvé(s)');
 
     if (userResult.rows.length === 0) {
       console.log('❌ Utilisateur non trouvé ou code de récupération incorrect');
@@ -60,7 +64,7 @@ export default async function handler(req, res) {
 
     // Mettre à jour le mot de passe de l'utilisateur
     console.log('💾 Mise à jour du mot de passe en base...');
-    const updatePasswordQuery = 'UPDATE users SET password = $1 WHERE id = $2';
+    const updatePasswordQuery = 'UPDATE users SET password_hash = $1 WHERE id = $2';
     const updateResult = await pool.query(updatePasswordQuery, [hashedPassword, user_id]);
     console.log('💾 Résultat de la mise à jour:', updateResult.rowCount, 'lignes modifiées');
 
