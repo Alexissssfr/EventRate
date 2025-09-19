@@ -23,10 +23,10 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, firstName, lastName, recoveryCode } = req.body;
     
-    if (!username || !email || !password) {
-      return res.status(400).json({ error: 'Tous les champs sont requis' });
+    if (!username || !email || !password || !recoveryCode) {
+      return res.status(400).json({ error: 'Tous les champs sont requis (username, email, password, recoveryCode)' });
     }
 
     // Vérifier si l'utilisateur existe déjà
@@ -45,8 +45,8 @@ module.exports = async function handler(req, res) {
 
     // Créer l'utilisateur
     const result = await db.query(
-      'INSERT INTO users (username, email, password_hash, first_name, last_name) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email',
-      [username, email, hashedPassword, '', '']
+      'INSERT INTO users (username, email, password_hash, first_name, last_name, recovery_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, username, email',
+      [username, email, hashedPassword, firstName || '', lastName || '', recoveryCode]
     );
 
     const user = result.rows[0];
