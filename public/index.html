@@ -5515,35 +5515,8 @@
 
         console.log("Données à envoyer:", formData);
 
-        // Vérifier les doublons avant de créer
-        try {
-          const duplicateCheck = await fetch(
-            `${API_BASE}/events/check-duplicates`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${authToken}`,
-              },
-              body: JSON.stringify({
-                title: formData.title,
-                locationCity: formData.locationCity,
-                dateStart: formData.dateStart,
-                category: formData.category,
-              }),
-            }
-          );
-
-          const duplicateData = await duplicateCheck.json();
-
-          if (duplicateData.hasDuplicates) {
-            // Afficher le modal de comparaison au lieu d'un simple confirm
-            showDuplicateModal(formData, duplicateData.similarEvents);
-            return;
-          }
-        } catch (error) {
-          console.error("Erreur lors de la vérification des doublons:", error);
-        }
+        // Vérification des doublons désactivée temporairement
+        console.log("📝 Création d'événement sans vérification de doublons");
 
         // Si pas de doublons, créer directement
         await createEventWithPhotos(formData);

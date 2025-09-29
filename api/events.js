@@ -119,29 +119,45 @@ async function handleCreateEvent(req, res) {
     creatorId
   } = req.body;
 
-  const result = await pool.query(
-    `INSERT INTO events (title, description, category, date_start, date_end, 
-                       location_address, location_city, price_amount, price_currency, 
-                       price_is_free, capacity, creator_id)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-     RETURNING *`,
-    [
-      title,
-      description,
-      category,
-      dateStart,
-      dateEnd,
-      locationAddress,
-      locationCity,
-      priceAmount,
-      priceCurrency || 'EUR',
-      priceIsFree !== undefined ? priceIsFree : true,
-      capacity || 0,
-      creatorId || decoded.userId
-    ]
-  );
+  console.log("🔍 Données reçues pour création événement:", {
+    title,
+    description,
+    category,
+    dateStart,
+    dateEnd,
+    locationAddress,
+    locationCity,
+    priceAmount,
+    priceCurrency,
+    priceIsFree,
+    capacity,
+    creatorId,
+    userId: decoded.userId
+  });
 
-  return res.status(201).json(result.rows[0]);
+    const result = await pool.query(
+      `INSERT INTO events (title, description, category, date_start, date_end, 
+                         location_address, location_city, price_amount, price_currency, 
+                         price_is_free, capacity, creator_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+       RETURNING *`,
+      [
+        title,
+        description,
+        category,
+        dateStart,
+        dateEnd,
+        locationAddress,
+        locationCity,
+        priceAmount,
+        priceCurrency || 'EUR',
+        priceIsFree !== undefined ? priceIsFree : true,
+        capacity || 0,
+        creatorId || decoded.userId
+      ]
+    );
+
+    return res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error("Erreur création événement:", error);
     if (error.name === "JsonWebTokenError") {
