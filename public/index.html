@@ -3037,14 +3037,45 @@
               const aOngoing = aStart <= now && aEnd >= now;
               const bOngoing = bStart <= now && bEnd >= now;
               
+              // Événements terminés
+              const aEnded = aEnd < now;
+              const bEnded = bEnd < now;
+              
               if (aOngoing && !bOngoing) return -1;
               if (!aOngoing && bOngoing) return 1;
               
-              // Puis par date de début
+              // Événements terminés en dernier
+              if (aEnded && !bEnded) return 1;
+              if (!aEnded && bEnded) return -1;
+              
+              // Puis par date de début (plus proche en premier)
               return aStart - bStart;
               
             case "date-desc":
-              return new Date(b.date_start) - new Date(a.date_start);
+              // Tri par date : événements en cours d'abord, puis par date de début (plus lointaine en premier)
+              const nowDesc = new Date();
+              const aStartDesc = new Date(a.date_start);
+              const bStartDesc = new Date(b.date_start);
+              const aEndDesc = new Date(a.date_end || a.date_start);
+              const bEndDesc = new Date(b.date_end || b.date_start);
+              
+              // Événements en cours d'abord
+              const aOngoingDesc = aStartDesc <= nowDesc && aEndDesc >= nowDesc;
+              const bOngoingDesc = bStartDesc <= nowDesc && bEndDesc >= nowDesc;
+              
+              // Événements terminés
+              const aEndedDesc = aEndDesc < nowDesc;
+              const bEndedDesc = bEndDesc < nowDesc;
+              
+              if (aOngoingDesc && !bOngoingDesc) return -1;
+              if (!aOngoingDesc && bOngoingDesc) return 1;
+              
+              // Événements terminés en dernier
+              if (aEndedDesc && !bEndedDesc) return 1;
+              if (!aEndedDesc && bEndedDesc) return -1;
+              
+              // Puis par date de début (plus lointaine en premier)
+              return bStartDesc - aStartDesc;
             case "price-asc":
               const priceA = a.price_is_free
                 ? 0
@@ -3507,37 +3538,13 @@
         }
 
         // Si l'événement est terminé
-        if (diffEndMs < -60000) { // Fini il y a plus de 1 minute
-          const diffDays = Math.floor(Math.abs(diffEndMs) / (1000 * 60 * 60 * 24));
-          if (diffDays === 0) {
-            return {
-              status: "ended",
-              text: "Terminé aujourd'hui",
-              color: "bg-gray-100 text-gray-800",
-              icon: "🔴",
-            };
-          } else if (diffDays === 1) {
-            return {
-              status: "ended",
-              text: "Terminé hier",
-              color: "bg-gray-100 text-gray-800",
-              icon: "🔴",
-            };
-          } else if (diffDays <= 7) {
-            return {
-              status: "ended",
-              text: `Terminé il y a ${diffDays} jours`,
-              color: "bg-gray-100 text-gray-800",
-              icon: "🔴",
-            };
-          } else {
-            return {
-              status: "ended",
-              text: "Terminé",
-              color: "bg-gray-100 text-gray-800",
-              icon: "🔴",
-            };
-          }
+        if (diffEndMs < 0) {
+          return {
+            status: "ended",
+            text: "Terminé",
+            color: "bg-gray-100 text-gray-800",
+            icon: "🔴",
+          };
         }
 
         // Par défaut, événement en cours
