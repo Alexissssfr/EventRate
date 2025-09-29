@@ -134,6 +134,8 @@ async function handleCreateEvent(req, res) {
     creatorId,
     userId: decoded.userId
   });
+  
+  console.log("🚀 Début de la création d'événement...");
 
     const result = await pool.query(
       `INSERT INTO events (title, description, category, date_start, date_end, 
