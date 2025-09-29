@@ -2840,7 +2840,7 @@
             </button>
             <button onclick="showEventRatings(${
               event.id
-            })" class="glass-card text-gray-700 py-2 px-4 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-300 flex-1">
+            }, this)" class="glass-card text-gray-700 py-2 px-4 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-300 flex-1">
               💬 Voir avis
             </button>
           </div>
@@ -3363,7 +3363,7 @@
       }
 
       // Afficher les avis d'un événement
-      async function showEventRatings(eventId) {
+      async function showEventRatings(eventId, clickedElement = null) {
         try {
           const response = await fetch(`${API_BASE}/ratings`, {
             method: "POST",
@@ -3379,17 +3379,42 @@
             displayEventRatings(data);
             document.getElementById("ratings-modal").classList.remove("hidden");
             
-            // Scroll automatiquement vers la fenêtre des avis
-            setTimeout(() => {
-              const modal = document.getElementById("ratings-modal");
-              if (modal) {
-                modal.scrollIntoView({ 
-                  behavior: 'smooth', 
-                  block: 'start',
-                  inline: 'nearest'
-                });
-              }
-            }, 100);
+            // Positionner la fenêtre directement sur la zone de la carte sur mobile
+            if (window.innerWidth <= 768) {
+              setTimeout(() => {
+                const modal = document.getElementById("ratings-modal");
+                const clickedButton = clickedElement;
+                const eventCard = clickedButton.closest('.event-card, .event-card-simple');
+                
+                if (modal && eventCard) {
+                  // Calculer la position de la carte
+                  const cardRect = eventCard.getBoundingClientRect();
+                  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                  
+                  // Positionner la fenêtre directement sur la carte
+                  modal.style.position = 'absolute';
+                  modal.style.top = (cardRect.top + scrollTop) + 'px';
+                  modal.style.left = '10px';
+                  modal.style.right = '10px';
+                  modal.style.width = 'auto';
+                  modal.style.maxHeight = '80vh';
+                  modal.style.overflowY = 'auto';
+                  modal.style.zIndex = '9999';
+                  modal.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+                  modal.style.backdropFilter = 'blur(10px)';
+                  
+                  // Scroll pour centrer la fenêtre
+                  const modalCenter = cardRect.top + scrollTop + (cardRect.height / 2);
+                  const viewportCenter = window.innerHeight / 2;
+                  const scrollTo = modalCenter - viewportCenter;
+                  
+                  window.scrollTo({
+                    top: Math.max(0, scrollTo),
+                    behavior: 'smooth'
+                  });
+                }
+              }, 100);
+            }
           } else {
             showNotification(
               "error",
@@ -3893,7 +3918,20 @@
 
       // Fermer le modal des avis
       function closeRatingsModal() {
-        document.getElementById("ratings-modal").classList.add("hidden");
+        const modal = document.getElementById("ratings-modal");
+        modal.classList.add("hidden");
+        
+        // Réinitialiser la position de la fenêtre
+        modal.style.position = '';
+        modal.style.top = '';
+        modal.style.left = '';
+        modal.style.right = '';
+        modal.style.width = '';
+        modal.style.maxHeight = '';
+        modal.style.overflowY = '';
+        modal.style.zIndex = '';
+        modal.style.backgroundColor = '';
+        modal.style.backdropFilter = '';
       }
 
       // Ouvrir le modal "Mes avis"
