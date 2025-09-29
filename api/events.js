@@ -141,7 +141,7 @@ async function handleCreateEvent(req, res) {
       `INSERT INTO events (title, description, category, date_start, date_end, 
                          location_address, location_city, price_amount, price_currency, 
                          price_is_free, capacity, creator_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
        RETURNING *`,
       [
         title,
