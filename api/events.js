@@ -50,15 +50,6 @@ export default async function handler(req, res) {
       // S'assurer que result.rows est un tableau
       const events = result.rows || [];
       console.log("✅ Événements récupérés:", events.length);
-      console.log("📋 Premiers événements:", events.slice(0, 2));
-      
-      // Debug des photos
-      events.forEach((event, index) => {
-        if (index < 3) { // Log seulement les 3 premiers
-          console.log(`📸 Événement ${index + 1} - Photos:`, event.photos);
-          console.log(`📸 Événement ${index + 1} - Images:`, event.images);
-        }
-      });
 
       return res.status(200).json(events);
     }

@@ -2711,7 +2711,7 @@
               ${event.photos
                 .map(
                   (photo) => `
-                <img src="${photo}" alt="Photo de l'événement" class="w-full h-full object-cover flex-shrink-0">
+                <img src="${photo}" alt="Photo de l'événement" class="w-full h-full object-contain bg-gray-100 flex-shrink-0">
               `
                 )
                 .join("")}
@@ -3194,7 +3194,7 @@
             const previewItem = document.createElement("div");
             previewItem.className = "relative";
             previewItem.innerHTML = `
-              <img src="${url}" class="w-full h-32 object-cover rounded-lg" alt="Prévisualisation"
+              <img src="${url}" class="w-full h-32 object-contain bg-gray-100 rounded-lg" alt="Prévisualisation"
                    onerror="this.src='https://via.placeholder.com/400x300/E5E7EB/6B7280?text=Image+non+trouvée'" />
               <button onclick="removePhotoUrl(${index})" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
                    ×
@@ -4194,7 +4194,7 @@
                     event.photos && event.photos.length > 0
                       ? `
                     <img src="${event.photos[0]}" 
-                         class="w-full h-48 object-cover rounded-t-lg" 
+                         class="w-full h-48 object-contain bg-gray-100 rounded-t-lg" 
                          alt="Photo événement" 
                          onerror="this.style.display='none'">
                   `
@@ -4444,7 +4444,7 @@
               .map(
                 (photo, index) => `
               <div class="relative group">
-                <img src="${photo}" class="w-full h-32 object-cover rounded-lg border" alt="Photo ${
+                <img src="${photo}" class="w-full h-32 object-contain bg-gray-100 rounded-lg border" alt="Photo ${
                   index + 1
                 }" 
                      onerror="this.src='https://via.placeholder.com/400x300/E5E7EB/6B7280?text=Image+non+trouvée'" />
