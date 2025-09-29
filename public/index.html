@@ -3409,6 +3409,17 @@
         const now = new Date();
         const startDate = new Date(event.date_start);
         const endDate = event.date_end ? new Date(event.date_end) : startDate;
+        
+        // Debug temporaire
+        console.log('🔍 Debug getEventStatus:', {
+          eventTitle: event.title,
+          now: now.toISOString(),
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          startDateGreaterThanNow: startDate > now,
+          startDateLessThanOrEqualNow: startDate <= now,
+          endDateGreaterThanOrEqualNow: endDate >= now
+        });
 
         // Si l'événement n'a pas encore commencé
         if (startDate > now) {
