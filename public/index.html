@@ -5542,7 +5542,7 @@
             // Si des photos ont été sélectionnées, les envoyer
             if (selectedPhotoUrls.length > 0) {
               await updateEventPhotos(
-                data.event._id || data.event.id || data.id,
+                data.id,
                 selectedPhotoUrls
               );
             }
