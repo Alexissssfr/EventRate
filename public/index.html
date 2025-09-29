@@ -3301,7 +3301,14 @@
       // Afficher les avis d'un événement
       async function showEventRatings(eventId) {
         try {
-          const response = await fetch(`${API_BASE}/events/${eventId}/ratings`);
+          const response = await fetch(`${API_BASE}/ratings`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({ action: 'get', eventId: eventId }),
+          });
           const data = await response.json();
 
           if (response.ok) {

@@ -250,23 +250,40 @@ async function handleMyRatings(req, res) {
   });
 }
 
-// RÉCUPÉRER UN RATING SPÉCIFIQUE
+// RÉCUPÉRER UN RATING SPÉCIFIQUE OU LES RATINGS D'UN ÉVÉNEMENT
 async function handleGetRating(req, res) {
-  const { ratingId } = req.body;
+  const { ratingId, eventId } = req.body;
 
-  const result = await pool.query(
-    `SELECT r.*, e.title as event_title, e.date_start as event_date, e.location_city
-     FROM ratings r
-     JOIN events e ON r.event_id = e.id
-     WHERE r.id = $1`,
-    [ratingId]
-  );
+  if (eventId) {
+    // Récupérer tous les ratings d'un événement
+    const result = await pool.query(
+      `SELECT r.*, e.title as event_title, e.date_start as event_date, e.location_city
+       FROM ratings r
+       JOIN events e ON r.event_id = e.id
+       WHERE r.event_id = $1
+       ORDER BY r.created_at DESC`,
+      [eventId]
+    );
 
-  if (result.rows.length === 0) {
-    return res.status(404).json({ error: "Rating non trouvé" });
+    res.status(200).json(result.rows);
+  } else if (ratingId) {
+    // Récupérer un rating spécifique
+    const result = await pool.query(
+      `SELECT r.*, e.title as event_title, e.date_start as event_date, e.location_city
+       FROM ratings r
+       JOIN events e ON r.event_id = e.id
+       WHERE r.id = $1`,
+      [ratingId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Rating non trouvé" });
+    }
+
+    res.status(200).json(result.rows[0]);
+  } else {
+    return res.status(400).json({ error: "ratingId ou eventId requis" });
   }
-
-  res.status(200).json(result.rows[0]);
 }
 
 // MODIFIER UN RATING
