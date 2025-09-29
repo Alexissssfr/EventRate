@@ -94,14 +94,15 @@ async function handleListEvents(req, res) {
 
 // CRÉER UN ÉVÉNEMENT
 async function handleCreateEvent(req, res) {
-  // Vérifier le token JWT
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Token d'authentification requis" });
-  }
+  try {
+    // Vérifier le token JWT
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Token d'authentification requis" });
+    }
 
-  const token = authHeader.substring(7);
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const token = authHeader.substring(7);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
   const {
     title,
@@ -141,6 +142,13 @@ async function handleCreateEvent(req, res) {
   );
 
   return res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Erreur création événement:", error);
+    if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ error: "Token invalide" });
+    }
+    return res.status(500).json({ error: "Erreur serveur" });
+  }
 }
 
 // RÉCUPÉRER UN ÉVÉNEMENT SPÉCIFIQUE

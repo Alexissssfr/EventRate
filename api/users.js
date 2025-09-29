@@ -120,18 +120,19 @@ async function handleUpdateProfile(req, res) {
 
 // RÉCUPÉRER MES ÉVÉNEMENTS
 async function handleMyEvents(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Méthode non autorisée' });
-  }
+  try {
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Méthode non autorisée' });
+    }
 
-  // Vérifier le token JWT
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Token d\'authentification requis' });
-  }
+    // Vérifier le token JWT
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Token d\'authentification requis' });
+    }
 
-  const token = authHeader.substring(7);
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const token = authHeader.substring(7);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
   // Récupérer les événements de l'utilisateur
   const result = await pool.query(`
@@ -159,22 +160,30 @@ async function handleMyEvents(req, res) {
   }));
 
   res.status(200).json(events);
+  } catch (error) {
+    console.error('Erreur récupération événements utilisateur:', error);
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Token invalide' });
+    }
+    return res.status(500).json({ error: 'Erreur serveur' });
+  }
 }
 
 // RÉCUPÉRER MES RATINGS
 async function handleMyRatings(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Méthode non autorisée' });
-  }
+  try {
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Méthode non autorisée' });
+    }
 
-  // Vérifier le token JWT
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Token d\'authentification requis' });
-  }
+    // Vérifier le token JWT
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Token d\'authentification requis' });
+    }
 
-  const token = authHeader.substring(7);
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const token = authHeader.substring(7);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
   // Récupérer les avis de l'utilisateur avec les informations des événements
   const result = await pool.query(`
@@ -213,4 +222,11 @@ async function handleMyRatings(req, res) {
   }));
 
   res.status(200).json(ratings);
+  } catch (error) {
+    console.error('Erreur récupération avis utilisateur:', error);
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Token invalide' });
+    }
+    return res.status(500).json({ error: 'Erreur serveur' });
+  }
 }
