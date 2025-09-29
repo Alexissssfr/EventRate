@@ -3410,20 +3410,13 @@
         const startDate = new Date(event.date_start);
         const endDate = event.date_end ? new Date(event.date_end) : startDate;
         
-        // Debug temporaire
-        console.log('🔍 Debug getEventStatus:', {
-          eventTitle: event.title,
-          now: now.toISOString(),
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-          startDateGreaterThanNow: startDate > now,
-          startDateLessThanOrEqualNow: startDate <= now,
-          endDateGreaterThanOrEqualNow: endDate >= now
-        });
-
-        // Si l'événement n'a pas encore commencé
-        if (startDate > now) {
-          const diffDays = Math.ceil((startDate - now) / (1000 * 60 * 60 * 24));
+        // Calculer les différences en millisecondes pour plus de précision
+        const diffStartMs = startDate.getTime() - now.getTime();
+        const diffEndMs = endDate.getTime() - now.getTime();
+        
+        // Si l'événement n'a pas encore commencé (plus de 1 minute dans le futur)
+        if (diffStartMs > 60000) { // 1 minute = 60000ms
+          const diffDays = Math.ceil(diffStartMs / (1000 * 60 * 60 * 24));
           if (diffDays === 1) {
             return {
               status: "upcoming",
@@ -3448,8 +3441,8 @@
           }
         }
 
-        // Si l'événement est en cours
-        if (startDate <= now && endDate >= now) {
+        // Si l'événement est en cours (commencé et pas encore fini)
+        if (diffStartMs <= 60000 && diffEndMs >= -60000) { // Commencé il y a moins de 1 minute et finit dans plus de 1 minute
           return {
             status: "ongoing",
             text: "En cours",
@@ -3459,36 +3452,46 @@
         }
 
         // Si l'événement est terminé
-        const diffDays = Math.floor((now - endDate) / (1000 * 60 * 60 * 24));
-        if (diffDays === 0) {
-          return {
-            status: "ended",
-            text: "Terminé aujourd'hui",
-            color: "bg-gray-100 text-gray-800",
-            icon: "🔴",
-          };
-        } else if (diffDays === 1) {
-          return {
-            status: "ended",
-            text: "Terminé hier",
-            color: "bg-gray-100 text-gray-800",
-            icon: "🔴",
-          };
-        } else if (diffDays <= 7) {
-          return {
-            status: "ended",
-            text: `Terminé il y a ${diffDays} jours`,
-            color: "bg-gray-100 text-gray-800",
-            icon: "🔴",
-          };
-        } else {
-          return {
-            status: "ended",
-            text: "Terminé",
-            color: "bg-gray-100 text-gray-800",
-            icon: "🔴",
-          };
+        if (diffEndMs < -60000) { // Fini il y a plus de 1 minute
+          const diffDays = Math.floor(Math.abs(diffEndMs) / (1000 * 60 * 60 * 24));
+          if (diffDays === 0) {
+            return {
+              status: "ended",
+              text: "Terminé aujourd'hui",
+              color: "bg-gray-100 text-gray-800",
+              icon: "🔴",
+            };
+          } else if (diffDays === 1) {
+            return {
+              status: "ended",
+              text: "Terminé hier",
+              color: "bg-gray-100 text-gray-800",
+              icon: "🔴",
+            };
+          } else if (diffDays <= 7) {
+            return {
+              status: "ended",
+              text: `Terminé il y a ${diffDays} jours`,
+              color: "bg-gray-100 text-gray-800",
+              icon: "🔴",
+            };
+          } else {
+            return {
+              status: "ended",
+              text: "Terminé",
+              color: "bg-gray-100 text-gray-800",
+              icon: "🔴",
+            };
+          }
         }
+
+        // Par défaut, événement en cours
+        return {
+          status: "ongoing",
+          text: "En cours",
+          color: "bg-green-100 text-green-800",
+          icon: "🟢",
+        };
       }
 
       // Fonctions utilitaires pour l'affichage des avis intelligents
