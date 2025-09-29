@@ -8,6 +8,10 @@ const pool = new Pool({
 });
 
 export default async function handler(req, res) {
+  console.log("🔍 API events appelée:", req.method, req.url);
+  console.log("🔍 Headers:", req.headers);
+  console.log("🔍 Body:", req.body);
+  
   // Configuration CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -137,6 +141,7 @@ async function handleCreateEvent(req, res) {
   
   console.log("🚀 Début de la création d'événement...");
   console.log("📅 Timestamp:", new Date().toISOString());
+  console.log("🔍 Tentative de connexion à la base de données...");
 
     const result = await pool.query(
       `INSERT INTO events (title, description, category, date_start, date_end, 
@@ -160,6 +165,7 @@ async function handleCreateEvent(req, res) {
       ]
     );
 
+    console.log("✅ Événement créé avec succès:", result.rows[0]);
     return res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error("Erreur création événement:", error);
