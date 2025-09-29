@@ -93,6 +93,25 @@ body::before {
   box-shadow: 0 20px 40px 0 rgba(31, 38, 135, 0.5);
 }
 
+/* Cartes simplifiées pour Mes événements et Mes avis (desktop) */
+.event-card-simple {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.event-card-simple:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
 /* Event Cards Modernes */
 .event-card {
   background: rgba(255, 255, 255, 0.95);
@@ -344,6 +363,21 @@ body::before {
   img {
     will-change: auto !important;
     transform: translateZ(0) !important;
+  }
+  
+  /* Cartes simplifiées pour Mes événements et Mes avis */
+  .event-card-simple {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    transition: none !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+  
+  .event-card-simple:hover {
+    transform: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
   }
   
   .glass-card {

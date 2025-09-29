@@ -3378,6 +3378,18 @@
           if (response.ok) {
             displayEventRatings(data);
             document.getElementById("ratings-modal").classList.remove("hidden");
+            
+            // Scroll automatiquement vers la fenêtre des avis
+            setTimeout(() => {
+              const modal = document.getElementById("ratings-modal");
+              if (modal) {
+                modal.scrollIntoView({ 
+                  behavior: 'smooth', 
+                  block: 'start',
+                  inline: 'nearest'
+                });
+              }
+            }, 100);
           } else {
             showNotification(
               "error",
@@ -3897,6 +3909,20 @@
 
         document.getElementById("my-ratings-modal").classList.remove("hidden");
         await loadMyRatings();
+        
+        // Scroll automatiquement vers la fenêtre sur mobile
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            const modal = document.getElementById("my-ratings-modal");
+            if (modal) {
+              modal.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+              });
+            }
+          }, 100);
+        }
       }
 
       // Fermer le modal "Mes avis"
@@ -4223,6 +4249,20 @@
       async function openMyEventsModal() {
         document.getElementById("my-events-modal").classList.remove("hidden");
         await loadMyEvents();
+        
+        // Scroll automatiquement vers la fenêtre sur mobile
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            const modal = document.getElementById("my-events-modal");
+            if (modal) {
+              modal.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+              });
+            }
+          }, 100);
+        }
       }
 
       function closeMyEventsModal() {
@@ -4243,17 +4283,21 @@
 
           if (response.ok) {
             const events = await response.json();
+            
+            // Précharger les images en arrière-plan
+            setTimeout(() => preloadImages(events), 50);
+            
             // Lazy loading optimisé pour mobile
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
             displayMyEvents(events);
-              }, 100);
+              }, 150);
             } else {
               // Desktop : délai normal
               setTimeout(() => {
                 displayMyEvents(events);
-              }, 50);
+              }, 100);
             }
           } else {
             console.error("Erreur chargement événements:", response.status);
@@ -4303,7 +4347,7 @@
             ${events
               .map(
                 (event) => `
-              <div class="event-card group">
+              <div class="event-card-simple group">
                 <!-- Header avec image et statut -->
                 <div class="relative mb-4">
                   ${
@@ -4787,12 +4831,15 @@
           const data = await response.json();
 
           if (response.ok) {
+            // Précharger les images en arrière-plan
+            setTimeout(() => preloadImages(data.map(rating => ({ photos: [rating.event_photo] }))), 50);
+            
             // Lazy loading optimisé pour mobile
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
             displayMyRatings(data);
-              }, 100);
+              }, 150);
             } else {
               // Desktop : délai normal
               setTimeout(() => {
@@ -4836,7 +4883,7 @@
             ${ratings
               .map(
                 (rating) => `
-              <div class="event-card group">
+              <div class="event-card-simple group">
                 <!-- Header avec image et note -->
                 <div class="relative mb-4">
                   <div id="event-photo-${
@@ -5742,6 +5789,20 @@
 
         // Initialiser le nouveau système de notation intelligent
         resetRatingForm();
+        
+        // Scroll automatiquement vers la fenêtre sur mobile
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            const modal = document.getElementById("rating-modal");
+            if (modal) {
+              modal.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+              });
+            }
+          }, 100);
+        }
       }
 
       function closeRatingModal() {
