@@ -325,11 +325,25 @@ body::before {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     transition: none !important;
     transform: none !important;
+    will-change: auto !important;
   }
   
   .event-card:hover {
     transform: none !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Désactiver les animations sur mobile */
+  .animate-slide-up,
+  .animate-fade-in {
+    animation: none !important;
+    transform: none !important;
+  }
+  
+  /* Optimiser les images sur mobile */
+  img {
+    will-change: auto !important;
+    transform: translateZ(0) !important;
   }
   
   .glass-card {
