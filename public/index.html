@@ -3414,10 +3414,32 @@
         const diffStartMs = startDate.getTime() - now.getTime();
         const diffEndMs = endDate.getTime() - now.getTime();
         
-        // Si l'événement n'a pas encore commencé (plus de 1 minute dans le futur)
-        if (diffStartMs > 60000) { // 1 minute = 60000ms
+        // Si l'événement n'a pas encore commencé
+        if (diffStartMs > 0) {
           const diffDays = Math.ceil(diffStartMs / (1000 * 60 * 60 * 24));
-          if (diffDays === 1) {
+          const diffHours = Math.ceil(diffStartMs / (1000 * 60 * 60));
+          const diffMinutes = Math.ceil(diffStartMs / (1000 * 60));
+          
+          // Si c'est aujourd'hui mais dans le futur
+          if (diffDays === 0) {
+            if (diffHours === 0) {
+              return {
+                status: "upcoming",
+                text: `Dans ${diffMinutes}min`,
+                color: "bg-orange-100 text-orange-800",
+                icon: "⏰",
+              };
+            } else {
+              return {
+                status: "upcoming",
+                text: `Dans ${diffHours}h`,
+                color: "bg-orange-100 text-orange-800",
+                icon: "⏰",
+              };
+            }
+          }
+          // Si c'est demain
+          else if (diffDays === 1) {
             return {
               status: "upcoming",
               text: "Demain",
@@ -3442,7 +3464,7 @@
         }
 
         // Si l'événement est en cours (commencé et pas encore fini)
-        if (diffStartMs <= 60000 && diffEndMs >= -60000) { // Commencé il y a moins de 1 minute et finit dans plus de 1 minute
+        if (diffStartMs <= 0 && diffEndMs >= 0) {
           return {
             status: "ongoing",
             text: "En cours",
@@ -4145,10 +4167,10 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+              headers: {
+                "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-            },
+              },
             body: JSON.stringify({ action: 'my-events' }),
           });
 
@@ -4618,10 +4640,10 @@
         try {
           const response = await fetch(`${API_BASE}/events`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${authToken}`,
-            },
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`,
+              },
             body: JSON.stringify({ 
               action: 'update', 
               id: currentEditingEventId, 
@@ -4686,10 +4708,10 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+              headers: {
+                "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-            },
+              },
             body: JSON.stringify({ action: 'my-ratings' }),
           });
 
