@@ -4589,10 +4589,8 @@
           return;
         }
 
-        if (new Date(formData.date_start) < new Date()) {
-          alert("❌ La date de début ne peut pas être dans le passé");
-          return;
-        }
+        // Validation de date désactivée - on permet les dates passées
+        console.log("📅 Date de début:", formData.date_start);
 
         if (
           formData.date_end &&
@@ -4603,17 +4601,18 @@
         }
 
         try {
-          const response = await fetch(
-            `${API_BASE}/events/${currentEditingEventId}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${authToken}`,
-              },
-              body: JSON.stringify(formData),
-            }
-          );
+          const response = await fetch(`${API_BASE}/events`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({ 
+              action: 'update', 
+              id: currentEditingEventId, 
+              ...formData 
+            }),
+          });
 
           if (response.ok) {
             alert("✅ Événement modifié avec succès !");
@@ -5587,13 +5586,17 @@
             photoUrls
           );
 
-          const response = await fetch(`${API_BASE}/events/${eventId}/photos`, {
+          const response = await fetch(`${API_BASE}/events`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ photoUrls: photoUrls }),
+            body: JSON.stringify({ 
+              action: 'update', 
+              id: eventId, 
+              photos: photoUrls 
+            }),
           });
 
           if (response.ok) {

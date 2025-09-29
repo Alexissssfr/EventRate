@@ -157,7 +157,7 @@ async function handleCreateEvent(req, res) {
         dateEnd,
         locationAddress,
         locationCity,
-        priceAmount,
+        priceAmount || 0,
         priceCurrency || 'EUR',
         priceIsFree !== undefined ? priceIsFree : true,
         capacity || 0,
