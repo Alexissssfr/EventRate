@@ -3481,6 +3481,11 @@
         const numRating =
           typeof rating === "string" ? parseFloat(rating) : rating;
 
+        // Vérifier que c'est bien un nombre valide
+        if (isNaN(numRating) || !isFinite(numRating)) {
+          return "0/5";
+        }
+
         // Si c'est un nombre entier, afficher sans décimales
         if (numRating % 1 === 0) {
           return `${numRating}/5`;
@@ -4301,7 +4306,7 @@
                         <div>
                           <p class="text-sm font-medium text-gray-500">Note moyenne</p>
                           <p class="text-gray-900 font-semibold">${formatRating(
-                              event
+                              event.rating_average
                           )}</p>
                         </div>
                       </div>
