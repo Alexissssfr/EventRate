@@ -3026,7 +3026,23 @@
         filteredEvents.sort((a, b) => {
           switch (sortBy) {
             case "date-asc":
-              return new Date(a.date_start) - new Date(b.date_start);
+              // Tri par date : événements en cours d'abord, puis par date de début
+              const now = new Date();
+              const aStart = new Date(a.date_start);
+              const bStart = new Date(b.date_start);
+              const aEnd = new Date(a.date_end || a.date_start);
+              const bEnd = new Date(b.date_end || b.date_start);
+              
+              // Événements en cours d'abord
+              const aOngoing = aStart <= now && aEnd >= now;
+              const bOngoing = bStart <= now && bEnd >= now;
+              
+              if (aOngoing && !bOngoing) return -1;
+              if (!aOngoing && bOngoing) return 1;
+              
+              // Puis par date de début
+              return aStart - bStart;
+              
             case "date-desc":
               return new Date(b.date_start) - new Date(a.date_start);
             case "price-asc":
@@ -3059,7 +3075,20 @@
             case "recent-desc":
               return new Date(b.created_at) - new Date(a.created_at);
             default:
-              return new Date(a.date_start) - new Date(b.date_start);
+              // Tri par défaut : événements en cours d'abord, puis par date
+              const nowDefault = new Date();
+              const aStartDefault = new Date(a.date_start);
+              const bStartDefault = new Date(b.date_start);
+              const aEndDefault = new Date(a.date_end || a.date_start);
+              const bEndDefault = new Date(b.date_end || b.date_start);
+              
+              const aOngoingDefault = aStartDefault <= nowDefault && aEndDefault >= nowDefault;
+              const bOngoingDefault = bStartDefault <= nowDefault && bEndDefault >= nowDefault;
+              
+              if (aOngoingDefault && !bOngoingDefault) return -1;
+              if (!aOngoingDefault && bOngoingDefault) return 1;
+              
+              return aStartDefault - bStartDefault;
           }
         });
 
