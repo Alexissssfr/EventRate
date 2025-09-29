@@ -2703,12 +2703,13 @@
         card.className = "event-card animate-slide-up";
 
         // Afficher les photos si disponibles
+        const photos = event.photos || event.images || [];
         const photosHtml =
-          event.photos && event.photos.length > 0
+          photos && photos.length > 0
             ? `
           <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 overflow-hidden">
             <div class="flex space-x-2 h-full">
-              ${event.photos
+              ${photos
                 .map(
                   (photo) => `
                 <img src="${photo}" alt="Photo de l'événement" class="w-full h-full object-contain bg-gray-100 flex-shrink-0">
