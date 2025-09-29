@@ -3933,12 +3933,13 @@
         }
 
         try {
-          const response = await fetch(`${API_BASE}/auth/reset-with-recovery-code`, {
+          const response = await fetch(`${API_BASE}/auth`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              action: 'reset',
               email: email,
               recoveryCode: recoveryCode,
               newPassword: newPassword,
@@ -4115,15 +4116,14 @@
       // Charger les événements de l'utilisateur
       async function loadMyEvents() {
         try {
-          const response = await fetch(
-            `${API_BASE}/users/${currentUser.id}/events`,
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          const response = await fetch(`${API_BASE}/users`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({ action: 'my-events' }),
+          });
 
           if (response.ok) {
             const events = await response.json();
@@ -4365,10 +4365,13 @@
 
         try {
           // Récupérer les détails de l'événement
-          const response = await fetch(`${API_BASE}/events/${eventId}`, {
+          const response = await fetch(`${API_BASE}/events`, {
+            method: "POST",
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
+            body: JSON.stringify({ action: 'get', id: eventId }),
           });
 
           if (response.ok) {
@@ -4655,15 +4658,14 @@
       // Charger les avis de l'utilisateur connecté
       async function loadMyRatings() {
         try {
-          const response = await fetch(
-            `${API_BASE}/users/${currentUser.id}/ratings`,
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          const response = await fetch(`${API_BASE}/users`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({ action: 'my-ratings' }),
+          });
 
           const data = await response.json();
 
@@ -4826,11 +4828,13 @@
       // Charger et afficher une photo d'événement dans la liste
       async function loadEventPhotoForDisplay(eventId, containerId) {
         try {
-          const response = await fetch(`${API_BASE}/events/${eventId}`, {
+          const response = await fetch(`${API_BASE}/events`, {
+            method: "POST",
             headers: {
-              Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
             },
+            body: JSON.stringify({ action: 'get', id: eventId }),
           });
 
           if (response.ok) {
@@ -5056,12 +5060,12 @@
         };
 
         try {
-          const response = await fetch(`${API_BASE}/auth/register`, {
+          const response = await fetch(`${API_BASE}/auth`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify({ ...formData, action: 'register' }),
           });
 
           const data = await response.json();
@@ -5115,12 +5119,12 @@
         };
 
         try {
-          const response = await fetch(`${API_BASE}/auth/login`, {
+          const response = await fetch(`${API_BASE}/auth`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify({ ...formData, action: 'login' }),
           });
 
           const data = await response.json();
@@ -5540,7 +5544,7 @@
               "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify({ ...formData, action: 'create' }),
           });
 
           console.log("Réponse du serveur:", response.status);
@@ -6043,6 +6047,7 @@
 
         // Nouveau système de données structurées
         const ratingData = {
+          action: 'create',
           eventId: parseInt(eventId),
 
           // Note principale
@@ -6104,7 +6109,7 @@
             );
           } else {
             // Mode création : POST request
-            response = await fetch(`${API_BASE}/ratings/create`, {
+            response = await fetch(`${API_BASE}/ratings`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
