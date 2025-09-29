@@ -136,6 +136,7 @@ async function handleCreateEvent(req, res) {
   });
   
   console.log("🚀 Début de la création d'événement...");
+  console.log("📅 Timestamp:", new Date().toISOString());
 
     const result = await pool.query(
       `INSERT INTO events (title, description, category, date_start, date_end, 
