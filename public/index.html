@@ -4876,11 +4876,13 @@
           closeMyRatingsModal();
 
           // Récupérer les détails du rating
-          const response = await fetch(`${API_BASE}/ratings/${ratingId}`, {
+          const response = await fetch(`${API_BASE}/ratings`, {
+            method: "POST",
             headers: {
-              Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
             },
+            body: JSON.stringify({ action: 'get', ratingId: ratingId }),
           });
 
           if (response.ok) {
@@ -5021,12 +5023,13 @@
         }
 
         try {
-          const response = await fetch(`${API_BASE}/ratings/${ratingId}`, {
-            method: "DELETE",
+          const response = await fetch(`${API_BASE}/ratings`, {
+            method: "POST",
             headers: {
-              Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
             },
+            body: JSON.stringify({ action: 'delete', ratingId: ratingId }),
           });
 
           const data = await response.json();

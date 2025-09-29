@@ -281,7 +281,7 @@ async function handleGetRating(req, res) {
     }
 
     res.status(200).json(result.rows[0]);
-  } else {
+    } else {
     return res.status(400).json({ error: "ratingId ou eventId requis" });
   }
 }
@@ -327,7 +327,7 @@ async function handleUpdateRating(req, res) {
 
 // SUPPRIMER UN RATING
 async function handleDeleteRating(req, res) {
-  if (req.method !== "DELETE") {
+  if (req.method !== "POST") {
     return res.status(405).json({ error: "Méthode non autorisée" });
   }
 
