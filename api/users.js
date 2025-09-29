@@ -120,7 +120,7 @@ async function handleUpdateProfile(req, res) {
 
 // RÉCUPÉRER MES ÉVÉNEMENTS
 async function handleMyEvents(req, res) {
-  if (req.method !== 'GET') {
+  if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Méthode non autorisée' });
   }
 
@@ -163,7 +163,7 @@ async function handleMyEvents(req, res) {
 
 // RÉCUPÉRER MES RATINGS
 async function handleMyRatings(req, res) {
-  if (req.method !== 'GET') {
+  if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Méthode non autorisée' });
   }
 
