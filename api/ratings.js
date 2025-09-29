@@ -21,22 +21,32 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { action } = req.body;
-
-    switch (action) {
-      case 'create':
-        return await handleCreateRating(req, res);
-      case 'my-ratings':
-        return await handleMyRatings(req, res);
-      case 'get':
-        return await handleGetRating(req, res);
-      case 'update':
-        return await handleUpdateRating(req, res);
-      case 'delete':
-        return await handleDeleteRating(req, res);
-      default:
-        return res.status(400).json({ error: 'Action non reconnue' });
+    // Pour les requêtes GET, utiliser l'ancien système
+    if (req.method === "GET") {
+      return res.status(405).json({ error: 'Méthode GET non supportée' });
     }
+
+    // Pour les requêtes POST, vérifier l'action
+    if (req.method === "POST") {
+      const { action } = req.body;
+
+      switch (action) {
+        case 'create':
+          return await handleCreateRating(req, res);
+        case 'my-ratings':
+          return await handleMyRatings(req, res);
+        case 'get':
+          return await handleGetRating(req, res);
+        case 'update':
+          return await handleUpdateRating(req, res);
+        case 'delete':
+          return await handleDeleteRating(req, res);
+        default:
+          return res.status(400).json({ error: 'Action non reconnue' });
+      }
+    }
+
+    return res.status(405).json({ error: 'Méthode non autorisée' });
   } catch (error) {
     console.error("Erreur API ratings:", error);
     return res.status(500).json({

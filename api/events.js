@@ -21,29 +21,33 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { action, id } = req.body;
-
-    switch (action) {
-      case 'list':
-        return await handleListEvents(req, res);
-      case 'create':
-        return await handleCreateEvent(req, res);
-      case 'get':
-        return await handleGetEvent(req, res, id);
-      case 'update':
-        return await handleUpdateEvent(req, res, id);
-      case 'delete':
-        return await handleDeleteEvent(req, res, id);
-      default:
-        // Fallback pour compatibilité avec l'ancien système
+    // Pour les requêtes GET, utiliser l'ancien système
     if (req.method === "GET") {
-          return await handleListEvents(req, res);
-        }
-    if (req.method === "POST") {
-          return await handleCreateEvent(req, res);
-        }
-        return res.status(400).json({ error: 'Action non reconnue' });
+      return await handleListEvents(req, res);
     }
+
+    // Pour les requêtes POST, vérifier l'action
+    if (req.method === "POST") {
+      const { action, id } = req.body;
+
+      switch (action) {
+        case 'list':
+          return await handleListEvents(req, res);
+        case 'create':
+          return await handleCreateEvent(req, res);
+        case 'get':
+          return await handleGetEvent(req, res, id);
+        case 'update':
+          return await handleUpdateEvent(req, res, id);
+        case 'delete':
+          return await handleDeleteEvent(req, res, id);
+        default:
+          // Fallback : si pas d'action, c'est une création
+          return await handleCreateEvent(req, res);
+      }
+    }
+
+    return res.status(405).json({ error: 'Méthode non autorisée' });
   } catch (error) {
     console.error("Erreur API events:", error);
     return res.status(500).json({

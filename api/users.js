@@ -18,20 +18,30 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { action, userId } = req.body;
-
-    switch (action) {
-      case 'profile':
-        return await handleGetProfile(req, res);
-      case 'update-profile':
-        return await handleUpdateProfile(req, res);
-      case 'my-events':
-        return await handleMyEvents(req, res);
-      case 'my-ratings':
-        return await handleMyRatings(req, res);
-      default:
-        return res.status(400).json({ error: 'Action non reconnue' });
+    // Pour les requêtes GET, utiliser l'ancien système
+    if (req.method === "GET") {
+      return res.status(405).json({ error: 'Méthode GET non supportée' });
     }
+
+    // Pour les requêtes POST, vérifier l'action
+    if (req.method === "POST") {
+      const { action, userId } = req.body;
+
+      switch (action) {
+        case 'profile':
+          return await handleGetProfile(req, res);
+        case 'update-profile':
+          return await handleUpdateProfile(req, res);
+        case 'my-events':
+          return await handleMyEvents(req, res);
+        case 'my-ratings':
+          return await handleMyRatings(req, res);
+        default:
+          return res.status(400).json({ error: 'Action non reconnue' });
+      }
+    }
+
+    return res.status(405).json({ error: 'Méthode non autorisée' });
   } catch (error) {
     console.error('Erreur API users:', error);
     return res.status(500).json({ error: 'Erreur serveur' });
