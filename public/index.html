@@ -3512,6 +3512,9 @@
           if (response.ok) {
             displayEventRatings(data);
             document.getElementById("ratings-modal").classList.remove("hidden");
+            
+            // Configurer la fermeture en cliquant à côté
+            setupModalClickOutside();
 
             // Positionner la fenêtre directement sur la zone de la carte sur mobile
             if (window.innerWidth <= 768) {
@@ -3798,7 +3801,9 @@
 
         // Temps relatif
         let relativeTime = "";
-        if (diffDays === 1) {
+        if (diffDays === 0) {
+          relativeTime = "Aujourd'hui";
+        } else if (diffDays === 1) {
           relativeTime = "Hier";
         } else if (diffDays < 7) {
           relativeTime = `Il y a ${diffDays} jours`;
@@ -4074,16 +4079,21 @@
       }
 
       // Ajouter un event listener pour fermer en cliquant à côté
-      document.addEventListener('DOMContentLoaded', function() {
+      function setupModalClickOutside() {
         const ratingsModal = document.getElementById('ratings-modal');
         if (ratingsModal) {
-          ratingsModal.addEventListener('click', function(e) {
-            if (e.target === ratingsModal) {
-              closeRatingsModal();
-            }
-          });
+          // Supprimer les anciens event listeners
+          ratingsModal.removeEventListener('click', handleModalClick);
+          // Ajouter le nouvel event listener
+          ratingsModal.addEventListener('click', handleModalClick);
         }
-      });
+      }
+
+      function handleModalClick(e) {
+        if (e.target === e.currentTarget) {
+          closeRatingsModal();
+        }
+      }
 
       // Ouvrir le modal "Mes avis"
       async function openMyRatingsModal() {
@@ -5117,7 +5127,11 @@
                     <div class="flex items-center justify-center mb-4">
                       <div class="flex text-yellow-400 text-2xl mr-3">
                         ${Array.from({ length: 5 }, (_, i) =>
-                          i < Math.floor(rating.overall_rating) ? "★" : "☆"
+                          i < Math.floor(rating.overall_rating)
+                            ? "★"
+                            : i < rating.overall_rating
+                            ? "☆"
+                            : "☆"
                         ).join("")}
                       </div>
                       <span class="text-2xl font-bold text-gray-900">${formatRating(
