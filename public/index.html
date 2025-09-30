@@ -3596,24 +3596,16 @@
                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-3">
                    <div class="flex-1 min-w-0">
                      <div class="flex items-center space-x-2 sm:space-x-3 mb-2">
-                       <div class="flex text-yellow-400 text-lg sm:text-xl flex-shrink-0">
-                         ${Array.from({ length: 5 }, (_, i) => {
-                           const starRating = rating.overall_rating;
-                           if (i < Math.floor(starRating)) {
-                             return "★";
-                           } else if (
-                             i === Math.floor(starRating) &&
-                             starRating % 1 !== 0
-                           ) {
-                             return "⭐"; // Demi-étoile Unicode
-                           } else {
-                             return "☆";
-                           }
-                         }).join("")}
-                   </div>
-                       <span class="text-lg sm:text-xl font-bold text-gray-900 flex-shrink-0">${formatRating(
-                         rating.overall_rating
-                       )}</span>
+                       <div class="flex items-center space-x-2 flex-shrink-0">
+                         <div class="flex text-gray-300 text-sm">
+                           ${Array.from({ length: 10 }, (_, i) => {
+                             const starRating = rating.overall_rating;
+                             const filledBars = Math.round(starRating * 2); // 3.5 → 7 barres
+                             return i < filledBars ? "█" : "░";
+                           }).join("")}
+                         </div>
+                         <span class="text-sm font-bold text-gray-700">${rating.overall_rating}/5</span>
+                       </div>
                    </div>
                      ${formatRatingDate(rating.created_at, rating)}
                    </div>
