@@ -1979,14 +1979,14 @@
         class="flex items-center justify-center min-h-screen p-4"
         onclick="event.stopPropagation()"
       >
-        <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto">
+        <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto" onclick="closeRatingsModal()">
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b">
             <h2 class="text-2xl font-bold text-gray-900">
               ⭐ Avis des participants
             </h2>
             <button
-              onclick="closeRatingsModal()"
+              onclick="closeRatingsModal(); event.stopPropagation();"
               class="text-gray-600 hover:text-gray-800 transition-colors"
             >
               <svg
