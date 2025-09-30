@@ -301,6 +301,57 @@ body::before {
   background: var(--danger-gradient);
 }
 
+/* Category Badges avec gradients */
+.category-badge {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: var(--transition-smooth);
+}
+
+.category-business {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.category-music {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.category-sport {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.category-tech {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.category-food {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.category-art {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  color: #333;
+}
+
+.category-education {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  color: #333;
+}
+
+.category-general {
+  background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+  color: #333;
+}
+
 /* Animations d'entrée */
 @keyframes slideInUp {
   from {
@@ -497,4 +548,29 @@ body::before {
 
 .interactive:active {
   transform: translateY(0) scale(0.98);
+}
+
+/* Amélioration pour très petits écrans */
+@media (max-width: 480px) {
+  #events-count {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+  }
+  
+  .btn-gradient,
+  .glass-card {
+    font-size: 14px !important;
+    padding: 8px 12px !important;
+  }
+  
+  .category-badge,
+  .status-badge {
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Améliorer l'espacement des boutons sur très petits écrans */
+  .flex.flex-col.sm\\:flex-row {
+    gap: 8px !important;
+  }
 }
