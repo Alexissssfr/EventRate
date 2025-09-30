@@ -3512,7 +3512,7 @@
           if (response.ok) {
             displayEventRatings(data);
             document.getElementById("ratings-modal").classList.remove("hidden");
-            
+
             // Configurer la fermeture en cliquant à côté
             setupModalClickOutside();
 
@@ -3597,13 +3597,19 @@
                    <div class="flex-1 min-w-0">
                      <div class="flex items-center space-x-2 sm:space-x-3 mb-2">
                        <div class="flex text-yellow-400 text-lg sm:text-xl flex-shrink-0">
-                         ${Array.from({ length: 5 }, (_, i) =>
-                           i < Math.floor(rating.overall_rating)
-                             ? "★"
-                             : i < rating.overall_rating
-                             ? "☆"
-                             : "☆"
-                         ).join("")}
+                         ${Array.from({ length: 5 }, (_, i) => {
+                           const starRating = rating.overall_rating;
+                           if (i < Math.floor(starRating)) {
+                             return "★";
+                           } else if (
+                             i === Math.floor(starRating) &&
+                             starRating % 1 !== 0
+                           ) {
+                             return "⭐"; // Demi-étoile Unicode
+                           } else {
+                             return "☆";
+                           }
+                         }).join("")}
                    </div>
                        <span class="text-lg sm:text-xl font-bold text-gray-900 flex-shrink-0">${formatRating(
                          rating.overall_rating
@@ -3785,11 +3791,16 @@
         return `${numRating.toFixed(1)}/5`;
       }
 
-      function formatRatingDate(dateString, rating = null) {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffTime = Math.abs(now - date);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  function formatRatingDate(dateString, rating = null) {
+    const date = new Date(dateString);
+    const now = new Date();
+    
+    // Normaliser les dates pour comparer seulement les jours (sans heures)
+    const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    
+    const diffTime = nowOnly - dateOnly;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
         // Date précise
         const preciseDate = date.toLocaleDateString("fr-FR", {
@@ -3799,20 +3810,42 @@
           year: "numeric",
         });
 
-        // Temps relatif
-        let relativeTime = "";
-        if (diffDays === 0) {
-          relativeTime = "Aujourd'hui";
-        } else if (diffDays === 1) {
-          relativeTime = "Hier";
-        } else if (diffDays < 7) {
-          relativeTime = `Il y a ${diffDays} jours`;
-        } else if (diffDays < 30) {
-          const weeks = Math.floor(diffDays / 7);
-          relativeTime = `Il y a ${weeks} semaine${weeks > 1 ? "s" : ""}`;
-        } else {
-          relativeTime = "Il y a plus d'un mois";
-        }
+    // Temps relatif - plus précis
+    let relativeTime = "";
+    if (diffDays === 0) {
+      relativeTime = "Aujourd'hui";
+    } else if (diffDays === 1) {
+      relativeTime = "Hier";
+    } else if (diffDays === -1) {
+      relativeTime = "Demain";
+    } else if (diffDays > 1 && diffDays < 7) {
+      relativeTime = `Il y a ${diffDays} jours`;
+    } else if (diffDays >= 7 && diffDays < 30) {
+      const weeks = Math.floor(diffDays / 7);
+      const remainingDays = diffDays % 7;
+      if (remainingDays === 0) {
+        relativeTime = `Il y a ${weeks} semaine${weeks > 1 ? "s" : ""}`;
+      } else {
+        relativeTime = `Il y a ${weeks} semaine${
+          weeks > 1 ? "s" : ""
+        } et ${remainingDays} jour${remainingDays > 1 ? "s" : ""}`;
+      }
+    } else if (diffDays >= 30 && diffDays < 365) {
+      const months = Math.floor(diffDays / 30);
+      const remainingDays = diffDays % 30;
+      if (remainingDays === 0) {
+        relativeTime = `Il y a ${months} mois`;
+      } else {
+        relativeTime = `Il y a ${months} mois et ${remainingDays} jour${
+          remainingDays > 1 ? "s" : ""
+        }`;
+      }
+    } else if (diffDays >= 365) {
+      const years = Math.floor(diffDays / 365);
+      relativeTime = `Il y a ${years} an${years > 1 ? "s" : ""}`;
+    } else {
+      relativeTime = "Date inconnue";
+    }
 
         // Ajouter l'horaire si disponible
         let timingText = "";
@@ -4080,12 +4113,12 @@
 
       // Ajouter un event listener pour fermer en cliquant à côté
       function setupModalClickOutside() {
-        const ratingsModal = document.getElementById('ratings-modal');
+        const ratingsModal = document.getElementById("ratings-modal");
         if (ratingsModal) {
           // Supprimer les anciens event listeners
-          ratingsModal.removeEventListener('click', handleModalClick);
+          ratingsModal.removeEventListener("click", handleModalClick);
           // Ajouter le nouvel event listener
-          ratingsModal.addEventListener('click', handleModalClick);
+          ratingsModal.addEventListener("click", handleModalClick);
         }
       }
 
@@ -5126,13 +5159,19 @@
                   <div class="mb-6">
                     <div class="flex items-center justify-center mb-4">
                       <div class="flex text-yellow-400 text-2xl mr-3">
-                        ${Array.from({ length: 5 }, (_, i) =>
-                          i < Math.floor(rating.overall_rating)
-                            ? "★"
-                            : i < rating.overall_rating
-                            ? "☆"
-                            : "☆"
-                        ).join("")}
+                        ${Array.from({ length: 5 }, (_, i) => {
+                          const starRating = rating.overall_rating;
+                          if (i < Math.floor(starRating)) {
+                            return "★";
+                          } else if (
+                            i === Math.floor(starRating) &&
+                            starRating % 1 !== 0
+                          ) {
+                            return "☆"; // Demi-étoile
+                          } else {
+                            return "☆";
+                          }
+                        }).join("")}
                       </div>
                       <span class="text-2xl font-bold text-gray-900">${formatRating(
                         rating.overall_rating
