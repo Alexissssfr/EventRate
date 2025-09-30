@@ -1973,7 +1973,6 @@
     <div
       id="ratings-modal"
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
-      onclick="closeRatingsModal()"
     >
       <div
         class="flex items-center justify-center min-h-screen p-4"
@@ -3604,7 +3603,7 @@
                          ).join("")}
                    </div>
                        <span class="text-lg sm:text-xl font-bold text-gray-900 flex-shrink-0">${formatRating(
-                         rating
+                         rating.overall_rating
                        )}</span>
                    </div>
                      ${formatRatingDate(rating.created_at, rating)}
@@ -4073,6 +4072,18 @@
         modal.style.backgroundColor = "";
         modal.style.backdropFilter = "";
       }
+
+      // Ajouter un event listener pour fermer en cliquant à côté
+      document.addEventListener('DOMContentLoaded', function() {
+        const ratingsModal = document.getElementById('ratings-modal');
+        if (ratingsModal) {
+          ratingsModal.addEventListener('click', function(e) {
+            if (e.target === ratingsModal) {
+              closeRatingsModal();
+            }
+          });
+        }
+      });
 
       // Ouvrir le modal "Mes avis"
       async function openMyRatingsModal() {
@@ -5086,7 +5097,7 @@
                   <!-- Badge de note -->
                   <div class="absolute top-3 right-3">
                     <span class="status-badge bg-yellow-100 text-yellow-800">
-                      ⭐ ${formatRating(rating)}
+                      ⭐ ${formatRating(rating.overall_rating)}
                     </span>
                   </div>
                 </div>
