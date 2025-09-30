@@ -1,5 +1,7 @@
-const { Pool } = require("pg");
-const jwt = require("jsonwebtoken");
+import pkg from "pg";
+import jwt from "jsonwebtoken";
+
+const { Pool } = pkg;
 
 // Configuration de la base de données
 const pool = new Pool({

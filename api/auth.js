@@ -1,6 +1,8 @@
-const { Pool } = require('pg');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import pkg from 'pg';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+const { Pool } = pkg;
 
 // Configuration de la base de données
 const pool = new Pool({

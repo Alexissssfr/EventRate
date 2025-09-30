@@ -1,4 +1,6 @@
-const { Pool } = require("pg");
+import pkg from "pg";
+
+const { Pool } = pkg;
 
 // Configuration de la base de données
 const pool = new Pool({
