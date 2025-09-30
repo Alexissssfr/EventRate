@@ -638,7 +638,7 @@
           </div>
 
           <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             id="events-container"
           >
             <!-- Les événements seront chargés ici -->
@@ -2764,11 +2764,8 @@
           // S'assurer que data est un tableau
           allEvents = Array.isArray(data) ? data : [];
 
-          // Précharger les images en arrière-plan
-          setTimeout(() => preloadImages(allEvents), 100);
-          
-          // Optimiser le rendu des cartes
-          setTimeout(() => optimizeCardRendering(allEvents), 50);
+          // Précharger les images en arrière-plan (sans délai)
+          preloadImages(allEvents);
 
           // Les événements sont déjà dans le bon format depuis l'API
           filteredEvents = [...allEvents];
@@ -3313,7 +3310,7 @@
         if (mode === "grid") {
           document.getElementById("grid-view-btn").classList.add("active");
           document.getElementById("events-container").className =
-            "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6";
+            "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8";
         } else {
           document.getElementById("list-view-btn").classList.add("active");
           document.getElementById("events-container").className = "space-y-6";
@@ -3586,7 +3583,9 @@
                              return i < filledBars ? "█" : "░";
                            }).join("")}
                          </div>
-                         <span class="text-sm font-bold text-gray-700">${rating.overall_rating}/5</span>
+                         <span class="text-sm font-bold text-gray-700">${
+                           rating.overall_rating
+                         }/5</span>
                        </div>
                    </div>
                      ${formatRatingDate(rating.created_at, rating)}
@@ -3632,31 +3631,11 @@
           photos.forEach((photoUrl) => {
             const img = new Image();
             img.src = photoUrl;
-            img.loading = 'eager'; // Chargement prioritaire
+            img.loading = "eager"; // Chargement prioritaire
           });
         });
       }
 
-      // Fonction pour optimiser le rendu des cartes
-      function optimizeCardRendering(events) {
-        // Utiliser requestAnimationFrame pour un rendu fluide
-        requestAnimationFrame(() => {
-          const container = document.getElementById("events-container");
-          if (container) {
-            // Créer un fragment pour éviter les reflows multiples
-            const fragment = document.createDocumentFragment();
-            
-            events.forEach(event => {
-              const cardElement = document.createElement('div');
-              cardElement.innerHTML = createEventCard(event);
-              cardElement.className = 'event-card animate-fade-in';
-              fragment.appendChild(cardElement);
-            });
-            
-            container.appendChild(fragment);
-          }
-        });
-      }
 
       // Fonction de debouncing pour optimiser les performances
       function debounce(func, wait) {
@@ -3787,16 +3766,24 @@
         return `${numRating.toFixed(1)}/5`;
       }
 
-  function formatRatingDate(dateString, rating = null) {
-    const date = new Date(dateString);
-    const now = new Date();
-    
-    // Normaliser les dates pour comparer seulement les jours (sans heures)
-    const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    
-    const diffTime = nowOnly - dateOnly;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      function formatRatingDate(dateString, rating = null) {
+        const date = new Date(dateString);
+        const now = new Date();
+
+        // Normaliser les dates pour comparer seulement les jours (sans heures)
+        const dateOnly = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate()
+        );
+        const nowOnly = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate()
+        );
+
+        const diffTime = nowOnly - dateOnly;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
         // Date précise
         const preciseDate = date.toLocaleDateString("fr-FR", {
@@ -3806,42 +3793,42 @@
           year: "numeric",
         });
 
-    // Temps relatif - plus précis
-    let relativeTime = "";
-    if (diffDays === 0) {
-      relativeTime = "Aujourd'hui";
-    } else if (diffDays === 1) {
-      relativeTime = "Hier";
-    } else if (diffDays === -1) {
-      relativeTime = "Demain";
-    } else if (diffDays > 1 && diffDays < 7) {
-      relativeTime = `Il y a ${diffDays} jours`;
-    } else if (diffDays >= 7 && diffDays < 30) {
-      const weeks = Math.floor(diffDays / 7);
-      const remainingDays = diffDays % 7;
-      if (remainingDays === 0) {
-        relativeTime = `Il y a ${weeks} semaine${weeks > 1 ? "s" : ""}`;
-      } else {
-        relativeTime = `Il y a ${weeks} semaine${
-          weeks > 1 ? "s" : ""
-        } et ${remainingDays} jour${remainingDays > 1 ? "s" : ""}`;
-      }
-    } else if (diffDays >= 30 && diffDays < 365) {
-      const months = Math.floor(diffDays / 30);
-      const remainingDays = diffDays % 30;
-      if (remainingDays === 0) {
-        relativeTime = `Il y a ${months} mois`;
-      } else {
-        relativeTime = `Il y a ${months} mois et ${remainingDays} jour${
-          remainingDays > 1 ? "s" : ""
-        }`;
-      }
-    } else if (diffDays >= 365) {
-      const years = Math.floor(diffDays / 365);
-      relativeTime = `Il y a ${years} an${years > 1 ? "s" : ""}`;
-    } else {
-      relativeTime = "Date inconnue";
-    }
+        // Temps relatif - plus précis
+        let relativeTime = "";
+        if (diffDays === 0) {
+          relativeTime = "Aujourd'hui";
+        } else if (diffDays === 1) {
+          relativeTime = "Hier";
+        } else if (diffDays === -1) {
+          relativeTime = "Demain";
+        } else if (diffDays > 1 && diffDays < 7) {
+          relativeTime = `Il y a ${diffDays} jours`;
+        } else if (diffDays >= 7 && diffDays < 30) {
+          const weeks = Math.floor(diffDays / 7);
+          const remainingDays = diffDays % 7;
+          if (remainingDays === 0) {
+            relativeTime = `Il y a ${weeks} semaine${weeks > 1 ? "s" : ""}`;
+          } else {
+            relativeTime = `Il y a ${weeks} semaine${
+              weeks > 1 ? "s" : ""
+            } et ${remainingDays} jour${remainingDays > 1 ? "s" : ""}`;
+          }
+        } else if (diffDays >= 30 && diffDays < 365) {
+          const months = Math.floor(diffDays / 30);
+          const remainingDays = diffDays % 30;
+          if (remainingDays === 0) {
+            relativeTime = `Il y a ${months} mois`;
+          } else {
+            relativeTime = `Il y a ${months} mois et ${remainingDays} jour${
+              remainingDays > 1 ? "s" : ""
+            }`;
+          }
+        } else if (diffDays >= 365) {
+          const years = Math.floor(diffDays / 365);
+          relativeTime = `Il y a ${years} an${years > 1 ? "s" : ""}`;
+        } else {
+          relativeTime = "Date inconnue";
+        }
 
         // Ajouter l'horaire si disponible
         let timingText = "";
@@ -4120,7 +4107,10 @@
 
       function handleModalClick(e) {
         // Fermer si on clique sur le backdrop OU sur le contenu du modal
-        if (e.target === e.currentTarget || e.target.closest('.modal-content')) {
+        if (
+          e.target === e.currentTarget ||
+          e.target.closest(".modal-content")
+        ) {
           closeRatingsModal();
         }
       }

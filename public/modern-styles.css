@@ -120,10 +120,13 @@ body::before {
   border-radius: 24px;
   padding: 24px;
   margin-bottom: 20px;
-  transition: var(--transition-smooth);
+  transition: none; /* Suppression des transitions pour performance */
   position: relative;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  min-height: 500px; /* Hauteur minimale pour alignement */
+  display: flex;
+  flex-direction: column;
 }
 
 .event-card::before {
@@ -138,8 +141,8 @@ body::before {
 }
 
 .event-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  transform: none; /* Suppression des effets hover pour performance */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 /* Gradient Buttons */
@@ -426,11 +429,13 @@ body::before {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
   }
   
-  /* Désactiver les animations sur mobile */
+  /* Désactiver TOUTES les animations pour performance */
   .animate-slide-up,
-  .animate-fade-in {
+  .animate-fade-in,
+  * {
     animation: none !important;
     transform: none !important;
+    transition: none !important;
   }
   
   /* Optimiser les images sur mobile */
