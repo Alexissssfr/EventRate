@@ -1973,9 +1973,10 @@
     <div
       id="ratings-modal"
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+      onclick="closeRatingsModal()"
     >
       <div
-        class="flex items-center justify-center min-h-screen p-4 modal-content"
+        class="flex items-center justify-center min-h-screen p-4"
         onclick="event.stopPropagation()"
       >
         <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto">
@@ -3492,8 +3493,7 @@
             displayEventRatings(data);
             document.getElementById("ratings-modal").classList.remove("hidden");
 
-            // Configurer la fermeture en cliquant à côté
-            setupModalClickOutside();
+            // Fermeture automatique configurée dans le HTML
 
             // Positionner la fenêtre directement sur la zone de la carte sur mobile
             if (window.innerWidth <= 768) {
@@ -4094,26 +4094,7 @@
         modal.style.backdropFilter = "";
       }
 
-      // Ajouter un event listener pour fermer en cliquant à côté
-      function setupModalClickOutside() {
-        const ratingsModal = document.getElementById("ratings-modal");
-        if (ratingsModal) {
-          // Supprimer les anciens event listeners
-          ratingsModal.removeEventListener("click", handleModalClick);
-          // Ajouter le nouvel event listener
-          ratingsModal.addEventListener("click", handleModalClick);
-        }
-      }
-
-      function handleModalClick(e) {
-        // Fermer si on clique sur le backdrop OU sur le contenu du modal
-        if (
-          e.target === e.currentTarget ||
-          e.target.closest(".modal-content")
-        ) {
-          closeRatingsModal();
-        }
-      }
+      // Fonction de fermeture simple - gérée par le HTML
 
       // Ouvrir le modal "Mes avis"
       async function openMyRatingsModal() {
