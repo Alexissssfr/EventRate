@@ -1074,10 +1074,10 @@
                 >Mot de passe</label
               >
               <div class="relative">
-              <input
-                type="password"
-                id="login-password"
-                required
+                <input
+                  type="password"
+                  id="login-password"
+                  required
                   class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
                 />
                 <button
@@ -1222,10 +1222,10 @@
                 >Mot de passe</label
               >
               <div class="relative">
-              <input
-                type="password"
-                id="register-password"
-                required
+                <input
+                  type="password"
+                  id="register-password"
+                  required
                   class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
                 />
                 <button
@@ -1269,7 +1269,8 @@
                 placeholder="Votre code secret (ex: RC-ABC123-XYZ789)"
               />
               <p class="text-xs text-gray-500 mt-1">
-                ⚠️ <strong>GARDEZ CE CODE PRÉCIEUSEMENT !</strong> Il vous servira à réinitialiser votre mot de passe si vous l'oubliez.
+                ⚠️ <strong>GARDEZ CE CODE PRÉCIEUSEMENT !</strong> Il vous
+                servira à réinitialiser votre mot de passe si vous l'oubliez.
               </p>
             </div>
 
@@ -1324,10 +1325,15 @@
             <h2 class="text-3xl font-bold text-gray-900 mb-4">
               🔑 Réinitialisation de mot de passe
             </h2>
-            <p class="text-gray-600">Entrez votre email et votre code de récupération</p>
+            <p class="text-gray-600">
+              Entrez votre email et votre code de récupération
+            </p>
           </div>
 
-          <form class="space-y-6" onsubmit="resetPasswordWithRecoveryCode(event)">
+          <form
+            class="space-y-6"
+            onsubmit="resetPasswordWithRecoveryCode(event)"
+          >
             <div>
               <label
                 for="recovery-email"
@@ -1380,9 +1386,24 @@
                   id="new-password-toggle"
                   class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                 >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    ></path>
                   </svg>
                 </button>
               </div>
@@ -1408,9 +1429,24 @@
                   id="confirm-new-password-toggle"
                   class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                 >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    ></path>
                   </svg>
                 </button>
               </div>
@@ -1939,10 +1975,10 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeRatingsModal()"
     >
-        <div
+      <div
         class="flex items-center justify-center min-h-screen p-4"
         onclick="event.stopPropagation()"
-        >
+      >
         <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto">
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b">
@@ -2385,27 +2421,38 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
     >
       <div class="flex items-center justify-center min-h-screen p-4">
-        <div
-          class="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
-        >
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
           <div class="text-center">
             <!-- Icône -->
-            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full flex items-center justify-center">
-              <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            <div
+              class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full flex items-center justify-center"
+            >
+              <svg
+                class="w-8 h-8 text-yellow-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                ></path>
               </svg>
             </div>
-            
+
             <!-- Titre -->
             <h2 class="text-2xl font-bold text-gray-900 mb-2">
               Connexion requise
             </h2>
-            
+
             <!-- Message -->
             <p class="text-gray-600 mb-6">
-              Vous devez être connecté pour noter cet événement. Connectez-vous ou créez un compte pour partager votre avis !
+              Vous devez être connecté pour noter cet événement. Connectez-vous
+              ou créez un compte pour partager votre avis !
             </p>
-            
+
             <!-- Boutons -->
             <div class="flex flex-col sm:flex-row gap-3">
               <button
@@ -2421,7 +2468,7 @@
                 ✨ Créer un compte
               </button>
             </div>
-            
+
             <!-- Bouton fermer -->
             <button
               onclick="closeLoginToRateModal()"
@@ -2797,7 +2844,9 @@
                 event.title
               }</h3>
               <div class="flex flex-col sm:flex-row gap-1 sm:gap-2">
-                <span class="category-badge category-${(event.category || "general").toLowerCase()}">
+                <span class="category-badge category-${(
+                  event.category || "general"
+                ).toLowerCase()}">
                   🏷️ ${event.category || "Général"}
                 </span>
                 ${(() => {
@@ -2907,8 +2956,12 @@
                     <svg class="h-3 w-3 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.783.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                     </svg>
-                    <span class="text-xs font-semibold text-yellow-800">${parseFloat(event.rating_average).toFixed(1)}</span>
-                    <span class="text-xs text-yellow-700">(${event.rating_count || 0})</span>
+                    <span class="text-xs font-semibold text-yellow-800">${parseFloat(
+                      event.rating_average
+                    ).toFixed(1)}</span>
+                    <span class="text-xs text-yellow-700">(${
+                      event.rating_count || 0
+                    })</span>
                   </div>
                   `
                   : `
@@ -3000,7 +3053,7 @@
       }
 
       // Filtrage et tri avancés (optimisé avec debouncing)
-      const applyFilters = debounce(function() {
+      const applyFilters = debounce(function () {
         const searchText = document
           .getElementById("search-events")
           .value.toLowerCase();
@@ -3110,25 +3163,25 @@
               const bStart = new Date(b.date_start);
               const aEnd = new Date(a.date_end || a.date_start);
               const bEnd = new Date(b.date_end || b.date_start);
-              
+
               // Événements en cours d'abord
               const aOngoing = aStart <= now && aEnd >= now;
               const bOngoing = bStart <= now && bEnd >= now;
-              
+
               // Événements terminés
               const aEnded = aEnd < now;
               const bEnded = bEnd < now;
-              
+
               if (aOngoing && !bOngoing) return -1;
               if (!aOngoing && bOngoing) return 1;
-              
+
               // Événements terminés en dernier
               if (aEnded && !bEnded) return 1;
               if (!aEnded && bEnded) return -1;
-              
+
               // Puis par date de début (plus proche en premier)
               return aStart - bStart;
-              
+
             case "date-desc":
               // Tri par date : événements en cours d'abord, puis par date de début (plus lointaine en premier)
               const nowDesc = new Date();
@@ -3136,22 +3189,22 @@
               const bStartDesc = new Date(b.date_start);
               const aEndDesc = new Date(a.date_end || a.date_start);
               const bEndDesc = new Date(b.date_end || b.date_start);
-              
+
               // Événements en cours d'abord
               const aOngoingDesc = aStartDesc <= nowDesc && aEndDesc >= nowDesc;
               const bOngoingDesc = bStartDesc <= nowDesc && bEndDesc >= nowDesc;
-              
+
               // Événements terminés
               const aEndedDesc = aEndDesc < nowDesc;
               const bEndedDesc = bEndDesc < nowDesc;
-              
+
               if (aOngoingDesc && !bOngoingDesc) return -1;
               if (!aOngoingDesc && bOngoingDesc) return 1;
-              
+
               // Événements terminés en dernier
               if (aEndedDesc && !bEndedDesc) return 1;
               if (!aEndedDesc && bEndedDesc) return -1;
-              
+
               // Puis par date de début (plus lointaine en premier)
               return bStartDesc - aStartDesc;
             case "price-asc":
@@ -3190,13 +3243,15 @@
               const bStartDefault = new Date(b.date_start);
               const aEndDefault = new Date(a.date_end || a.date_start);
               const bEndDefault = new Date(b.date_end || b.date_start);
-              
-              const aOngoingDefault = aStartDefault <= nowDefault && aEndDefault >= nowDefault;
-              const bOngoingDefault = bStartDefault <= nowDefault && bEndDefault >= nowDefault;
-              
+
+              const aOngoingDefault =
+                aStartDefault <= nowDefault && aEndDefault >= nowDefault;
+              const bOngoingDefault =
+                bStartDefault <= nowDefault && bEndDefault >= nowDefault;
+
               if (aOngoingDefault && !bOngoingDefault) return -1;
               if (!aOngoingDefault && bOngoingDefault) return 1;
-              
+
               return aStartDefault - bStartDefault;
           }
         });
@@ -3240,7 +3295,12 @@
       }
 
       function formatRating(event) {
-        if (!event.rating_average || event.rating_average === 0 || isNaN(event.rating_average) || !isFinite(event.rating_average)) {
+        if (
+          !event.rating_average ||
+          event.rating_average === 0 ||
+          isNaN(event.rating_average) ||
+          !isFinite(event.rating_average)
+        ) {
           return "Pas encore d'avis";
         }
         const rating = parseFloat(event.rating_average);
@@ -3446,46 +3506,50 @@
               "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ action: 'get', eventId: eventId }),
+            body: JSON.stringify({ action: "get", eventId: eventId }),
           });
           const data = await response.json();
 
           if (response.ok) {
             displayEventRatings(data);
             document.getElementById("ratings-modal").classList.remove("hidden");
-            
+
             // Positionner la fenêtre directement sur la zone de la carte sur mobile
             if (window.innerWidth <= 768) {
               setTimeout(() => {
                 const modal = document.getElementById("ratings-modal");
                 const clickedButton = clickedElement;
-                const eventCard = clickedButton.closest('.event-card, .event-card-simple');
-                
+                const eventCard = clickedButton.closest(
+                  ".event-card, .event-card-simple"
+                );
+
                 if (modal && eventCard) {
                   // Calculer la position de la carte
                   const cardRect = eventCard.getBoundingClientRect();
-                  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                  
+                  const scrollTop =
+                    window.pageYOffset || document.documentElement.scrollTop;
+
                   // Positionner la fenêtre directement sur la carte
-                  modal.style.position = 'absolute';
-                  modal.style.top = (cardRect.top + scrollTop) + 'px';
-                  modal.style.left = '10px';
-                  modal.style.right = '10px';
-                  modal.style.width = 'auto';
-                  modal.style.maxHeight = '80vh';
-                  modal.style.overflowY = 'auto';
-                  modal.style.zIndex = '9999';
-                  modal.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
-                  modal.style.backdropFilter = 'blur(10px)';
-                  
+                  modal.style.position = "absolute";
+                  modal.style.top = cardRect.top + scrollTop + "px";
+                  modal.style.left = "10px";
+                  modal.style.right = "10px";
+                  modal.style.width = "auto";
+                  modal.style.maxHeight = "80vh";
+                  modal.style.overflowY = "auto";
+                  modal.style.zIndex = "9999";
+                  modal.style.backgroundColor = "rgba(255, 255, 255, 0.98)";
+                  modal.style.backdropFilter = "blur(10px)";
+
                   // Scroll pour centrer la fenêtre
-                  const modalCenter = cardRect.top + scrollTop + (cardRect.height / 2);
+                  const modalCenter =
+                    cardRect.top + scrollTop + cardRect.height / 2;
                   const viewportCenter = window.innerHeight / 2;
                   const scrollTo = modalCenter - viewportCenter;
-                  
+
                   window.scrollTo({
                     top: Math.max(0, scrollTo),
-                    behavior: 'smooth'
+                    behavior: "smooth",
                   });
                 }
               }, 100);
@@ -3581,9 +3645,9 @@
 
       // Fonction pour précharger les images
       function preloadImages(events) {
-        events.forEach(event => {
+        events.forEach((event) => {
           const photos = event.photos || event.images || [];
-          photos.forEach(photoUrl => {
+          photos.forEach((photoUrl) => {
             const img = new Image();
             img.src = photoUrl;
           });
@@ -3608,21 +3672,21 @@
         const now = new Date();
         const startDate = new Date(event.date_start);
         const endDate = event.date_end ? new Date(event.date_end) : startDate;
-        
+
         // Calculer les différences en millisecondes pour plus de précision
         const diffStartMs = startDate.getTime() - now.getTime();
         const diffEndMs = endDate.getTime() - now.getTime();
-        
+
         // Si l'événement n'a pas encore commencé
         if (diffStartMs > 0) {
           // Vérifier si c'est le même jour
           const today = new Date();
           const eventDate = new Date(event.date_start);
           const isSameDay = today.toDateString() === eventDate.toDateString();
-          
+
           const diffHours = Math.ceil(diffStartMs / (1000 * 60 * 60));
           const diffMinutes = Math.ceil(diffStartMs / (1000 * 60));
-          
+
           // Si c'est aujourd'hui mais dans le futur
           if (isSameDay) {
             return {
@@ -3636,8 +3700,9 @@
           else {
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
-            const isTomorrow = tomorrow.toDateString() === eventDate.toDateString();
-            
+            const isTomorrow =
+              tomorrow.toDateString() === eventDate.toDateString();
+
             if (isTomorrow) {
               return {
                 status: "upcoming",
@@ -3832,8 +3897,8 @@
         } else if (rating.arrival_time && rating.still_present) {
           // En cours : seulement si c'est aujourd'hui
           if (isToday) {
-          timingText = `Depuis ${rating.arrival_time}`;
-          timingIcon = "🔴";
+            timingText = `Depuis ${rating.arrival_time}`;
+            timingIcon = "🔴";
             badgeColor = "bg-red-100 text-red-800";
           } else {
             // Pour les jours passés, afficher juste l'heure d'arrivée
@@ -3995,20 +4060,19 @@
       function closeRatingsModal() {
         const modal = document.getElementById("ratings-modal");
         modal.classList.add("hidden");
-        
-        // Réinitialiser la position de la fenêtre
-        modal.style.position = '';
-        modal.style.top = '';
-        modal.style.left = '';
-        modal.style.right = '';
-        modal.style.width = '';
-        modal.style.maxHeight = '';
-        modal.style.overflowY = '';
-        modal.style.zIndex = '';
-        modal.style.backgroundColor = '';
-        modal.style.backdropFilter = '';
-      }
 
+        // Réinitialiser la position de la fenêtre
+        modal.style.position = "";
+        modal.style.top = "";
+        modal.style.left = "";
+        modal.style.right = "";
+        modal.style.width = "";
+        modal.style.maxHeight = "";
+        modal.style.overflowY = "";
+        modal.style.zIndex = "";
+        modal.style.backgroundColor = "";
+        modal.style.backdropFilter = "";
+      }
 
       // Ouvrir le modal "Mes avis"
       async function openMyRatingsModal() {
@@ -4023,16 +4087,16 @@
 
         document.getElementById("my-ratings-modal").classList.remove("hidden");
         await loadMyRatings();
-        
+
         // Scroll automatiquement vers la fenêtre sur mobile
         if (window.innerWidth <= 768) {
           setTimeout(() => {
             const modal = document.getElementById("my-ratings-modal");
             if (modal) {
-              modal.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start',
-                inline: 'nearest'
+              modal.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+                inline: "nearest",
               });
             }
           }, 100);
@@ -4165,8 +4229,12 @@
 
         const email = document.getElementById("recovery-email").value;
         const recoveryCode = document.getElementById("recovery-code").value;
-        const newPassword = document.getElementById("new-password").value.trim();
-        const confirmPassword = document.getElementById("confirm-new-password").value.trim();
+        const newPassword = document
+          .getElementById("new-password")
+          .value.trim();
+        const confirmPassword = document
+          .getElementById("confirm-new-password")
+          .value.trim();
 
         // Vérifier que les mots de passe correspondent
         if (newPassword !== confirmPassword) {
@@ -4195,7 +4263,7 @@
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              action: 'reset',
+              action: "reset",
               email: email,
               recoveryCode: recoveryCode,
               newPassword: newPassword,
@@ -4208,7 +4276,8 @@
             showNotification(
               "success",
               "Mot de passe réinitialisé !",
-              data.message || "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+              data.message ||
+                "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
             );
 
             // Rediriger vers la page de connexion
@@ -4363,16 +4432,16 @@
       async function openMyEventsModal() {
         document.getElementById("my-events-modal").classList.remove("hidden");
         await loadMyEvents();
-        
+
         // Scroll automatiquement vers la fenêtre sur mobile
         if (window.innerWidth <= 768) {
           setTimeout(() => {
             const modal = document.getElementById("my-events-modal");
             if (modal) {
-              modal.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start',
-                inline: 'nearest'
+              modal.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+                inline: "nearest",
               });
             }
           }, 100);
@@ -4388,24 +4457,24 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-              headers: {
-                "Content-Type": "application/json",
+            headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-              },
-            body: JSON.stringify({ action: 'my-events' }),
+            },
+            body: JSON.stringify({ action: "my-events" }),
           });
 
           if (response.ok) {
             const events = await response.json();
-            
+
             // Précharger les images en arrière-plan
             setTimeout(() => preloadImages(events), 50);
-            
+
             // Lazy loading optimisé pour mobile
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-            displayMyEvents(events);
+                displayMyEvents(events);
               }, 150);
             } else {
               // Desktop : délai normal
@@ -4523,7 +4592,7 @@
                       <div>
                         <p class="text-sm font-medium text-gray-500">Date</p>
                         <p class="text-gray-900 font-semibold">${formatEventDateRange(
-                        event
+                          event
                         )}</p>
                       </div>
                     </div>
@@ -4539,7 +4608,7 @@
                       <div>
                         <p class="text-sm font-medium text-gray-500">Lieu</p>
                         <p class="text-gray-900 font-semibold">${
-                        event.location || "Non spécifié"
+                          event.location || "Non spécifié"
                         }</p>
                       </div>
                     </div>
@@ -4576,7 +4645,7 @@
                         <div>
                           <p class="text-sm font-medium text-gray-500">Note moyenne</p>
                           <p class="text-gray-900 font-semibold">${formatRating(
-                              event
+                            event
                           )}</p>
                         </div>
                       </div>
@@ -4646,7 +4715,7 @@
               "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ action: 'get', id: eventId }),
+            body: JSON.stringify({ action: "get", id: eventId }),
           });
 
           if (response.ok) {
@@ -4867,14 +4936,14 @@
         try {
           const response = await fetch(`${API_BASE}/events`, {
             method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${authToken}`,
-              },
-            body: JSON.stringify({ 
-              action: 'update', 
-              id: currentEditingEventId, 
-              ...formData 
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({
+              action: "update",
+              id: currentEditingEventId,
+              ...formData,
             }),
           });
 
@@ -4935,24 +5004,30 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-              headers: {
-                "Content-Type": "application/json",
+            headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-              },
-            body: JSON.stringify({ action: 'my-ratings' }),
+            },
+            body: JSON.stringify({ action: "my-ratings" }),
           });
 
           const data = await response.json();
 
           if (response.ok) {
             // Précharger les images en arrière-plan
-            setTimeout(() => preloadImages(data.map(rating => ({ photos: [rating.event_photo] }))), 50);
-            
+            setTimeout(
+              () =>
+                preloadImages(
+                  data.map((rating) => ({ photos: [rating.event_photo] }))
+                ),
+              50
+            );
+
             // Lazy loading optimisé pour mobile
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-            displayMyRatings(data);
+                displayMyRatings(data);
               }, 150);
             } else {
               // Desktop : délai normal
@@ -5112,7 +5187,7 @@
               "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ action: 'get', id: eventId }),
+            body: JSON.stringify({ action: "get", id: eventId }),
           });
 
           if (response.ok) {
@@ -5148,7 +5223,7 @@
               "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ action: 'get', ratingId: ratingId }),
+            body: JSON.stringify({ action: "get", ratingId: ratingId }),
           });
 
           if (response.ok) {
@@ -5295,7 +5370,7 @@
               "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ action: 'delete', ratingId: ratingId }),
+            body: JSON.stringify({ action: "delete", ratingId: ratingId }),
           });
 
           const data = await response.json();
@@ -5346,7 +5421,7 @@
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ ...formData, action: 'register' }),
+            body: JSON.stringify({ ...formData, action: "register" }),
           });
 
           const data = await response.json();
@@ -5405,7 +5480,7 @@
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ ...formData, action: 'login' }),
+            body: JSON.stringify({ ...formData, action: "login" }),
           });
 
           const data = await response.json();
@@ -5798,7 +5873,7 @@
               "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ ...formData, action: 'create' }),
+            body: JSON.stringify({ ...formData, action: "create" }),
           });
 
           console.log("Réponse du serveur:", response.status);
@@ -5808,10 +5883,7 @@
           if (response.ok) {
             // Si des photos ont été sélectionnées, les envoyer
             if (selectedPhotoUrls.length > 0) {
-              await updateEventPhotos(
-                data.id,
-                selectedPhotoUrls
-              );
+              await updateEventPhotos(data.id, selectedPhotoUrls);
             }
 
             showNotification(
@@ -5859,10 +5931,10 @@
               "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ 
-              action: 'update', 
-              id: eventId, 
-              photos: photoUrls 
+            body: JSON.stringify({
+              action: "update",
+              id: eventId,
+              photos: photoUrls,
             }),
           });
 
@@ -5894,7 +5966,9 @@
 
       // Afficher le popup de connexion pour noter
       function showLoginToRateModal() {
-        document.getElementById("login-to-rate-modal").classList.remove("hidden");
+        document
+          .getElementById("login-to-rate-modal")
+          .classList.remove("hidden");
       }
 
       // Fermer le popup de connexion pour noter
@@ -5909,16 +5983,16 @@
 
         // Initialiser le nouveau système de notation intelligent
         resetRatingForm();
-        
+
         // Scroll automatiquement vers la fenêtre sur mobile
         if (window.innerWidth <= 768) {
           setTimeout(() => {
             const modal = document.getElementById("rating-modal");
             if (modal) {
-              modal.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start',
-                inline: 'nearest'
+              modal.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+                inline: "nearest",
               });
             }
           }, 100);
@@ -6325,7 +6399,7 @@
 
         // Nouveau système de données structurées
         const ratingData = {
-          action: 'create',
+          action: "create",
           eventId: parseInt(eventId),
 
           // Note principale

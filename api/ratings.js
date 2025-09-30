@@ -165,6 +165,9 @@ async function handleCreateRating(req, res) {
 
   console.log("✅ Rating sauvegardé:", result.rows[0]);
 
+  // Mettre à jour les statistiques de l'événement
+  await updateEventRatingStats(parseInt(eventId));
+
   // Préparer la réponse avec parsing sécurisé
   const ratingResult = result.rows[0];
   let parsedQuickTags = [];
@@ -322,6 +325,10 @@ async function handleUpdateRating(req, res) {
     return res.status(404).json({ error: "Rating non trouvé ou non autorisé" });
   }
 
+  // Mettre à jour les statistiques de l'événement
+  const rating = result.rows[0];
+  await updateEventRatingStats(rating.event_id);
+
   res.status(200).json(result.rows[0]);
 }
 
@@ -351,5 +358,44 @@ async function handleDeleteRating(req, res) {
     return res.status(404).json({ error: "Rating non trouvé ou non autorisé" });
   }
 
+  // Mettre à jour les statistiques de l'événement
+  const deletedRating = result.rows[0];
+  await updateEventRatingStats(deletedRating.event_id);
+
   res.status(200).json({ message: "Rating supprimé avec succès" });
+}
+
+// FONCTION POUR METTRE À JOUR LES STATISTIQUES D'UN ÉVÉNEMENT
+async function updateEventRatingStats(eventId) {
+  try {
+    console.log(`🔄 Mise à jour des statistiques pour l'événement ${eventId}`);
+    
+    // Calculer la moyenne et le nombre d'avis
+    const statsResult = await pool.query(
+      `SELECT 
+        COUNT(*) as rating_count,
+        AVG(overall_rating) as rating_average
+       FROM ratings 
+       WHERE event_id = $1 AND status = 'active'`,
+      [eventId]
+    );
+
+    const stats = statsResult.rows[0];
+    const ratingCount = parseInt(stats.rating_count) || 0;
+    const ratingAverage = stats.rating_average ? parseFloat(stats.rating_average) : 0;
+
+    console.log(`📊 Statistiques calculées: ${ratingCount} avis, moyenne ${ratingAverage}`);
+
+    // Mettre à jour la table events
+    await pool.query(
+      `UPDATE events 
+       SET rating_count = $1, rating_average = $2, updated_at = CURRENT_TIMESTAMP
+       WHERE id = $3`,
+      [ratingCount, ratingAverage, eventId]
+    );
+
+    console.log(`✅ Statistiques mises à jour pour l'événement ${eventId}`);
+  } catch (error) {
+    console.error(`❌ Erreur lors de la mise à jour des statistiques pour l'événement ${eventId}:`, error);
+  }
 }
