@@ -3540,7 +3540,7 @@
                          ).join("")}
                    </div>
                        <span class="text-lg sm:text-xl font-bold text-gray-900 flex-shrink-0">${formatRating(
-                         rating.overall_rating
+                         rating
                        )}</span>
                    </div>
                      ${formatRatingDate(rating.created_at, rating)}
@@ -4009,18 +4009,6 @@
         modal.style.backdropFilter = '';
       }
 
-      // Fermer le modal en cliquant à côté
-      function setupModalClickOutside() {
-        const modal = document.getElementById("ratings-modal");
-        if (modal) {
-          modal.addEventListener('click', function(e) {
-            // Si on clique sur le backdrop (pas sur le contenu)
-            if (e.target === modal) {
-              closeRatingsModal();
-            }
-          });
-        }
-      }
 
       // Ouvrir le modal "Mes avis"
       async function openMyRatingsModal() {
@@ -5023,7 +5011,7 @@
                   <!-- Badge de note -->
                   <div class="absolute top-3 right-3">
                     <span class="status-badge bg-yellow-100 text-yellow-800">
-                      ⭐ ${formatRating(rating.overall_rating)}
+                      ⭐ ${formatRating(rating)}
                     </span>
                   </div>
                 </div>
@@ -6468,9 +6456,6 @@
 
         // Vérifier s'il y a un token de réinitialisation dans l'URL
         checkResetPasswordToken();
-
-        // Configurer la fermeture des modals en cliquant à côté
-        setupModalClickOutside();
 
         // Démarrer le timer d'inactivité si déjà connecté
         if (authToken) {
