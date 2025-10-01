@@ -4500,10 +4500,10 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+              headers: {
+                "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-            },
+              },
             body: JSON.stringify({ action: "my-events" }),
           });
 
@@ -4745,10 +4745,10 @@
 
       // Fonctions d'actions sur les événements
       async function editEvent(eventId) {
-        // Fermer le modal "Mes événements" d'abord
-        closeMyEventsModal();
-
         currentEditingEventId = eventId;
+        
+        // Fermer le modal "Mes événements" sans retourner à la page précédente
+        document.getElementById("my-events-modal").classList.add("hidden");
 
         try {
           // Récupérer les détails de l'événement
@@ -5050,10 +5050,10 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+              headers: {
+                "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-            },
+              },
             body: JSON.stringify({ action: "my-ratings" }),
           });
 
@@ -5250,8 +5250,8 @@
       // Modifier un avis
       async function editRating(ratingId) {
         try {
-          // Fermer le modal "Mes avis" d'abord
-          closeMyRatingsModal();
+          // Fermer le modal "Mes avis" sans retourner à la page précédente
+          document.getElementById("my-ratings-modal").classList.add("hidden");
 
           // Récupérer les détails du rating
           const response = await fetch(`${API_BASE}/ratings`, {
