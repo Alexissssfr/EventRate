@@ -1979,7 +1979,7 @@
     >
         <div
         class="flex items-center justify-center min-h-screen p-4"
-      >
+        >
         <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto" id="ratings-modal-content">
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b" onclick="event.stopPropagation()">
@@ -4485,10 +4485,10 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-              headers: {
-                "Content-Type": "application/json",
+            headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-              },
+            },
             body: JSON.stringify({ action: "my-events" }),
           });
 
@@ -5035,10 +5035,10 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-              headers: {
-                "Content-Type": "application/json",
+            headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-              },
+            },
             body: JSON.stringify({ action: "my-ratings" }),
           });
 
@@ -6100,6 +6100,108 @@
             closeRatingModal();
             isSwipeStarted = false;
           }
+        });
+      }
+
+      // Méthodes de fermeture pour le modal "Voir avis"
+      function setupRatingsModalCloseMethods() {
+        const modalContent = document.getElementById("ratings-modal-content");
+        if (!modalContent) return;
+
+        // 1. TOUCHE ÉCHAP (ESC)
+        const handleKeyPress = (e) => {
+          if (e.key === 'Escape') {
+            closeRatingsModal();
+          }
+        };
+        document.addEventListener('keydown', handleKeyPress);
+
+        // Nettoyer l'event listener quand le modal se ferme
+        const originalClose = closeRatingsModal;
+        closeRatingsModal = function() {
+          document.removeEventListener('keydown', handleKeyPress);
+          originalClose();
+        };
+
+        // 2. SWIPE VERS LE BAS (mobile)
+        let startY = 0;
+        let startX = 0;
+        let isSwipeStarted = false;
+
+        modalContent.addEventListener("touchstart", (e) => {
+          startY = e.touches[0].clientY;
+          startX = e.touches[0].clientX;
+          isSwipeStarted = true;
+        });
+
+        modalContent.addEventListener("touchmove", (e) => {
+          if (!isSwipeStarted) return;
+          
+          const currentY = e.touches[0].clientY;
+          const currentX = e.touches[0].clientX;
+          const diffY = currentY - startY; // Vers le bas
+          const diffX = Math.abs(currentX - startX);
+
+          // Swipe vers le bas et pas trop horizontal
+          if (diffY > 100 && diffX < 100) {
+            closeRatingsModal();
+            isSwipeStarted = false;
+          }
+        });
+
+        modalContent.addEventListener("touchend", () => {
+          isSwipeStarted = false;
+        });
+      }
+
+      // Méthodes de fermeture pour le modal "Modifier événement"
+      function setupEditEventModalCloseMethods() {
+        const modalContent = document.getElementById("edit-event-modal-content");
+        if (!modalContent) return;
+
+        // 1. TOUCHE ÉCHAP (ESC)
+        const handleKeyPress = (e) => {
+          if (e.key === 'Escape') {
+            closeEditEventModal();
+          }
+        };
+        document.addEventListener('keydown', handleKeyPress);
+
+        // Nettoyer l'event listener quand le modal se ferme
+        const originalClose = closeEditEventModal;
+        closeEditEventModal = function() {
+          document.removeEventListener('keydown', handleKeyPress);
+          originalClose();
+        };
+
+        // 2. SWIPE VERS LE BAS (mobile)
+        let startY = 0;
+        let startX = 0;
+        let isSwipeStarted = false;
+
+        modalContent.addEventListener("touchstart", (e) => {
+          startY = e.touches[0].clientY;
+          startX = e.touches[0].clientX;
+          isSwipeStarted = true;
+        });
+
+        modalContent.addEventListener("touchmove", (e) => {
+          if (!isSwipeStarted) return;
+          
+          const currentY = e.touches[0].clientY;
+          const currentX = e.touches[0].clientX;
+          const diffY = currentY - startY; // Vers le bas
+          const diffX = Math.abs(currentX - startX);
+
+          // Swipe vers le bas et pas trop horizontal
+          if (diffY > 100 && diffX < 100) {
+            closeEditEventModal();
+            isSwipeStarted = false;
+          }
+        });
+
+        modalContent.addEventListener("touchend", () => {
+          isSwipeStarted = false;
         });
       }
 
