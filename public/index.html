@@ -1503,6 +1503,7 @@
       <div class="flex items-center justify-center min-h-screen p-4" onclick="event.stopPropagation()">
         <div
           class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto"
+          id="rating-modal-content"
         >
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b">
@@ -5998,6 +5999,9 @@
         // Initialiser le nouveau système de notation intelligent
         resetRatingForm();
 
+        // Ajouter le détecteur de swipe vers la gauche
+        setupSwipeToClose();
+
         // Scroll automatiquement vers la fenêtre sur mobile
         if (window.innerWidth <= 768) {
           setTimeout(() => {
@@ -6017,6 +6021,68 @@
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
         resetRatingForm();
+      }
+
+      // Détecteur de swipe vers la gauche pour fermer le modal
+      function setupSwipeToClose() {
+        const modalContent = document.getElementById("rating-modal-content");
+        if (!modalContent) return;
+
+        let startX = 0;
+        let startY = 0;
+        let isSwipeStarted = false;
+
+        // Touch events pour mobile
+        modalContent.addEventListener("touchstart", (e) => {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          isSwipeStarted = true;
+        });
+
+        modalContent.addEventListener("touchmove", (e) => {
+          if (!isSwipeStarted) return;
+          
+          const currentX = e.touches[0].clientX;
+          const currentY = e.touches[0].clientY;
+          const diffX = startX - currentX;
+          const diffY = Math.abs(startY - currentY);
+
+          // Swipe vers la gauche (diffX > 0) et pas trop vertical
+          if (diffX > 100 && diffY < 100) {
+            closeRatingModal();
+            isSwipeStarted = false;
+          }
+        });
+
+        modalContent.addEventListener("touchend", () => {
+          isSwipeStarted = false;
+        });
+
+        // Mouse events pour desktop (glisser avec la souris)
+        modalContent.addEventListener("mousedown", (e) => {
+          startX = e.clientX;
+          startY = e.clientY;
+          isSwipeStarted = true;
+        });
+
+        modalContent.addEventListener("mousemove", (e) => {
+          if (!isSwipeStarted) return;
+          
+          const currentX = e.clientX;
+          const currentY = e.clientY;
+          const diffX = startX - currentX;
+          const diffY = Math.abs(startY - currentY);
+
+          // Swipe vers la gauche et pas trop vertical
+          if (diffX > 100 && diffY < 100) {
+            closeRatingModal();
+            isSwipeStarted = false;
+          }
+        });
+
+        modalContent.addEventListener("mouseup", () => {
+          isSwipeStarted = false;
+        });
       }
 
       // Fonctions pour le nouveau système de notation intelligent
