@@ -1498,8 +1498,9 @@
     <div
       id="rating-modal"
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+      onclick="closeRatingModal()"
     >
-      <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="flex items-center justify-center min-h-screen p-4" onclick="event.stopPropagation()">
         <div
           class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto"
         >
@@ -1509,7 +1510,7 @@
               Noter cet événement
             </h2>
             <button
-              onclick="closeRatingModal()"
+              onclick="closeRatingModal(); event.stopPropagation();"
               class="text-gray-400 hover:text-gray-600"
             >
               <svg
@@ -1877,7 +1878,7 @@
               <div class="flex justify-end space-x-4">
                 <button
                   type="button"
-                  onclick="closeRatingModal()"
+                  onclick="closeRatingModal(); event.stopPropagation();"
                   class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
                 >
                   Annuler
@@ -5094,102 +5095,67 @@
             ${ratings
               .map(
                 (rating) => `
-              <div class="event-card-simple group">
-                <!-- Header avec image et note -->
-                <div class="relative mb-4">
-                  <div id="event-photo-${
-                    rating.id
-                  }" class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-t-lg flex items-center justify-center">
-                    <svg class="w-16 h-16 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+                <!-- Photo de l'événement en grand -->
+                <div class="relative h-56 bg-gradient-to-br from-yellow-100 to-orange-100">
+                  <div id="event-photo-${rating.id}" class="w-full h-full flex items-center justify-center">
+                    <svg class="w-20 h-20 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                     </svg>
                   </div>
                   
-                  <!-- Badge de note -->
-                  <div class="absolute top-3 right-3">
-                    <span class="status-badge bg-yellow-100 text-yellow-800">
-                      ⭐ ${formatRating(rating.overall_rating)}
-                    </span>
+                  <!-- Note dans le coin -->
+                  <div class="absolute top-3 right-3 bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1 flex items-center space-x-1">
+                    <span class="text-yellow-500">⭐</span>
+                    <span class="text-sm font-bold text-gray-700">${rating.overall_rating}/5</span>
                   </div>
                 </div>
 
-                <!-- Contenu principal -->
+                <!-- Contenu de l'avis -->
                 <div class="p-6">
                   <!-- Titre et date -->
                   <div class="mb-4">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                      ${rating.event_title}
-                    </h3>
-                    ${formatRatingDate(rating.created_at, rating)}
-                  </div>
-
-                  <!-- Note détaillée -->
-                  <div class="mb-6">
-                    <div class="flex items-center justify-center mb-4">
-                      <div class="flex text-yellow-400 text-2xl mr-3">
-                        ${Array.from({ length: 5 }, (_, i) => {
-                          const starRating = rating.overall_rating;
-                          if (i < Math.floor(starRating)) {
-                            return "★";
-                          } else if (
-                            i === Math.floor(starRating) &&
-                            starRating % 1 !== 0
-                          ) {
-                            return "☆"; // Demi-étoile
-                          } else {
-                            return "☆";
-                          }
-                        }).join("")}
-                      </div>
-                      <span class="text-2xl font-bold text-gray-900">${formatRating(
-                        rating.overall_rating
-                      )}</span>
-                  </div>
-                </div>
-
-                <!-- Tags rapides -->
-                ${formatQuickTags(rating.quick_tags)}
-
-                <!-- Commentaire -->
-                ${
-                  rating.comment
-                    ? `
-                    <div class="mb-6">
-                      <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-                        <div class="flex items-start space-x-3">
-                          <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                      </svg>
-                          </div>
-                          <p class="text-gray-700 italic text-sm leading-relaxed">"${rating.comment}"</p>
-                        </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">${rating.event_title}</h3>
+                    <div class="text-sm text-gray-500">
+                      <div class="font-medium text-gray-700">${formatRatingDate(rating.created_at, rating)}</div>
                     </div>
-                     </div>
-                   `
-                    : ""
-                }
+                  </div>
+                  
+                  <!-- Tags rapides -->
+                  ${formatQuickTags(rating.quick_tags)}
+
+                  <!-- Commentaire -->
+                  ${rating.comment ? `
+                    <div class="mb-4">
+                      <div class="flex items-start space-x-2">
+                        <span class="text-blue-500 text-lg">💬</span>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 flex-1">
+                          <p class="text-sm text-gray-700">"${rating.comment}"</p>
+                        </div>
+                      </div>
+                    </div>
+                  ` : ''}
 
                   <!-- Critères détaillés -->
                   ${formatDetailedCriteria(rating.detailed_criteria)}
 
-                <!-- Informations contextuelles -->
-                ${formatContextInfo(rating)}
-
+                  <!-- Informations contextuelles -->
+                  ${formatContextInfo(rating)}
+                  
                   <!-- Actions -->
-                  <div class="flex space-x-3 mt-6">
+                  <div class="flex gap-3 mt-6">
                     <button
                       onclick="editRating(${rating.id})"
-                      class="flex-1 btn-gradient text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center"
+                      class="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-200 flex items-center justify-center space-x-2"
                     >
-                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                       </svg>
-                      Modifier
+                      <span>Modifier</span>
                     </button>
                     <button
                       onclick="deleteRating(${rating.id})"
-                      class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all duration-300 flex items-center justify-center"
+                      class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition-colors"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -5197,12 +5163,21 @@
                     </button>
                   </div>
                 </div>
-               </div>
+              </div>
              `
               )
               .join("")}
            </div>
          `;
+
+        // Précharger toutes les images pour éviter les lags
+        const photoUrls = ratings
+          .map(rating => rating.event_photo)
+          .filter(url => url);
+        
+        if (photoUrls.length > 0) {
+          preloadImages(photoUrls);
+        }
 
         // Charger les photos pour chaque événement
         ratings.forEach((rating) => {
@@ -5228,13 +5203,20 @@
             const container = document.getElementById(containerId);
 
             if (container && photos.length > 0) {
-              container.innerHTML = `
-                <img src="${photos[0]}"
-                     class="w-20 h-20 object-cover rounded-lg border"
-                     alt="Photo événement"
-                     onerror="this.style.display='none'">
-                <p class="text-xs text-gray-500 mt-1">📷 ${photos.length} photo(s)</p>
-              `;
+              // Précharger l'image pour éviter les lags
+              const img = new Image();
+              img.onload = () => {
+                container.innerHTML = `
+                  <img 
+                    src="${photos[0]}" 
+                    alt="Photo événement"
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                `;
+              };
+              img.src = photos[0];
             }
           }
         } catch (error) {
