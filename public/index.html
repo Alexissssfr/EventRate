@@ -3501,6 +3501,12 @@
 
             // Ajouter toutes les méthodes de fermeture standard
             setupRatingsModalCloseMethods();
+            
+            // Masquer l'indicateur de chargement
+            setTimeout(() => {
+              const notifications = document.querySelectorAll('.notification');
+              notifications.forEach(notif => notif.remove());
+            }, 1000);
 
             // Fermeture automatique configurée dans le HTML
 
@@ -4747,6 +4753,9 @@
       async function editEvent(eventId) {
         currentEditingEventId = eventId;
         
+        // Afficher un indicateur de chargement
+        showNotification("info", "Chargement", "Récupération des données de l'événement...");
+        
         // Fermer le modal "Mes événements" sans retourner à la page précédente
         document.getElementById("my-events-modal").classList.add("hidden");
 
@@ -4770,6 +4779,12 @@
             
             // Ajouter toutes les méthodes de fermeture standard
             setupEditEventModalCloseMethods();
+            
+            // Masquer l'indicateur de chargement
+            setTimeout(() => {
+              const notifications = document.querySelectorAll('.notification');
+              notifications.forEach(notif => notif.remove());
+            }, 1000);
           } else {
             alert("❌ Erreur lors du chargement de l'événement");
           }
@@ -4899,6 +4914,9 @@
         currentEditingEventId = null;
         editEventPhotos = [];
         document.getElementById("edit-event-form").reset();
+        
+        // Retourner au modal "Mes événements" au lieu de la page précédente
+        document.getElementById("my-events-modal").classList.remove("hidden");
       }
 
       // Gérer l'événement gratuit
@@ -5250,6 +5268,9 @@
       // Modifier un avis
       async function editRating(ratingId) {
         try {
+          // Afficher un indicateur de chargement
+          showNotification("info", "Chargement", "Récupération des données de l'avis...");
+          
           // Fermer le modal "Mes avis" sans retourner à la page précédente
           document.getElementById("my-ratings-modal").classList.add("hidden");
 
@@ -5268,6 +5289,12 @@
 
             // Pré-remplir le modal de notation avec les données existantes
             await prepareEditRatingModal(rating);
+            
+            // Masquer l'indicateur de chargement
+            setTimeout(() => {
+              const notifications = document.querySelectorAll('.notification');
+              notifications.forEach(notif => notif.remove());
+            }, 1000);
           } else {
             showNotification(
               "error",
@@ -5374,10 +5401,10 @@
             if (comment) comment.value = rating.comment;
           }
 
-          // Modifier le titre du modal
+          // Modifier le titre du modal avec le nom de l'événement
           const modalTitle = document.querySelector("#rating-modal h2");
           if (modalTitle) {
-            modalTitle.textContent = "✏️ Modifier votre avis";
+            modalTitle.textContent = `✏️ Modifier votre avis - ${rating.event_title}`;
           }
 
           // Modifier le texte du bouton
@@ -6043,6 +6070,12 @@
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
         resetRatingForm();
+        
+        // Si on était en train de modifier un avis, retourner au modal "Mes avis"
+        if (window.editingRatingId) {
+          document.getElementById("my-ratings-modal").classList.remove("hidden");
+          window.editingRatingId = null;
+        }
       }
 
       // Toutes les méthodes standard pour fermer le modal
