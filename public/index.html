@@ -2775,6 +2775,9 @@
           filteredEvents = [...allEvents];
           populateFilterOptions();
           applyFilters();
+          
+          // Configurer le lazy loading après affichage
+          setTimeout(() => setupLazyLoading(), 100);
         } catch (error) {
           console.error("Erreur lors du chargement des événements:", error);
           document.getElementById("events-container").innerHTML = `
@@ -4113,6 +4116,7 @@
           return;
         }
 
+        setCurrentPage('my-ratings');
         document.getElementById("my-ratings-modal").classList.remove("hidden");
         await loadMyRatings();
 
@@ -4134,6 +4138,11 @@
       // Fermer le modal "Mes avis"
       function closeMyRatingsModal() {
         document.getElementById("my-ratings-modal").classList.add("hidden");
+        // Retourner à la page précédente
+        const previousPage = goBackToPreviousPage();
+        if (previousPage === 'events') {
+          showEventsSection();
+        }
       }
 
       // Modal de récupération de mot de passe
@@ -4458,6 +4467,7 @@
 
       // Modal "Mes événements" - VERSION COMPLÈTE
       async function openMyEventsModal() {
+        setCurrentPage('my-events');
         document.getElementById("my-events-modal").classList.remove("hidden");
         await loadMyEvents();
 
@@ -4478,6 +4488,11 @@
 
       function closeMyEventsModal() {
         document.getElementById("my-events-modal").classList.add("hidden");
+        // Retourner à la page précédente
+        const previousPage = goBackToPreviousPage();
+        if (previousPage === 'events') {
+          showEventsSection();
+        }
       }
 
       // Charger les événements de l'utilisateur
@@ -6211,6 +6226,73 @@
       let selectedTags = [];
       let activeCriteria = {};
 
+      // Variables globales pour la navigation et performance
+      let currentPage = 'events'; // Page actuelle
+      let pageHistory = ['events']; // Historique des pages
+      let isScrolling = false;
+      let scrollTimeout = null;
+
+      // Fonctions de navigation et performance
+      function setCurrentPage(page) {
+        if (currentPage !== page) {
+          pageHistory.push(currentPage);
+          currentPage = page;
+          // Limiter l'historique à 10 pages
+          if (pageHistory.length > 10) {
+            pageHistory.shift();
+          }
+        }
+      }
+
+      function goBackToPreviousPage() {
+        if (pageHistory.length > 0) {
+          const previousPage = pageHistory.pop();
+          currentPage = previousPage;
+          return previousPage;
+        }
+        return 'events'; // Fallback
+      }
+
+      // Optimisation du scroll avec debouncing
+      function optimizeScroll() {
+        if (isScrolling) return;
+        isScrolling = true;
+        
+        // Désactiver les animations pendant le scroll
+        document.body.style.setProperty('--transition-smooth', 'none');
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          isScrolling = false;
+          // Réactiver les animations après le scroll
+          document.body.style.removeProperty('--transition-smooth');
+        }, 150);
+      }
+
+      // Intersection Observer pour lazy loading
+      function setupLazyLoading() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              if (img.dataset.src) {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+                observer.unobserve(img);
+              }
+            }
+          });
+        }, {
+          rootMargin: '50px 0px',
+          threshold: 0.1
+        });
+
+        // Observer toutes les images avec data-src
+        document.querySelectorAll('img[data-src]').forEach(img => {
+          observer.observe(img);
+        });
+      }
+
       // Presets de critères par type d'événement
       const criteriaPresets = {
         concert: [
@@ -6730,6 +6812,15 @@
 
         // Vérifier s'il y a un token de réinitialisation dans l'URL
         checkResetPasswordToken();
+        
+        // Optimiser le scroll global
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+          clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(() => {
+            optimizeScroll();
+          }, 10);
+        }, { passive: true });
 
         // Démarrer le timer d'inactivité si déjà connecté
         if (authToken) {

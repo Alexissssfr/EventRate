@@ -494,6 +494,30 @@ body::before {
     animation: none !important;
   }
   
+  /* Optimisation du scroll */
+  .event-card, .event-card-simple {
+    will-change: auto;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  
+  /* Lazy loading optimisé */
+  img[data-src] {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  img[data-src].loaded {
+    opacity: 1;
+  }
+  
+  /* Optimisation des containers */
+  .events-container, .my-events-content, .my-ratings-content {
+    contain: layout style paint;
+    will-change: scroll-position;
+  }
+  
   /* DÉSACTIVER les effets hover sur mobile */
   .btn-gradient:hover,
   .glass-card:hover,
