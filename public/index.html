@@ -6067,14 +6067,15 @@
       }
 
       function closeRatingModal() {
+        // Si on était en train de modifier un avis, retourner au modal "Mes avis"
+        const wasEditing = !!window.editingRatingId;
+        
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
         resetRatingForm();
         
-        // Si on était en train de modifier un avis, retourner au modal "Mes avis"
-        if (window.editingRatingId) {
+        if (wasEditing) {
           document.getElementById("my-ratings-modal").classList.remove("hidden");
-          window.editingRatingId = null;
         }
       }
 
