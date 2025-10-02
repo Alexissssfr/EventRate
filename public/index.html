@@ -6087,8 +6087,17 @@
         document.getElementById("rating-event-id").value = eventId;
         document.getElementById("rating-modal").classList.remove("hidden");
 
+        // Sauvegarder le mode édition avant de réinitialiser
+        const wasEditing = !!window.editingRatingId;
+        const editingId = window.editingRatingId;
+
         // Initialiser le nouveau système de notation intelligent
         resetRatingForm();
+
+        // Restaurer le mode édition si on était en train de modifier un avis
+        if (wasEditing) {
+          window.editingRatingId = editingId;
+        }
 
         // Ajouter toutes les méthodes de fermeture standard
         setupModalCloseMethods();
