@@ -3522,42 +3522,15 @@
 
             // Fermeture automatique configurée dans le HTML
 
-            // Positionner la fenêtre directement sur la zone de la carte sur mobile
+            // Scroll automatiquement vers la fenêtre sur mobile
             if (window.innerWidth <= 768) {
               setTimeout(() => {
                 const modal = document.getElementById("ratings-modal");
-                const clickedButton = clickedElement;
-                const eventCard = clickedButton.closest(
-                  ".event-card, .event-card-simple"
-                );
-
-                if (modal && eventCard) {
-                  // Calculer la position de la carte
-                  const cardRect = eventCard.getBoundingClientRect();
-                  const scrollTop =
-                    window.pageYOffset || document.documentElement.scrollTop;
-
-                  // Positionner la fenêtre directement sur la carte
-                  modal.style.position = "absolute";
-                  modal.style.top = cardRect.top + scrollTop + "px";
-                  modal.style.left = "10px";
-                  modal.style.right = "10px";
-                  modal.style.width = "auto";
-                  modal.style.maxHeight = "80vh";
-                  modal.style.overflowY = "auto";
-                  modal.style.zIndex = "9999";
-                  modal.style.backgroundColor = "rgba(255, 255, 255, 0.98)";
-                  modal.style.backdropFilter = "blur(10px)";
-
-                  // Scroll pour centrer la fenêtre
-                  const modalCenter =
-                    cardRect.top + scrollTop + cardRect.height / 2;
-                  const viewportCenter = window.innerHeight / 2;
-                  const scrollTo = modalCenter - viewportCenter;
-
-                  window.scrollTo({
-                    top: Math.max(0, scrollTo),
+                if (modal) {
+                  modal.scrollIntoView({
                     behavior: "smooth",
+                    block: "start",
+                    inline: "nearest",
                   });
                 }
               }, 100);
@@ -4104,20 +4077,7 @@
 
       // Fermer le modal des avis
       function closeRatingsModal() {
-        const modal = document.getElementById("ratings-modal");
-        modal.classList.add("hidden");
-
-        // Réinitialiser la position de la fenêtre
-        modal.style.position = "";
-        modal.style.top = "";
-        modal.style.left = "";
-        modal.style.right = "";
-        modal.style.width = "";
-        modal.style.maxHeight = "";
-        modal.style.overflowY = "";
-        modal.style.zIndex = "";
-        modal.style.backgroundColor = "";
-        modal.style.backdropFilter = "";
+        document.getElementById("ratings-modal").classList.add("hidden");
       }
 
       // Fonction de fermeture simple - gérée par le HTML
