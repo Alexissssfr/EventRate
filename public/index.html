@@ -6103,49 +6103,35 @@
       }
 
       function closeRatingModal() {
-        // Si on était en train de modifier un avis, retourner au modal "Mes avis"
+        // Vérifier d'abord si on était en mode édition AVANT de réinitialiser
         const wasEditing = !!window.editingRatingId;
-
+        
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
-
-        if (wasEditing) {
-          // Réinitialiser le mode édition avant de rouvrir le modal "Mes avis"
-          window.editingRatingId = null;
-          document
-            .getElementById("my-ratings-modal")
-            .classList.remove("hidden");
-        }
-        
-        // Réinitialiser le formulaire APRÈS avoir vérifié le mode édition
         resetRatingForm();
+
+        // Si on était en train de modifier un avis, retourner au modal "Mes avis"
+        if (wasEditing) {
+          document.getElementById("my-ratings-modal").classList.remove("hidden");
+        }
       }
 
       // Version de base de closeRatingModal (sans les event listeners)
       function baseCloseRatingModal() {
-        // Si on était en train de modifier un avis, retourner au modal "Mes avis"
+        console.log("baseCloseRatingModal called, editingRatingId:", window.editingRatingId);
+        
+        // Vérifier d'abord si on était en mode édition AVANT de réinitialiser
         const wasEditing = !!window.editingRatingId;
-        console.log(
-          "baseCloseRatingModal called, wasEditing:",
-          wasEditing,
-          "editingRatingId:",
-          window.editingRatingId
-        );
-
+        
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
-        
-        if (wasEditing) {
-          // Réinitialiser le mode édition avant de rouvrir le modal "Mes avis"
-          window.editingRatingId = null;
-          document
-            .getElementById("my-ratings-modal")
-            .classList.remove("hidden");
-          console.log("Returning to My Reviews modal");
-        }
-        
-        // Réinitialiser le formulaire APRÈS avoir vérifié le mode édition
         resetRatingForm();
+
+        // Si on était en train de modifier un avis, retourner au modal "Mes avis"
+        if (wasEditing) {
+          console.log("Returning to My Reviews modal");
+          document.getElementById("my-ratings-modal").classList.remove("hidden");
+        }
       }
 
       // Toutes les méthodes standard pour fermer le modal
