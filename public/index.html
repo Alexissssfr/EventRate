@@ -6114,7 +6114,14 @@
         // Si on était en train de modifier un avis, retourner au modal "Mes avis"
         if (wasEditing) {
           console.log("Returning to My Reviews modal");
-          document.getElementById("my-ratings-modal").classList.remove("hidden");
+          const myRatingsModal = document.getElementById("my-ratings-modal");
+          if (myRatingsModal) {
+            myRatingsModal.classList.remove("hidden");
+            console.log("Modal 'Mes avis' should be visible now");
+            console.log("Modal classes:", myRatingsModal.className);
+          } else {
+            console.error("Could not find my-ratings-modal element");
+          }
         }
       }
 
