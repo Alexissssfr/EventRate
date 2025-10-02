@@ -6105,23 +6105,7 @@
       function closeRatingModal() {
         // Vérifier d'abord si on était en mode édition AVANT de réinitialiser
         const wasEditing = !!window.editingRatingId;
-        
-        document.getElementById("rating-modal").classList.add("hidden");
-        document.getElementById("detailed-rating-form").reset();
-        resetRatingForm();
-
-        // Si on était en train de modifier un avis, retourner au modal "Mes avis"
-        if (wasEditing) {
-          document.getElementById("my-ratings-modal").classList.remove("hidden");
-        }
-      }
-
-      // Version de base de closeRatingModal (sans les event listeners)
-      function baseCloseRatingModal() {
-        console.log("baseCloseRatingModal called, editingRatingId:", window.editingRatingId);
-        
-        // Vérifier d'abord si on était en mode édition AVANT de réinitialiser
-        const wasEditing = !!window.editingRatingId;
+        console.log("closeRatingModal called, wasEditing:", wasEditing, "editingRatingId:", window.editingRatingId);
         
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
@@ -6148,10 +6132,10 @@
         document.addEventListener("keydown", handleKeyPress);
 
         // Nettoyer l'event listener quand le modal se ferme
+        const originalClose = closeRatingModal;
         closeRatingModal = function () {
           document.removeEventListener("keydown", handleKeyPress);
-          // Appeler la version de base qui contient la logique de retour au modal "Mes avis"
-          baseCloseRatingModal();
+          originalClose();
         };
 
         // 2. SWIPE VERS LE BAS (mobile) - plus standard que gauche
