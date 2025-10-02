@@ -6108,7 +6108,6 @@
 
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
-        resetRatingForm();
 
         if (wasEditing) {
           // Réinitialiser le mode édition avant de rouvrir le modal "Mes avis"
@@ -6117,6 +6116,9 @@
             .getElementById("my-ratings-modal")
             .classList.remove("hidden");
         }
+        
+        // Réinitialiser le formulaire APRÈS avoir vérifié le mode édition
+        resetRatingForm();
       }
 
       // Version de base de closeRatingModal (sans les event listeners)
@@ -6132,8 +6134,7 @@
 
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
-        resetRatingForm();
-
+        
         if (wasEditing) {
           // Réinitialiser le mode édition avant de rouvrir le modal "Mes avis"
           window.editingRatingId = null;
@@ -6142,6 +6143,9 @@
             .classList.remove("hidden");
           console.log("Returning to My Reviews modal");
         }
+        
+        // Réinitialiser le formulaire APRÈS avoir vérifié le mode édition
+        resetRatingForm();
       }
 
       // Toutes les méthodes standard pour fermer le modal
