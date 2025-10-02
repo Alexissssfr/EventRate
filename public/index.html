@@ -4155,6 +4155,13 @@
       // Fermer le modal "Mes avis"
       function closeMyRatingsModal() {
         document.getElementById("my-ratings-modal").classList.add("hidden");
+        
+        // Si on vient de l'édition d'un avis, ne pas retourner à la page précédente
+        if (window.cameFromEditRating) {
+          window.cameFromEditRating = false;
+          return;
+        }
+        
         // Retourner à la page précédente
         const previousPage = goBackToPreviousPage();
         if (previousPage === "events") {
@@ -6100,9 +6107,12 @@
       }
 
       function closeRatingModal() {
+        console.log("=== closeRatingModal called ===");
+        console.log("window.editingRatingId:", window.editingRatingId);
+        
         // Vérifier d'abord si on était en mode édition AVANT de réinitialiser
         const wasEditing = !!window.editingRatingId;
-        console.log("closeRatingModal called, wasEditing:", wasEditing, "editingRatingId:", window.editingRatingId);
+        console.log("wasEditing:", wasEditing);
         
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
@@ -6110,15 +6120,16 @@
 
         // Si on était en train de modifier un avis, retourner au modal "Mes avis"
         if (wasEditing) {
-          console.log("Returning to My Reviews modal");
+          console.log("*** RETURNING TO MY REVIEWS MODAL ***");
           const myRatingsModal = document.getElementById("my-ratings-modal");
           if (myRatingsModal) {
             myRatingsModal.classList.remove("hidden");
-            console.log("Modal 'Mes avis' should be visible now");
-            console.log("Modal classes:", myRatingsModal.className);
+            console.log("Modal 'Mes avis' is now visible");
           } else {
             console.error("Could not find my-ratings-modal element");
           }
+        } else {
+          console.log("Not in editing mode, just closing modal");
         }
       }
 
