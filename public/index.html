@@ -619,19 +619,19 @@
                   </button>
                 </div>
                 <div class="flex flex-col sm:flex-row items-center gap-2">
-                <button
-                  type="button"
-                  onclick="resetFilters()"
+                  <button
+                    type="button"
+                    onclick="resetFilters()"
                     class="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors whitespace-nowrap"
-                >
-                  🗑️ Effacer filtres
-                </button>
-                <span
-                  id="events-count"
+                  >
+                    🗑️ Effacer filtres
+                  </button>
+                  <span
+                    id="events-count"
                     class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full whitespace-nowrap"
-                >
-                  0 événement(s)
-                </span>
+                  >
+                    0 événement(s)
+                  </span>
                 </div>
               </div>
             </div>
@@ -1074,10 +1074,10 @@
                 >Mot de passe</label
               >
               <div class="relative">
-              <input
-                type="password"
-                id="login-password"
-                required
+                <input
+                  type="password"
+                  id="login-password"
+                  required
                   class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
                 />
                 <button
@@ -1222,10 +1222,10 @@
                 >Mot de passe</label
               >
               <div class="relative">
-              <input
-                type="password"
-                id="register-password"
-                required
+                <input
+                  type="password"
+                  id="register-password"
+                  required
                   class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 bg-white"
                 />
                 <button
@@ -1506,8 +1506,14 @@
           id="rating-modal-content"
         >
           <!-- Header -->
-          <div class="flex items-center justify-between p-6 border-b" onclick="event.stopPropagation()">
-            <h2 class="text-2xl font-bold text-gray-900" ondblclick="closeRatingModal()">
+          <div
+            class="flex items-center justify-between p-6 border-b"
+            onclick="event.stopPropagation()"
+          >
+            <h2
+              class="text-2xl font-bold text-gray-900"
+              ondblclick="closeRatingModal()"
+            >
               Noter cet événement
             </h2>
             <button
@@ -1977,13 +1983,20 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeRatingsModal()"
     >
+      <div class="flex items-center justify-center min-h-screen p-4">
         <div
-        class="flex items-center justify-center min-h-screen p-4"
+          class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto"
+          id="ratings-modal-content"
         >
-        <div class="modal-glass max-w-4xl w-full max-h-screen overflow-y-auto" id="ratings-modal-content">
           <!-- Header -->
-          <div class="flex items-center justify-between p-6 border-b" onclick="event.stopPropagation()">
-            <h2 class="text-2xl font-bold text-gray-900" ondblclick="closeRatingsModal()">
+          <div
+            class="flex items-center justify-between p-6 border-b"
+            onclick="event.stopPropagation()"
+          >
+            <h2
+              class="text-2xl font-bold text-gray-900"
+              ondblclick="closeRatingsModal()"
+            >
               ⭐ Avis des participants
             </h2>
             <button
@@ -2028,8 +2041,14 @@
           id="edit-event-modal-content"
         >
           <!-- Header -->
-          <div class="flex items-center justify-between p-6 border-b" onclick="event.stopPropagation()">
-            <h2 class="text-2xl font-bold text-gray-900" ondblclick="closeEditEventModal()">
+          <div
+            class="flex items-center justify-between p-6 border-b"
+            onclick="event.stopPropagation()"
+          >
+            <h2
+              class="text-2xl font-bold text-gray-900"
+              ondblclick="closeEditEventModal()"
+            >
               ✏️ Modifier l'événement
             </h2>
             <button
@@ -2233,9 +2252,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeMyEventsModal()"
     >
-      <div
-        class="flex items-center justify-center min-h-screen p-2 sm:p-4"
-      >
+      <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
         <div
           class="modal-glass max-w-6xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
           onclick="event.stopPropagation()"
@@ -2281,9 +2298,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
       onclick="closeMyRatingsModal()"
     >
-      <div
-        class="flex items-center justify-center min-h-screen p-2 sm:p-4"
-      >
+      <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
         <div
           class="modal-glass max-w-5xl w-full max-h-screen overflow-y-auto mx-2 sm:mx-0"
           onclick="event.stopPropagation()"
@@ -2775,7 +2790,7 @@
           filteredEvents = [...allEvents];
           populateFilterOptions();
           applyFilters();
-          
+
           // Configurer le lazy loading après affichage
           setTimeout(() => setupLazyLoading(), 100);
         } catch (error) {
@@ -3501,11 +3516,11 @@
 
             // Ajouter toutes les méthodes de fermeture standard
             setupRatingsModalCloseMethods();
-            
+
             // Masquer l'indicateur de chargement
             setTimeout(() => {
-              const notifications = document.querySelectorAll('.notification');
-              notifications.forEach(notif => notif.remove());
+              const notifications = document.querySelectorAll(".notification");
+              notifications.forEach((notif) => notif.remove());
             }, 1000);
 
             // Fermeture automatique configurée dans le HTML
@@ -3600,7 +3615,7 @@
                    </div>
                          <span class="text-sm font-bold text-gray-700">${
                            rating.overall_rating
-                       }/5</span>
+                         }/5</span>
                    </div>
                    </div>
                      ${formatRatingDate(rating.created_at, rating)}
@@ -3650,7 +3665,6 @@
           });
         });
       }
-
 
       // Fonction de debouncing pour optimiser les performances
       function debounce(func, wait) {
@@ -3932,8 +3946,8 @@
         } else if (rating.arrival_time && rating.still_present) {
           // En cours : seulement si c'est aujourd'hui
           if (isToday) {
-          timingText = `Depuis ${rating.arrival_time}`;
-          timingIcon = "🔴";
+            timingText = `Depuis ${rating.arrival_time}`;
+            timingIcon = "🔴";
             badgeColor = "bg-red-100 text-red-800";
           } else {
             // Pour les jours passés, afficher juste l'heure d'arrivée
@@ -4122,7 +4136,7 @@
           return;
         }
 
-        setCurrentPage('my-ratings');
+        setCurrentPage("my-ratings");
         document.getElementById("my-ratings-modal").classList.remove("hidden");
         await loadMyRatings();
 
@@ -4146,7 +4160,7 @@
         document.getElementById("my-ratings-modal").classList.add("hidden");
         // Retourner à la page précédente
         const previousPage = goBackToPreviousPage();
-        if (previousPage === 'events') {
+        if (previousPage === "events") {
           showEventsSection();
         }
       }
@@ -4473,7 +4487,7 @@
 
       // Modal "Mes événements" - VERSION COMPLÈTE
       async function openMyEventsModal() {
-        setCurrentPage('my-events');
+        setCurrentPage("my-events");
         document.getElementById("my-events-modal").classList.remove("hidden");
         await loadMyEvents();
 
@@ -4496,7 +4510,7 @@
         document.getElementById("my-events-modal").classList.add("hidden");
         // Retourner à la page précédente
         const previousPage = goBackToPreviousPage();
-        if (previousPage === 'events') {
+        if (previousPage === "events") {
           showEventsSection();
         }
       }
@@ -4506,10 +4520,10 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-              headers: {
-                "Content-Type": "application/json",
+            headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-              },
+            },
             body: JSON.stringify({ action: "my-events" }),
           });
 
@@ -4523,7 +4537,7 @@
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-            displayMyEvents(events);
+                displayMyEvents(events);
               }, 150);
             } else {
               // Desktop : délai normal
@@ -4641,7 +4655,7 @@
                       <div>
                         <p class="text-sm font-medium text-gray-500">Date</p>
                         <p class="text-gray-900 font-semibold">${formatEventDateRange(
-                        event
+                          event
                         )}</p>
                       </div>
                     </div>
@@ -4657,7 +4671,7 @@
                       <div>
                         <p class="text-sm font-medium text-gray-500">Lieu</p>
                         <p class="text-gray-900 font-semibold">${
-                        event.location || "Non spécifié"
+                          event.location || "Non spécifié"
                         }</p>
                       </div>
                     </div>
@@ -4694,7 +4708,7 @@
                         <div>
                           <p class="text-sm font-medium text-gray-500">Note moyenne</p>
                           <p class="text-gray-900 font-semibold">${formatRating(
-                              event
+                            event
                           )}</p>
                         </div>
                       </div>
@@ -4752,10 +4766,14 @@
       // Fonctions d'actions sur les événements
       async function editEvent(eventId) {
         currentEditingEventId = eventId;
-        
+
         // Afficher un indicateur de chargement
-        showNotification("info", "Chargement", "Récupération des données de l'événement...");
-        
+        showNotification(
+          "info",
+          "Chargement",
+          "Récupération des données de l'événement..."
+        );
+
         // Fermer le modal "Mes événements" sans retourner à la page précédente
         document.getElementById("my-events-modal").classList.add("hidden");
 
@@ -4776,14 +4794,14 @@
             document
               .getElementById("edit-event-modal")
               .classList.remove("hidden");
-            
+
             // Ajouter toutes les méthodes de fermeture standard
             setupEditEventModalCloseMethods();
-            
+
             // Masquer l'indicateur de chargement
             setTimeout(() => {
-              const notifications = document.querySelectorAll('.notification');
-              notifications.forEach(notif => notif.remove());
+              const notifications = document.querySelectorAll(".notification");
+              notifications.forEach((notif) => notif.remove());
             }, 1000);
           } else {
             alert("❌ Erreur lors du chargement de l'événement");
@@ -4914,7 +4932,7 @@
         currentEditingEventId = null;
         editEventPhotos = [];
         document.getElementById("edit-event-form").reset();
-        
+
         // Retourner au modal "Mes événements" au lieu de la page précédente
         document.getElementById("my-events-modal").classList.remove("hidden");
       }
@@ -5000,10 +5018,10 @@
         try {
           const response = await fetch(`${API_BASE}/events`, {
             method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${authToken}`,
-              },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
             body: JSON.stringify({
               action: "update",
               id: currentEditingEventId,
@@ -5068,10 +5086,10 @@
         try {
           const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
-              headers: {
-                "Content-Type": "application/json",
+            headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
-              },
+            },
             body: JSON.stringify({ action: "my-ratings" }),
           });
 
@@ -5091,7 +5109,7 @@
             if (window.innerWidth <= 768) {
               // Mobile : délai plus long pour éviter les lags
               setTimeout(() => {
-            displayMyRatings(data);
+                displayMyRatings(data);
               }, 150);
             } else {
               // Desktop : délai normal
@@ -5139,7 +5157,9 @@
               <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
                 <!-- Photo de l'événement en grand -->
                 <div class="relative h-56 bg-gradient-to-br from-yellow-100 to-orange-100">
-                  <div id="event-photo-${rating.id}" class="w-full h-full flex items-center justify-center">
+                  <div id="event-photo-${
+                    rating.id
+                  }" class="w-full h-full flex items-center justify-center">
                     <svg class="w-20 h-20 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                     </svg>
@@ -5148,7 +5168,9 @@
                   <!-- Note dans le coin -->
                   <div class="absolute top-3 right-3 bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1 flex items-center space-x-1">
                     <span class="text-yellow-500">⭐</span>
-                    <span class="text-sm font-bold text-gray-700">${rating.overall_rating}/5</span>
+                    <span class="text-sm font-bold text-gray-700">${
+                      rating.overall_rating
+                    }/5</span>
                     </div>
                   </div>
 
@@ -5156,9 +5178,14 @@
                 <div class="p-6">
                   <!-- Titre et date -->
                   <div class="mb-4">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">${rating.event_title}</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">${
+                      rating.event_title
+                    }</h3>
                     <div class="text-sm text-gray-500">
-                      <div class="font-medium text-gray-700">${formatRatingDate(rating.created_at, rating)}</div>
+                      <div class="font-medium text-gray-700">${formatRatingDate(
+                        rating.created_at,
+                        rating
+                      )}</div>
                   </div>
                 </div>
 
@@ -5166,7 +5193,9 @@
                 ${formatQuickTags(rating.quick_tags)}
 
                 <!-- Commentaire -->
-                  ${rating.comment ? `
+                  ${
+                    rating.comment
+                      ? `
                     <div class="mb-4">
                     <div class="flex items-start space-x-2">
                         <span class="text-blue-500 text-lg">💬</span>
@@ -5175,7 +5204,9 @@
                     </div>
                      </div>
                     </div>
-                  ` : ''}
+                  `
+                      : ""
+                  }
 
                   <!-- Critères détaillés -->
                   ${formatDetailedCriteria(rating.detailed_criteria)}
@@ -5213,9 +5244,9 @@
 
         // Précharger toutes les images pour éviter les lags
         const photoUrls = ratings
-          .map(rating => rating.event_photo)
-          .filter(url => url);
-        
+          .map((rating) => rating.event_photo)
+          .filter((url) => url);
+
         if (photoUrls.length > 0) {
           preloadImages(photoUrls);
         }
@@ -5247,7 +5278,7 @@
               // Précharger l'image pour éviter les lags
               const img = new Image();
               img.onload = () => {
-              container.innerHTML = `
+                container.innerHTML = `
                   <img 
                     src="${photos[0]}" 
                      alt="Photo événement"
@@ -5269,8 +5300,12 @@
       async function editRating(ratingId) {
         try {
           // Afficher un indicateur de chargement
-          showNotification("info", "Chargement", "Récupération des données de l'avis...");
-          
+          showNotification(
+            "info",
+            "Chargement",
+            "Récupération des données de l'avis..."
+          );
+
           // Fermer le modal "Mes avis" sans retourner à la page précédente
           document.getElementById("my-ratings-modal").classList.add("hidden");
 
@@ -5289,11 +5324,11 @@
 
             // Pré-remplir le modal de notation avec les données existantes
             await prepareEditRatingModal(rating);
-            
+
             // Masquer l'indicateur de chargement
             setTimeout(() => {
-              const notifications = document.querySelectorAll('.notification');
-              notifications.forEach(notif => notif.remove());
+              const notifications = document.querySelectorAll(".notification");
+              notifications.forEach((notif) => notif.remove());
             }, 1000);
           } else {
             showNotification(
@@ -5312,6 +5347,7 @@
       async function prepareEditRatingModal(rating) {
         // Marquer qu'on est en mode édition
         window.editingRatingId = rating.id;
+        console.log("Setting editingRatingId to:", rating.id);
 
         // Ouvrir le modal de notation
         openRatingModal(rating.event_id);
@@ -6069,15 +6105,42 @@
       function closeRatingModal() {
         // Si on était en train de modifier un avis, retourner au modal "Mes avis"
         const wasEditing = !!window.editingRatingId;
-        
+
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
         resetRatingForm();
-        
+
         if (wasEditing) {
           // Réinitialiser le mode édition avant de rouvrir le modal "Mes avis"
           window.editingRatingId = null;
-          document.getElementById("my-ratings-modal").classList.remove("hidden");
+          document
+            .getElementById("my-ratings-modal")
+            .classList.remove("hidden");
+        }
+      }
+
+      // Version de base de closeRatingModal (sans les event listeners)
+      function baseCloseRatingModal() {
+        // Si on était en train de modifier un avis, retourner au modal "Mes avis"
+        const wasEditing = !!window.editingRatingId;
+        console.log(
+          "baseCloseRatingModal called, wasEditing:",
+          wasEditing,
+          "editingRatingId:",
+          window.editingRatingId
+        );
+
+        document.getElementById("rating-modal").classList.add("hidden");
+        document.getElementById("detailed-rating-form").reset();
+        resetRatingForm();
+
+        if (wasEditing) {
+          // Réinitialiser le mode édition avant de rouvrir le modal "Mes avis"
+          window.editingRatingId = null;
+          document
+            .getElementById("my-ratings-modal")
+            .classList.remove("hidden");
+          console.log("Returning to My Reviews modal");
         }
       }
 
@@ -6088,17 +6151,17 @@
 
         // 1. TOUCHE ÉCHAP (ESC)
         const handleKeyPress = (e) => {
-          if (e.key === 'Escape') {
+          if (e.key === "Escape") {
             closeRatingModal();
           }
         };
-        document.addEventListener('keydown', handleKeyPress);
+        document.addEventListener("keydown", handleKeyPress);
 
         // Nettoyer l'event listener quand le modal se ferme
-        const originalClose = closeRatingModal;
-        closeRatingModal = function() {
-          document.removeEventListener('keydown', handleKeyPress);
-          originalClose();
+        closeRatingModal = function () {
+          document.removeEventListener("keydown", handleKeyPress);
+          // Appeler la version de base qui contient la logique de retour au modal "Mes avis"
+          baseCloseRatingModal();
         };
 
         // 2. SWIPE VERS LE BAS (mobile) - plus standard que gauche
@@ -6115,7 +6178,7 @@
 
         modalContent.addEventListener("touchmove", (e) => {
           if (!isSwipeStarted) return;
-          
+
           const currentY = e.touches[0].clientY;
           const currentX = e.touches[0].clientX;
           const diffY = currentY - startY; // Vers le bas
@@ -6140,7 +6203,7 @@
 
         modalContent.addEventListener("touchmove", (e) => {
           if (!isSwipeStarted) return;
-          
+
           const currentX = e.touches[0].clientX;
           const currentY = e.touches[0].clientY;
           const diffX = startX - currentX; // Vers la gauche
@@ -6161,16 +6224,16 @@
 
         // 1. TOUCHE ÉCHAP (ESC)
         const handleKeyPress = (e) => {
-          if (e.key === 'Escape') {
+          if (e.key === "Escape") {
             closeRatingsModal();
           }
         };
-        document.addEventListener('keydown', handleKeyPress);
+        document.addEventListener("keydown", handleKeyPress);
 
         // Nettoyer l'event listener quand le modal se ferme
         const originalClose = closeRatingsModal;
-        closeRatingsModal = function() {
-          document.removeEventListener('keydown', handleKeyPress);
+        closeRatingsModal = function () {
+          document.removeEventListener("keydown", handleKeyPress);
           originalClose();
         };
 
@@ -6187,7 +6250,7 @@
 
         modalContent.addEventListener("touchmove", (e) => {
           if (!isSwipeStarted) return;
-          
+
           const currentY = e.touches[0].clientY;
           const currentX = e.touches[0].clientX;
           const diffY = currentY - startY; // Vers le bas
@@ -6207,21 +6270,23 @@
 
       // Méthodes de fermeture pour le modal "Modifier événement"
       function setupEditEventModalCloseMethods() {
-        const modalContent = document.getElementById("edit-event-modal-content");
+        const modalContent = document.getElementById(
+          "edit-event-modal-content"
+        );
         if (!modalContent) return;
 
         // 1. TOUCHE ÉCHAP (ESC)
         const handleKeyPress = (e) => {
-          if (e.key === 'Escape') {
+          if (e.key === "Escape") {
             closeEditEventModal();
           }
         };
-        document.addEventListener('keydown', handleKeyPress);
+        document.addEventListener("keydown", handleKeyPress);
 
         // Nettoyer l'event listener quand le modal se ferme
         const originalClose = closeEditEventModal;
-        closeEditEventModal = function() {
-          document.removeEventListener('keydown', handleKeyPress);
+        closeEditEventModal = function () {
+          document.removeEventListener("keydown", handleKeyPress);
           originalClose();
         };
 
@@ -6238,7 +6303,7 @@
 
         modalContent.addEventListener("touchmove", (e) => {
           if (!isSwipeStarted) return;
-          
+
           const currentY = e.touches[0].clientY;
           const currentX = e.touches[0].clientX;
           const diffY = currentY - startY; // Vers le bas
@@ -6263,8 +6328,8 @@
       let activeCriteria = {};
 
       // Variables globales pour la navigation et performance
-      let currentPage = 'events'; // Page actuelle
-      let pageHistory = ['events']; // Historique des pages
+      let currentPage = "events"; // Page actuelle
+      let pageHistory = ["events"]; // Historique des pages
       let isScrolling = false;
       let scrollTimeout = null;
 
@@ -6286,45 +6351,48 @@
           currentPage = previousPage;
           return previousPage;
         }
-        return 'events'; // Fallback
+        return "events"; // Fallback
       }
 
       // Optimisation du scroll avec debouncing
       function optimizeScroll() {
         if (isScrolling) return;
         isScrolling = true;
-        
+
         // Désactiver les animations pendant le scroll
-        document.body.style.setProperty('--transition-smooth', 'none');
-        
+        document.body.style.setProperty("--transition-smooth", "none");
+
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
           isScrolling = false;
           // Réactiver les animations après le scroll
-          document.body.style.removeProperty('--transition-smooth');
+          document.body.style.removeProperty("--transition-smooth");
         }, 150);
       }
 
       // Intersection Observer pour lazy loading
       function setupLazyLoading() {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const img = entry.target;
-              if (img.dataset.src) {
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                observer.unobserve(img);
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                  img.src = img.dataset.src;
+                  img.removeAttribute("data-src");
+                  observer.unobserve(img);
+                }
               }
-            }
-          });
-        }, {
-          rootMargin: '50px 0px',
-          threshold: 0.1
-        });
+            });
+          },
+          {
+            rootMargin: "50px 0px",
+            threshold: 0.1,
+          }
+        );
 
         // Observer toutes les images avec data-src
-        document.querySelectorAll('img[data-src]').forEach(img => {
+        document.querySelectorAll("img[data-src]").forEach((img) => {
           observer.observe(img);
         });
       }
@@ -6848,15 +6916,19 @@
 
         // Vérifier s'il y a un token de réinitialisation dans l'URL
         checkResetPasswordToken();
-        
+
         // Optimiser le scroll global
         let scrollTimeout;
-        window.addEventListener('scroll', () => {
-          clearTimeout(scrollTimeout);
-          scrollTimeout = setTimeout(() => {
-            optimizeScroll();
-          }, 10);
-        }, { passive: true });
+        window.addEventListener(
+          "scroll",
+          () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+              optimizeScroll();
+            }, 10);
+          },
+          { passive: true }
+        );
 
         // Démarrer le timer d'inactivité si déjà connecté
         if (authToken) {
