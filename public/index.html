@@ -4165,7 +4165,8 @@
         // Retourner à la page précédente
         const previousPage = goBackToPreviousPage();
         if (previousPage === "events") {
-          showEventsSection();
+          // Recharger la page des événements
+          loadEvents();
         }
       }
 
@@ -4515,7 +4516,8 @@
         // Retourner à la page précédente
         const previousPage = goBackToPreviousPage();
         if (previousPage === "events") {
-          showEventsSection();
+          // Recharger la page des événements
+          loadEvents();
         }
       }
 
@@ -6116,8 +6118,7 @@
         
         document.getElementById("rating-modal").classList.add("hidden");
         document.getElementById("detailed-rating-form").reset();
-        resetRatingForm();
-
+        
         // Si on était en train de modifier un avis, retourner au modal "Mes avis"
         if (wasEditing) {
           console.log("*** RETURNING TO MY REVIEWS MODAL ***");
@@ -6131,6 +6132,9 @@
         } else {
           console.log("Not in editing mode, just closing modal");
         }
+        
+        // Réinitialiser le formulaire APRÈS avoir vérifié le mode édition
+        resetRatingForm();
       }
 
       // Toutes les méthodes standard pour fermer le modal
