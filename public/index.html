@@ -6166,41 +6166,15 @@
           originalClose();
         };
 
-        // 2. SWIPE VERS LE BAS (mobile) - plus standard que gauche
-        let startY = 0;
+        // 2. SWIPE VERS LA GAUCHE (mobile)
         let startX = 0;
+        let startY = 0;
         let isSwipeStarted = false;
 
-        // Touch events pour mobile
         modalContent.addEventListener("touchstart", (e) => {
-          startY = e.touches[0].clientY;
           startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
           isSwipeStarted = true;
-        });
-
-        modalContent.addEventListener("touchmove", (e) => {
-          if (!isSwipeStarted) return;
-
-          const currentY = e.touches[0].clientY;
-          const currentX = e.touches[0].clientX;
-          const diffY = currentY - startY; // Vers le bas
-          const diffX = Math.abs(currentX - startX);
-
-          // Swipe vers le bas et pas trop horizontal
-          if (diffY > 100 && diffX < 100) {
-            closeRatingModal();
-            isSwipeStarted = false;
-          }
-        });
-
-        modalContent.addEventListener("touchend", () => {
-          isSwipeStarted = false;
-        });
-
-        // 3. SWIPE VERS LA GAUCHE (alternative)
-        modalContent.addEventListener("touchstart", (e) => {
-          startX = e.touches[0].clientX;
-          startY = e.touches[0].clientY;
         });
 
         modalContent.addEventListener("touchmove", (e) => {
@@ -6216,6 +6190,10 @@
             closeRatingModal();
             isSwipeStarted = false;
           }
+        });
+
+        modalContent.addEventListener("touchend", () => {
+          isSwipeStarted = false;
         });
       }
 
@@ -6239,27 +6217,27 @@
           originalClose();
         };
 
-        // 2. SWIPE VERS LE BAS (mobile)
-        let startY = 0;
+        // 2. SWIPE VERS LA GAUCHE (mobile)
         let startX = 0;
+        let startY = 0;
         let isSwipeStarted = false;
 
         modalContent.addEventListener("touchstart", (e) => {
-          startY = e.touches[0].clientY;
           startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
           isSwipeStarted = true;
         });
 
         modalContent.addEventListener("touchmove", (e) => {
           if (!isSwipeStarted) return;
 
-          const currentY = e.touches[0].clientY;
           const currentX = e.touches[0].clientX;
-          const diffY = currentY - startY; // Vers le bas
-          const diffX = Math.abs(currentX - startX);
+          const currentY = e.touches[0].clientY;
+          const diffX = startX - currentX; // Vers la gauche
+          const diffY = Math.abs(startY - currentY);
 
-          // Swipe vers le bas et pas trop horizontal
-          if (diffY > 100 && diffX < 100) {
+          // Swipe vers la gauche et pas trop vertical
+          if (diffX > 100 && diffY < 100) {
             closeRatingsModal();
             isSwipeStarted = false;
           }
@@ -6292,27 +6270,27 @@
           originalClose();
         };
 
-        // 2. SWIPE VERS LE BAS (mobile)
-        let startY = 0;
+        // 2. SWIPE VERS LA GAUCHE (mobile)
         let startX = 0;
+        let startY = 0;
         let isSwipeStarted = false;
 
         modalContent.addEventListener("touchstart", (e) => {
-          startY = e.touches[0].clientY;
           startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
           isSwipeStarted = true;
         });
 
         modalContent.addEventListener("touchmove", (e) => {
           if (!isSwipeStarted) return;
 
-          const currentY = e.touches[0].clientY;
           const currentX = e.touches[0].clientX;
-          const diffY = currentY - startY; // Vers le bas
-          const diffX = Math.abs(currentX - startX);
+          const currentY = e.touches[0].clientY;
+          const diffX = startX - currentX; // Vers la gauche
+          const diffY = Math.abs(startY - currentY);
 
-          // Swipe vers le bas et pas trop horizontal
-          if (diffY > 100 && diffX < 100) {
+          // Swipe vers la gauche et pas trop vertical
+          if (diffX > 100 && diffY < 100) {
             closeEditEventModal();
             isSwipeStarted = false;
           }
