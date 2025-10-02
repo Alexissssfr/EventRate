@@ -6075,6 +6075,8 @@
         resetRatingForm();
         
         if (wasEditing) {
+          // Réinitialiser le mode édition avant de rouvrir le modal "Mes avis"
+          window.editingRatingId = null;
           document.getElementById("my-ratings-modal").classList.remove("hidden");
         }
       }
