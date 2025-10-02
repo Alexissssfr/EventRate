@@ -4137,6 +4137,9 @@
         document.getElementById("my-ratings-modal").classList.remove("hidden");
         await loadMyRatings();
 
+        // Ajouter les méthodes de fermeture standard
+        setupMyRatingsModalCloseMethods();
+
         // Scroll automatiquement vers la fenêtre sur mobile
         if (window.innerWidth <= 768) {
           setTimeout(() => {
@@ -4495,6 +4498,9 @@
         setCurrentPage("my-events");
         document.getElementById("my-events-modal").classList.remove("hidden");
         await loadMyEvents();
+
+        // Ajouter les méthodes de fermeture standard
+        setupMyEventsModalCloseMethods();
 
         // Scroll automatiquement vers la fenêtre sur mobile
         if (window.innerWidth <= 768) {
@@ -6292,6 +6298,108 @@
           // Swipe vers la gauche et pas trop vertical
           if (diffX > 100 && diffY < 100) {
             closeEditEventModal();
+            isSwipeStarted = false;
+          }
+        });
+
+        modalContent.addEventListener("touchend", () => {
+          isSwipeStarted = false;
+        });
+      }
+
+      // Méthodes de fermeture pour le modal "Mes avis"
+      function setupMyRatingsModalCloseMethods() {
+        const modalContent = document.querySelector("#my-ratings-modal > div > div");
+        if (!modalContent) return;
+
+        // 1. TOUCHE ÉCHAP (ESC)
+        const handleKeyPress = (e) => {
+          if (e.key === "Escape") {
+            closeMyRatingsModal();
+          }
+        };
+        document.addEventListener("keydown", handleKeyPress);
+
+        // Nettoyer l'event listener quand le modal se ferme
+        const originalClose = closeMyRatingsModal;
+        closeMyRatingsModal = function () {
+          document.removeEventListener("keydown", handleKeyPress);
+          originalClose();
+        };
+
+        // 2. SWIPE VERS LA GAUCHE (mobile)
+        let startX = 0;
+        let startY = 0;
+        let isSwipeStarted = false;
+
+        modalContent.addEventListener("touchstart", (e) => {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          isSwipeStarted = true;
+        });
+
+        modalContent.addEventListener("touchmove", (e) => {
+          if (!isSwipeStarted) return;
+
+          const currentX = e.touches[0].clientX;
+          const currentY = e.touches[0].clientY;
+          const diffX = startX - currentX; // Vers la gauche
+          const diffY = Math.abs(startY - currentY);
+
+          // Swipe vers la gauche et pas trop vertical
+          if (diffX > 100 && diffY < 100) {
+            closeMyRatingsModal();
+            isSwipeStarted = false;
+          }
+        });
+
+        modalContent.addEventListener("touchend", () => {
+          isSwipeStarted = false;
+        });
+      }
+
+      // Méthodes de fermeture pour le modal "Mes événements"
+      function setupMyEventsModalCloseMethods() {
+        const modalContent = document.querySelector("#my-events-modal > div > div");
+        if (!modalContent) return;
+
+        // 1. TOUCHE ÉCHAP (ESC)
+        const handleKeyPress = (e) => {
+          if (e.key === "Escape") {
+            closeMyEventsModal();
+          }
+        };
+        document.addEventListener("keydown", handleKeyPress);
+
+        // Nettoyer l'event listener quand le modal se ferme
+        const originalClose = closeMyEventsModal;
+        closeMyEventsModal = function () {
+          document.removeEventListener("keydown", handleKeyPress);
+          originalClose();
+        };
+
+        // 2. SWIPE VERS LA GAUCHE (mobile)
+        let startX = 0;
+        let startY = 0;
+        let isSwipeStarted = false;
+
+        modalContent.addEventListener("touchstart", (e) => {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          isSwipeStarted = true;
+        });
+
+        modalContent.addEventListener("touchmove", (e) => {
+          if (!isSwipeStarted) return;
+
+          const currentX = e.touches[0].clientX;
+          const currentY = e.touches[0].clientY;
+          const diffX = startX - currentX; // Vers la gauche
+          const diffY = Math.abs(startY - currentY);
+
+          // Swipe vers la gauche et pas trop vertical
+          if (diffX > 100 && diffY < 100) {
+            closeMyEventsModal();
             isSwipeStarted = false;
           }
         });
