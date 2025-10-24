@@ -1,12 +1,12 @@
 {
   "name": "eventrate-vercel",
   "version": "1.0.0",
-  "description": "Gestionnaire d'événements sur Vercel - Updated",
+  "description": "Gestionnaire d'événements sur Vercel - Fixed",
   "type": "module",
   "main": "api/index.js",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'No build needed for serverless'",
+    "build": "cd client && npm run build",
     "start": "echo 'Use vercel dev for local development'"
   },
   "dependencies": {

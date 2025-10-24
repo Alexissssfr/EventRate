@@ -3,7 +3,7 @@
   "name": "eventrate-app",
   "builds": [
     {
-      "src": "server.js",
+      "src": "api/**/*.js",
       "use": "@vercel/node"
     },
     {
@@ -15,10 +15,6 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/server.js"
-    },
     {
       "source": "/reset-password",
       "destination": "/index.html"
