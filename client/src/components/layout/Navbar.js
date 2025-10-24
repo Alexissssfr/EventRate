@@ -4,8 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { 
   Bars3Icon, 
   XMarkIcon,
-  UserCircleIcon,
-  ArrowRightOnRectangleIcon
+  UserCircleIcon
 } from '@heroicons/react/24/outline';
 
 const Navbar = () => {

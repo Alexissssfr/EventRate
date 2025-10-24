@@ -6,15 +6,14 @@ import {
   StarIcon, 
   UserGroupIcon, 
   MapPinIcon,
-  ArrowRightIcon,
-  PlayIcon
+  ArrowRightIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../contexts/AuthContext';
 import { useQuery } from 'react-query';
 import { eventAPI, userAPI } from '../services/api';
 
 const Home = () => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   // Récupérer les événements populaires
   const { data: popularEvents } = useQuery(
@@ -24,7 +23,7 @@ const Home = () => {
   );
 
   // Récupérer les meilleurs créateurs
-  const { data: topCreators } = useQuery(
+  useQuery(
     ['top-creators'],
     () => userAPI.getTopCreators({ limit: 4 }),
     { staleTime: 10 * 60 * 1000 }
