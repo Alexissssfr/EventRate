@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "name": "eventrate-app",
   "builds": [
     {
       "src": "server.js",
