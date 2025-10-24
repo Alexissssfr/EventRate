@@ -14,17 +14,11 @@
       }
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/$1"
-    }
-  ],
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/server.js"
+    },
     {
       "source": "/reset-password",
       "destination": "/index.html"
@@ -44,6 +38,10 @@
     {
       "source": "/create-event",
       "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/client/$1"
     }
   ],
   "headers": [
