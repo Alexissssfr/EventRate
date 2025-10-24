@@ -86,8 +86,10 @@ async function handleListEvents(req, res) {
            date_start, date_end, location_address, location_city,
            price_amount, price_currency, price_is_free, capacity,
            current_attendees, creator_id, status, rating_average,
-           rating_count, images, photos, created_at
+           rating_count, images, photos, tags, views_count,
+           is_featured, created_at, updated_at
     FROM events 
+    WHERE status = 'active'
     ORDER BY date_start DESC
   `);
 
@@ -122,7 +124,8 @@ async function handleCreateEvent(req, res) {
     priceCurrency,
     priceIsFree,
     capacity,
-    creatorId
+    creatorId,
+    tags
   } = req.body;
 
   console.log("🔍 Données reçues pour création événement:", {
@@ -148,8 +151,8 @@ async function handleCreateEvent(req, res) {
     const result = await pool.query(
       `INSERT INTO events (title, description, category, date_start, date_end, 
                          location_address, location_city, price_amount, price_currency, 
-                         price_is_free, capacity, creator_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                         price_is_free, capacity, creator_id, tags)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
        RETURNING *`,
       [
         title,
@@ -163,7 +166,8 @@ async function handleCreateEvent(req, res) {
         priceCurrency || 'EUR',
         priceIsFree !== undefined ? priceIsFree : true,
         capacity || 0,
-        creatorId || decoded.userId
+        creatorId || decoded.userId,
+        tags || []
       ]
     );
 
@@ -210,27 +214,61 @@ async function handleUpdateEvent(req, res, id) {
   const token = authHeader.substring(7);
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  const { title, description, category, date_start, date_end, location_address, location_city, photos } = req.body;
+  const { 
+    title, 
+    description, 
+    category, 
+    date_start, 
+    date_end, 
+    location_address, 
+    location_city, 
+    photos,
+    price_amount,
+    price_is_free,
+    capacity
+  } = req.body;
   
-  // Debug temporaire
-  console.log('Photos reçues:', photos);
+  console.log('🔍 Données reçues pour modification:', {
+    id,
+    title,
+    price_amount,
+    price_is_free,
+    userId: decoded.userId
+  });
 
   const result = await pool.query(
     `
     UPDATE events 
     SET title = $1, description = $2, category = $3, 
         date_start = $4, date_end = $5, location_address = $6, 
-        location_city = $7, photos = $8, images = $8, updated_at = NOW()
-    WHERE id = $9 AND creator_id = $10
+        location_city = $7, photos = $8, images = $8,
+        price_amount = $9, price_is_free = $10, capacity = $11,
+        updated_at = NOW()
+    WHERE id = $12 AND creator_id = $13
     RETURNING *
   `,
-    [title, description, category, date_start, date_end, location_address, location_city, photos || [], id, decoded.userId]
+    [
+      title, 
+      description, 
+      category, 
+      date_start, 
+      date_end, 
+      location_address, 
+      location_city, 
+      photos || [], 
+      price_amount || 0, 
+      price_is_free || false,
+      capacity || 0,
+      id, 
+      decoded.userId
+    ]
   );
 
   if (result.rows.length === 0) {
     return res.status(404).json({ error: "Événement non trouvé ou non autorisé" });
   }
 
+  console.log('✅ Événement modifié avec succès:', result.rows[0]);
   return res.status(200).json(result.rows[0]);
 }
 
