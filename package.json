@@ -1,7 +1,7 @@
 {
   "name": "eventrate-vercel",
   "version": "1.0.0",
-  "description": "Gestionnaire d'événements sur Vercel",
+  "description": "Gestionnaire d'événements sur Vercel - Updated",
   "type": "module",
   "main": "api/index.js",
   "scripts": {
