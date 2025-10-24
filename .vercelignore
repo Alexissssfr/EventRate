@@ -1,10 +1,28 @@
-client/
+node_modules
+.env
+.git
+.gitignore
+.DS_Store
+
+# Ignore les fichiers de documentation
+README.md
+*.md
+
+# Ignore les scripts de développement
+keep-alive.js
+fix-connection-bugs.js
+
+# Ignore les scripts SQL (à utiliser manuellement)
+enable-rls-optimal.sql
+enable-rls-secure.sql
+enable-rls-production.sql
+fix-rls-quick.sql
+disable-rls-temp.sql
+
+# Ignore les fichiers de déploiement forcé
+force-deploy-*.txt
+
+# Ignore les dossiers de développement
 server/
-demo-complete.html
-start-servers.sh
-install.sh
-SUPABASE_SETUP.md
-database.js
-server.js
 logs/
 *.log
