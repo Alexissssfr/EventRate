@@ -6916,10 +6916,12 @@
                 : "Votre avis détaillé a été enregistré avec succès."
             );
 
-            // Nettoyer le mode édition
-            window.editingRatingId = null;
-
+            // Fermer le modal de modification et retourner au modal "Mes avis"
             closeRatingModal();
+            
+            // Nettoyer le mode édition APRÈS avoir fermé le modal
+            window.editingRatingId = null;
+            
             loadEvents(); // Recharger les événements pour mettre à jour les notes
 
             // Si le modal "Mes avis" est ouvert, le recharger aussi
