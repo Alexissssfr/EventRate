@@ -6881,18 +6881,17 @@
 
           // Mode édition ou création ?
           if (window.editingRatingId) {
-            // Mode édition : PUT request
-            response = await fetch(
-              `${API_BASE}/ratings/${window.editingRatingId}`,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${authToken}`,
-                },
-                body: JSON.stringify(ratingData),
-              }
-            );
+            // Mode édition : POST request avec action update
+            ratingData.action = "update";
+            ratingData.ratingId = window.editingRatingId;
+            response = await fetch(`${API_BASE}/ratings`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: JSON.stringify(ratingData),
+            });
           } else {
             // Mode création : POST request
             response = await fetch(`${API_BASE}/ratings`, {
