@@ -51,14 +51,21 @@ export default async function handler(req, res) {
     // Pour les requêtes PUT (modification directe)
     if (req.method === "PUT") {
       console.log("🔍 PUT request reçue:", req.url);
+      console.log("🔍 Body:", req.body);
+      
       // Extraire l'ID de l'URL si c'est /ratings/{id}
       const urlParts = req.url.split('/');
       console.log("🔍 URL parts:", urlParts);
+      
       if (urlParts.length >= 3 && urlParts[1] === 'ratings' && urlParts[2]) {
         const ratingId = urlParts[2];
         console.log("🔍 Rating ID extrait:", ratingId);
         req.body.ratingId = ratingId;
+      } else {
+        console.log("🔍 Pas d'ID trouvé dans l'URL");
+        return res.status(400).json({ error: "ID de rating requis dans l'URL" });
       }
+      
       return await handleUpdateRating(req, res);
     }
 
