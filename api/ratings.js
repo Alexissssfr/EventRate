@@ -306,18 +306,60 @@ async function handleUpdateRating(req, res) {
   const token = authHeader.substring(7);
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  const { ratingId, overallRating, comment, quickTags, detailedCriteria } = req.body;
+  const { 
+    ratingId, 
+    overallRating, 
+    comment, 
+    quickTags, 
+    detailedCriteria,
+    ambianceRating,
+    affluenceRating,
+    organisationRating,
+    qualityRating,
+    valueRating,
+    noiseLevel,
+    visualQuality,
+    comfortRating,
+    accessibilityRating,
+    securityRating,
+    servicesRating,
+    attendanceTime,
+    crowdLevel,
+    weatherConditions,
+    photos
+  } = req.body;
 
   const result = await pool.query(
     `UPDATE ratings 
-     SET overall_rating = $1, comment = $2, quick_tags = $3, detailed_criteria = $4, updated_at = NOW()
-     WHERE id = $5 AND user_id = $6
+     SET overall_rating = $1, comment = $2, quick_tags = $3, detailed_criteria = $4,
+         ambiance_rating = $5, affluence_rating = $6, organisation_rating = $7,
+         quality_rating = $8, value_rating = $9, noise_level = $10,
+         visual_quality = $11, comfort_rating = $12, accessibility_rating = $13,
+         security_rating = $14, services_rating = $15, attendance_time = $16,
+         crowd_level = $17, weather_conditions = $18, photos = $19,
+         updated_at = NOW()
+     WHERE id = $20 AND user_id = $21
      RETURNING *`,
     [
       overallRating,
-          comment,
+      comment,
       JSON.stringify(quickTags || []),
       JSON.stringify(detailedCriteria || {}),
+      ambianceRating,
+      affluenceRating,
+      organisationRating,
+      qualityRating,
+      valueRating,
+      noiseLevel,
+      visualQuality,
+      comfortRating,
+      accessibilityRating,
+      securityRating,
+      servicesRating,
+      attendanceTime,
+      crowdLevel,
+      weatherConditions,
+      photos || [],
       ratingId,
       decoded.userId
     ]

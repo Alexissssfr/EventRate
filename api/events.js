@@ -210,7 +210,19 @@ async function handleUpdateEvent(req, res, id) {
   const token = authHeader.substring(7);
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  const { title, description, category, date_start, date_end, location_address, location_city, photos } = req.body;
+  const { 
+    title, 
+    description, 
+    category, 
+    date_start, 
+    date_end, 
+    location_address, 
+    location_city, 
+    photos,
+    price_amount,
+    price_is_free,
+    capacity
+  } = req.body;
   
   // Debug temporaire
   console.log('Photos reçues:', photos);
@@ -220,11 +232,27 @@ async function handleUpdateEvent(req, res, id) {
     UPDATE events 
     SET title = $1, description = $2, category = $3, 
         date_start = $4, date_end = $5, location_address = $6, 
-        location_city = $7, photos = $8, images = $8, updated_at = NOW()
-    WHERE id = $9 AND creator_id = $10
+        location_city = $7, photos = $8, images = $8,
+        price_amount = $9, price_is_free = $10, capacity = $11,
+        updated_at = NOW()
+    WHERE id = $12 AND creator_id = $13
     RETURNING *
   `,
-    [title, description, category, date_start, date_end, location_address, location_city, photos || [], id, decoded.userId]
+    [
+      title, 
+      description, 
+      category, 
+      date_start, 
+      date_end, 
+      location_address, 
+      location_city, 
+      photos || [], 
+      price_amount || 0,
+      price_is_free || false,
+      capacity || 0,
+      id, 
+      decoded.userId
+    ]
   );
 
   if (result.rows.length === 0) {
