@@ -10,6 +10,7 @@ const pool = new Pool({
 });
 
 export default async function handler(req, res) {
+  console.log("🚀 API RATINGS HANDLER START");
   console.log("🔍 API ratings appelée:", req.method, req.url);
   console.log("🔍 Headers:", req.headers);
   console.log("🔍 Body:", req.body);
@@ -23,38 +24,58 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method === "OPTIONS") {
+    console.log("✅ OPTIONS request - returning 200");
     return res.status(200).end();
   }
 
   try {
+    console.log("🔍 Processing request method:", req.method);
+    
     // Pour les requêtes GET, utiliser l'ancien système
     if (req.method === "GET") {
+      console.log("❌ GET method not supported");
       return res.status(405).json({ error: 'Méthode GET non supportée' });
     }
 
     // Pour les requêtes POST, vérifier l'action
     if (req.method === "POST") {
+      console.log("🔍 POST request - checking action");
       const { action } = req.body;
+      console.log("🔍 Action:", action);
 
       switch (action) {
         case 'create':
+          console.log("🔍 Action: create");
           return await handleCreateRating(req, res);
         case 'my-ratings':
+          console.log("🔍 Action: my-ratings");
           return await handleMyRatings(req, res);
         case 'get':
+          console.log("🔍 Action: get");
           return await handleGetRating(req, res);
         case 'update':
+          console.log("🔍 Action: update");
           return await handleUpdateRating(req, res);
         case 'delete':
+          console.log("🔍 Action: delete");
           return await handleDeleteRating(req, res);
         default:
+          console.log("❌ Action non reconnue:", action);
           return res.status(400).json({ error: 'Action non reconnue' });
       }
     }
 
+    // Pour les requêtes PUT
+    if (req.method === "PUT") {
+      console.log("🔍 PUT request - redirecting to update action");
+      req.body.action = 'update';
+      return await handleUpdateRating(req, res);
+    }
+
+    console.log("❌ Méthode non autorisée:", req.method);
     return res.status(405).json({ error: 'Méthode non autorisée' });
   } catch (error) {
-    console.error("Erreur API ratings:", error);
+    console.error("💥 ERREUR API RATINGS:", error);
     return res.status(500).json({
       error: "Erreur interne du serveur",
       details: error.message,
