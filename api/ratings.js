@@ -48,6 +48,11 @@ export default async function handler(req, res) {
       }
     }
 
+    // Pour les requêtes PUT (modification directe)
+    if (req.method === "PUT") {
+      return await handleUpdateRating(req, res);
+    }
+
     return res.status(405).json({ error: 'Méthode non autorisée' });
   } catch (error) {
     console.error("Erreur API ratings:", error);
@@ -293,7 +298,8 @@ async function handleGetRating(req, res) {
 
 // MODIFIER UN RATING
 async function handleUpdateRating(req, res) {
-  if (req.method !== "PUT") {
+  // Accepter PUT et POST avec action update
+  if (req.method !== "PUT" && req.method !== "POST") {
     return res.status(405).json({ error: "Méthode non autorisée" });
   }
 
