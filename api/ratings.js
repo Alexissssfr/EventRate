@@ -300,7 +300,7 @@ async function handleGetRating(req, res) {
     }
 
     res.status(200).json(result.rows[0]);
-    } else {
+  } else {
     return res.status(400).json({ error: "ratingId ou eventId requis" });
   }
 }
