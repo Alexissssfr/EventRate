@@ -50,6 +50,12 @@ export default async function handler(req, res) {
 
     // Pour les requêtes PUT (modification directe)
     if (req.method === "PUT") {
+      // Extraire l'ID de l'URL si c'est /ratings/{id}
+      const urlParts = req.url.split('/');
+      if (urlParts.length >= 3 && urlParts[1] === 'ratings' && urlParts[2]) {
+        const ratingId = urlParts[2];
+        req.body.ratingId = ratingId;
+      }
       return await handleUpdateRating(req, res);
     }
 
