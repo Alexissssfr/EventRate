@@ -14,6 +14,8 @@ export default async function handler(req, res) {
   console.log("🔍 API ratings appelée:", req.method, req.url);
   console.log("🔍 Headers:", req.headers);
   console.log("🔍 Body:", req.body);
+  console.log("🔍 Full URL:", req.url);
+  console.log("🔍 Query:", req.query);
   
   // Configuration CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
