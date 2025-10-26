@@ -1,48 +1,13 @@
 {
   "functions": {
     "api/**/*.js": {
-      "maxDuration": 30
+      "runtime": "@vercel/node@3.0.7"
     }
   },
   "rewrites": [
     {
-      "source": "/reset-password",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/login",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/register",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/events",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/create-event",
-      "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
       "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
-      ]
+      "destination": "/"
     }
   ]
 }
