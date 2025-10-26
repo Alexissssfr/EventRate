@@ -282,9 +282,12 @@ async function handleMyRatings(req, res) {
 
 // RÉCUPÉRER UN RATING SPÉCIFIQUE OU LES RATINGS D'UN ÉVÉNEMENT
 async function handleGetRating(req, res) {
+  console.log("🔍 HANDLE GET RATING START");
   const { ratingId, eventId } = req.body;
+  console.log("🔍 ratingId:", ratingId, "eventId:", eventId);
 
   if (eventId) {
+    console.log("🔍 Getting ratings for event:", eventId);
     // Récupérer tous les ratings d'un événement
     const result = await pool.query(
       `SELECT r.*, e.title as event_title, e.date_start as event_date, e.location_city
@@ -295,8 +298,10 @@ async function handleGetRating(req, res) {
       [eventId]
     );
 
+    console.log("✅ Event ratings retrieved:", result.rows.length);
     res.status(200).json(result.rows);
   } else if (ratingId) {
+    console.log("🔍 Getting specific rating:", ratingId);
     // Récupérer un rating spécifique
     const result = await pool.query(
       `SELECT r.*, e.title as event_title, e.date_start as event_date, e.location_city
@@ -307,11 +312,14 @@ async function handleGetRating(req, res) {
     );
 
     if (result.rows.length === 0) {
+      console.log("❌ Rating not found:", ratingId);
       return res.status(404).json({ error: "Rating non trouvé" });
     }
 
+    console.log("✅ Rating retrieved:", result.rows[0]);
     res.status(200).json(result.rows[0]);
   } else {
+    console.log("❌ No ratingId or eventId provided");
     return res.status(400).json({ error: "ratingId ou eventId requis" });
   }
 }
